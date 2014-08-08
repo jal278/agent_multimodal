@@ -1,0 +1,309 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4EE94BAF-AA0D-4CC1-9244-5FD986AC36F3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Engine</RootNamespace>
+    <AssemblyName>Engine</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RootNamespace>simulator</RootNamespace>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <RootNamespace>simulator</RootNamespace>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="AgentBrain.cs" />
+    <Compile Include="Behavior Characterizations\EndPointBC.cs" />
+    <Compile Include="Behavior Characterizations\NullBehaviorCharacterization.cs" />
+    <Compile Include="EngineUtilities.cs" />
+    <Compile Include="Experiment.cs" />
+    <Compile Include="Experiments\HardMazeExperiment.cs" />
+    <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
+    <Compile Include="ExperimentWrapper.cs" />
+    <Compile Include="Fitness Functions\HardMazeFitness.cs" />
+    <Compile Include="Fitness Functions\VisitThreeFitness.cs" />
+    <Compile Include="Forms\NewExperimentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NewExperimentForm.Designer.cs">
+      <DependentUpon>NewExperimentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SettingsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsDialog.Designer.cs">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\WallAdder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\WallAdder.Designer.cs">
+      <DependentUpon>WallAdder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AboutBox.Designer.cs">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\HelpForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HelpForm.Designer.cs">
+      <DependentUpon>HelpForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ReadmeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ReadmeForm.Designer.cs">
+      <DependentUpon>ReadmeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\RoboModelSetter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\RoboModelSetter.Designer.cs">
+      <DependentUpon>RoboModelSetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HyperNEATEvolver.cs" />
+    <Compile Include="Fitness Functions\IFitnessFunction.cs" />
+    <Compile Include="Fitness Functions\FitnessFunctionFactory.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Robot Models\MazeRobotPieSlice.cs" />
+    <Compile Include="Robot Models\Khepera3RobotModel.cs" />
+    <Compile Include="Robot Models\Khepera3RobotModelAutopilot.cs" />
+    <Compile Include="Robot Models\Khepera3RobotModelComeHome.cs" />
+    <Compile Include="Robot Models\Khepera3RobotModelContinuous.cs" />
+    <Compile Include="Sensor Models\ISensor.cs" />
+    <Compile Include="Experiments\RoomClearingExperiment.cs" />
+    <Compile Include="Forms\ObjectRenamer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ObjectRenamer.Designer.cs">
+      <DependentUpon>ObjectRenamer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Robot Models\RoomClearingRobotModel.cs" />
+    <Compile Include="Experiments\MultiAgentExperiment.cs" />
+    <Compile Include="NetworkEvaluator.cs" />
+    <Compile Include="Robot Models\PackBotModel.cs" />
+    <Compile Include="RobotModelFactory.cs" />
+    <Compile Include="Robot Models\Robot.cs" />
+    <Compile Include="BasicShapes.cs" />
+    <Compile Include="Environment.cs" />
+    <Compile Include="Sensor Models\PieSliceSensorArray.cs" />
+    <Compile Include="SensorType.cs" />
+    <Compile Include="Experiments\SimulatorExperiment.cs" />
+    <Compile Include="SimulatorObject.cs" />
+    <Compile Include="SimulatorPopulationEvaluator.cs" />
+    <Compile Include="Forms\AgentInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GenomeVisualizerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\GenomeVisualizerForm.Designer.cs">
+      <DependentUpon>GenomeVisualizerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkDifferencesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\NetworkDifferencesForm.Designer.cs">
+      <DependentUpon>NetworkDifferencesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkVisualizerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SensorInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulatorVisualizer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimulatorVisualizer.Designer.cs">
+      <DependentUpon>SimulatorVisualizer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Wall.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Behavior Characterizations\IBehaviorCharacterization.cs" />
+    <Compile Include="Behavior Characterizations\BehaviorCharacterizationFactory.cs" />
+    <Compile Include="IScript.cs" />
+    <Compile Include="SimpleScript.cs" />
+    <Compile Include="CollisionEngine\CollisionGrid.cs" />
+    <Compile Include="Sensor Models\RangeFinder.cs" />
+    <Compile Include="CollisionEngine\GridCollision.cs" />
+    <Compile Include="CollisionEngine\StandardCollision.cs" />
+    <Compile Include="Behavior Characterizations\DistributionBC.cs" />
+    <Compile Include="Behavior Characterizations\DistanceBC.cs" />
+    <Compile Include="Robot Models\Khepera3RobotModel_Remote.cs" />
+    <Compile Include="Utilities\khepera3_serial.cs" />
+    <Compile Include="Behavior Characterizations\SplitReturnBC.cs" />
+    <Compile Include="Sensor Models\SignalSensor.cs" />
+    <Compile Include="Fitness Functions\poiMO.cs" />
+    <Compile Include="Fitness Functions\CoverageFitness.cs" />
+    <Compile Include="Fitness Functions\WallCoverageFitness.cs" />
+    <Compile Include="Fitness Functions\SpreadFitness.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>
+      </ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>
+      </ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>
+      </ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SharpNeatLib\SharpNeatLib.csproj">
+      <Project>{3A64602B-C5E0-4CB7-99B0-1FC6ABB4449A}</Project>
+      <Name>SharpNeatLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Forms\NewExperimentForm.resx">
+      <DependentUpon>NewExperimentForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsDialog.resx">
+      <DependentUpon>SettingsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\WallAdder.resx">
+      <DependentUpon>WallAdder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AboutBox.resx">
+      <DependentUpon>AboutBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AgentInfo.resx">
+      <DependentUpon>AgentInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HelpForm.resx">
+      <DependentUpon>HelpForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ReadmeForm.resx">
+      <DependentUpon>ReadmeForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\RoboModelSetter.resx">
+      <DependentUpon>RoboModelSetter.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\GenomeVisualizerForm.resx">
+      <DependentUpon>GenomeVisualizerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NetworkDifferencesForm.resx">
+      <DependentUpon>NetworkDifferencesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\NetworkVisualizerForm.resx">
+      <DependentUpon>NetworkVisualizerForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SensorInfo.resx">
+      <DependentUpon>SensorInfo.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimulatorVisualizer.resx">
+      <DependentUpon>SimulatorVisualizer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ObjectRenamer.resx">
+      <DependentUpon>ObjectRenamer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\eplexLogo.png" />
+  </ItemGroup>
+</Project>

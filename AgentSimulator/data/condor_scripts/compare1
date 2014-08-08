@@ -1,0 +1,17 @@
+requirements=InMastodon
++Group="GRAD"
++Project="AI_ROBOTICS"
++ProjectDescription="Multiagent HyperNEAT"
+executable = /usr/bin/mono
+Error = logs/err.$(Process)
+Output = logs/out.$(Process)
+
+arguments = ./AgentSimulator.exe evolve -experiment lone_patrol_single.xml -generations 1000 -folder results/lp_single-$(Process)-
+queue 10
+
+arguments = ./AgentSimulator.exe evolve -experiment lone_patrol_switch3.xml -generations 1000 -folder results/lp_switch3-$(Process)-
+queue 10
+
+arguments = ./AgentSimulator.exe evolve -experiment lone_patrol_switchUngeom3.xml -generations 1000 -folder results/lp_ungeom3-$(Process)-
+queue 10
+

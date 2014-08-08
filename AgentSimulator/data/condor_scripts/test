@@ -1,0 +1,13 @@
+requirements=InMastodon
++Group="GRAD"
++Project="AI_ROBOTICS"
++ProjectDescription="Multiagent HyperNEAT"
+executable = /usr/bin/mono
+Error = logs/err.$(Process)
+Output = logs/out.$(Process)
+
+
+arguments = ./AgentSimulator.exe evolve -experiment hardmaze_exp.xml -generations 50 -folder results/t$(Process)-
+queue 20
+
+

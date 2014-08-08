@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RoomClearingExperiment>
+    <gridCollision>true</gridCollision>
+    <substrateDescriptionFilename>room_clearing_substrate.xml</substrateDescriptionFilename>
+    <adaptableANN>false</adaptableANN>
+    <modulatoryANN>false</modulatoryANN>
+    <normalizeWeights>true</normalizeWeights>
+    <inputs>5</inputs>
+    <outputs>2</outputs>
+    <populationSize>150</populationSize>
+    <headingNoise>0</headingNoise>
+    <effectorNoise>0</effectorNoise>
+    <sensorNoise>0</sensorNoise>
+    <timesToRunEnvironments>1</timesToRunEnvironments>
+    <evaluationTime>35</evaluationTime>
+    <timestep>0.2</timestep>
+    <explanatoryText>Multi-Agent Experiment</explanatoryText>
+    <scriptFile />
+    <robotModelName>RoomClearingRobotModel</robotModelName>
+    <fitnessFunctionName>CoverageFitness</fitnessFunctionName>
+    <behaviorCharacterizationName>EndPointBC</behaviorCharacterizationName>
+    <environmentName>roomclear_env.xml</environmentName>
+    <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
+    <rangefinderSensorDensity>11</rangefinderSensorDensity>
+    <useScript>false</useScript>
+    <multipleEnvironments>false</multipleEnvironments>
+    <evolveSubstrate>false</evolveSubstrate>
+    <modulatory>false</modulatory>
+    <numberRobots>7</numberRobots>
+    <homogeneousTeam>true</homogeneousTeam>
+    <agentsVisible>true</agentsVisible>
+    <agentsCollide>true</agentsCollide>
+  </RoomClearingExperiment>
+</ExperimentWrapper>

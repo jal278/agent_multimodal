@@ -1,0 +1,1206 @@
+// engine.cs created with MonoDevelop
+// User: joel at 9:10 PM 5/13/2009
+//
+// To change standard headers go to Edit->Preferences->Coding->Standard Headers
+//
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+
+using System.Drawing;
+using System.Windows.Forms;
+using SharpNeatLib.NeuralNetwork;
+using SharpNeatLib;
+
+
+namespace simulator
+{	
+	//base clase for simulated objects
+	public abstract class sim_obj
+	{
+	 public Point2D location; //location
+	 public bool dynamic; //will this object ever move?
+	 public bool visible; //is this object active
+	 public abstract void update(double delta); 
+	 public abstract void undo();
+	}
+
+	//simple wall class
+	public class wall_obj : sim_obj
+	{
+		//a wall is basically just a line
+		public string name;
+		public Line2D line;
+		public bool colored;
+		public override void update(double delta) { }
+		public override void undo() { }
+		public wall_obj()
+		{
+		}
+		public wall_obj(wall_obj k)
+		{
+			name=k.name;
+			Console.WriteLine(name);
+			colored=false;
+			
+			line = new Line2D(k.line);
+
+			//set center point
+			location=line.midpoint();
+			
+			dynamic=false;
+			visible=k.visible;
+		}
+		
+		public wall_obj(double nx1,double ny1,double nx2,double ny2, bool vis,string n)
+		{
+			name=n;
+			colored=false;
+			Point2D p1 = new Point2D(nx1,ny1);
+			Point2D p2 = new Point2D(nx2,ny2);
+			line = new Line2D(p1,p2);
+
+			//set center point
+			location=line.midpoint();
+			
+			dynamic=false;
+			visible=vis;
+		}
+		public void insert_into_collision_grid(collision_grid grid)
+		{
+		    foreach(collision_grid_square square in grid.cast_ray(line.p1.x,line.p1.y,line.p2.x,line.p2.y))
+		    {
+		        square.static_objs.Add(this);
+		    }
+		}
+	}
+		
+	public class rangefinder
+	{
+		public rangefinder()
+		{
+		}
+		
+		public rangefinder(double a)
+		{
+
+			angle = a;
+            max_range = 400.0;///EPUCK 15.0; 30 works   //epuck radius = 3.8
+			distance = (-1);
+
+			noise=0.0;
+		}
+
+        public bool hitRobot;
+		public double angle;
+		public double distance;
+		public double max_range;
+		public double noise; //for broken sensors?
+	}
+	
+	//robot class (khpera)
+	public class robot_obj : sim_obj
+	{
+	 public List<rangefinder> rangefinders; 	
+	 public	double velocity,heading,radius;
+     public double fitness;
+     public int steps;
+     public int marker;
+	 public Circle2D circle;
+	 public Point2D old_location;
+	 public bool collide_last;
+     public int timeOnAnyPOI;
+     public int timeOnAssignedPOI;
+     public bool autopilot;
+     public INetwork brain;
+    public bool reachedGoal, reachedFirst;
+
+     //z-stack coordinate
+	 public float zstack;
+
+		//path-drawing stuff
+		public List<Point2D> path;
+		public bool recordPath;
+		public bool displayPath;
+		public int updatecounter;
+		
+        //POI stuff
+        public List<double> distanceClosestPOI;
+        public List<double> distanceAssignedPOI;
+
+        public bool stopped = false;
+		public bool disabled = false;
+		public int collisions = 0;
+		public double health = 1.0;
+
+		public robot_obj() { } 
+		public robot_obj(double nx, double ny,double rad,double dir,List<double> sensors)
+		{
+            fitness = 1000;
+            steps = 0;
+            reachedFirst = false;
+            reachedGoal = false;
+		    autopilot=false; //autopilot until in poi? REMOVE!
+		    
+			updatecounter=0;
+			zstack=0.0f;
+			recordPath=false; 
+			displayPath=false; //make this editable
+			
+            distanceClosestPOI = new List<double>();
+            distanceAssignedPOI = new List<double>();
+			path = new List<Point2D>();
+            timeOnAnyPOI = 0;
+            timeOnAssignedPOI = 0;
+			location = new Point2D(nx,ny);
+			circle=new Circle2D(location,rad);			
+			old_location=new Point2D(location);
+			radius=rad;
+			heading=dir;
+			velocity=0.0;
+			collide_last=false;
+			rangefinders = new List<rangefinder>();
+			foreach (double val in sensors)
+			{
+				rangefinders.Add(new rangefinder(val));
+			}
+		}
+		
+        public void update(double delta, double noise)
+        {
+            //record old coordinates
+            old_location.x = location.x;
+            old_location.y = location.y;
+
+            if (recordPath)
+            {
+                if (updatecounter % 30 == 0)
+                    path.Add(new Point2D(old_location));
+                updatecounter++;
+            }
+
+            //update current coordinates (may be revoked if new position forces collision)
+            if (!stopped)
+            {
+                double tempHeading = noisyHeading(noise);
+			    //Console.WriteLine(tempHeading.ToString());
+
+				double dx = Math.Cos(tempHeading);
+                double dy = Math.Sin(tempHeading);
+                location.x += velocity * dx * delta;
+                location.y += velocity * dy * delta;
+            }
+        }
+
+        public double noisyHeading(double noise)
+        {
+            return heading + (0.16 * 1.28 * (Utilities.random.NextBool() ? 1.0 : -1.0) * Utilities.random.NextDouble() * noise/100.0);
+        }
+
+
+		public override void update(double delta)
+		{
+			//record old coordinates
+			old_location.x=location.x;
+			old_location.y=location.y;
+
+			if(recordPath)
+			{
+				if(updatecounter%30==0)
+					path.Add(new Point2D(old_location));
+				updatecounter++;
+			}
+			
+			//update current coordinates (may be revoked if new position forces collision)
+            if (!stopped)
+            {
+                double dx = Math.Cos(heading);
+                double dy = Math.Sin(heading);
+                location.x += velocity * dx * delta;
+                location.y += velocity * dy * delta;
+            }
+		}
+		
+		public override void undo()
+		{
+			location.x=old_location.x;
+			location.y=old_location.y;
+		}
+		
+		public void insert_into_collision_grid(collision_grid grid)
+		{
+		    foreach(collision_grid_square square in grid.circle(location.x,location.y,radius))
+		    {
+		        square.dynamic_objs.Add(this);
+		    }
+		}
+	}
+	
+	//collisions & ray-casting...
+	public class CollisionManager
+	{
+		//wall-wall (should never collide)
+		public bool collide(wall_obj a,wall_obj b)
+		{
+			return false;
+		}
+						
+		public bool collide(wall_obj wall,robot_obj robot)
+		{
+			Point2D a1=new Point2D(wall.line.p1);
+			Point2D a2=new Point2D(wall.line.p2);
+			Point2D b=new Point2D(robot.circle.p.x,robot.circle.p.y);
+			if(!wall.visible)
+				return false;
+			double rad = robot.circle.radius;
+			double r = ((b.x-a1.x)*(a2.x-a1.x)+(b.y-a1.y)*(a2.y-a1.y))/wall.line.length_sq();
+			double px = a1.x + r*(a2.x-a1.x);
+			double py = a1.y + r*(a2.y-a1.y);
+			Point2D np = new Point2D(px,py);
+			double rad_sq = rad*rad;
+			
+			if (r>=0.0f && r<=1.0f)
+			{
+				if (np.distance_sq(b)<rad_sq)
+					return true;
+				else
+					return false;
+			}
+			
+			double d1 = b.distance_sq(a1);
+			double d2 = b.distance_sq(a2);
+			if(d1<rad_sq || d2 < rad_sq)
+	    		return true;
+			else
+				return false;
+		}
+		
+		public bool collide(robot_obj a, wall_obj b)
+		{
+			return collide(b,a);
+		}
+
+		public bool collide(robot_obj a, robot_obj b)
+		{			
+			return a.circle.collide(b.circle);
+		}
+	}
+	
+	public class scenario
+	{
+		public List<wall_obj> walls;
+        public bool adaptiveNetwork, modulatoryNetwork;
+
+		//public List<double> robot_sensors;
+		public double sensor_start;
+		public double sensor_end;
+		public double time;
+		public int sensor_density;
+
+        public String name;
+        public bool normalizeWeights;
+		public int num_robots;
+		public int robot_orientation;
+		public int robot_spacing;
+		public int robot_heading;
+		public float robot_size;
+        public string fitness_function;
+		public string substrate_file;
+		public Point2D start_point;
+		public Point2D goal_point;
+        public List<Point> POIPosition { get; set; }
+        public Rectangle AOIRectangle { get; set; }
+        public float maxDistance;
+		public string scriptFile;
+
+		public bool agentsVisible;
+		public bool agentsCollide;
+		public bool useScript=false;
+		
+        public int noise = 0;
+        public int effector_noise = 0;
+		public double heading_noise = 0.0;
+		public int seed = -1;
+		public double timestep = 0.16;
+
+		public scenario()
+		{
+			agentsVisible=true;
+			agentsCollide=true;
+            normalizeWeights = true;
+            AOIRectangle = new Rectangle(30, 60, 640, 500);
+
+            time = 15.0;//EPUCK  40.0;
+			
+			walls=new List<wall_obj>();
+            POIPosition = new List<Point>();
+			substrate_file = "substrate.xml";			
+			scriptFile = "";
+			num_robots=1;
+			robot_orientation=0;
+			robot_spacing=30;
+			robot_size=10;//!
+			robot_heading=0;
+
+			sensor_start = -3.14/2.0;
+			sensor_end = 3.14/2.0;
+			sensor_density = 5;
+			
+			start_point = new Point2D(0,0);
+			goal_point = new Point2D(100,100);
+            fitness_function = "SingleGoalPoint";
+		}
+		
+		public void SaveXML(string name)
+		{
+			System.Xml.Serialization.XmlSerializer x= new System.Xml.Serialization.XmlSerializer(this.GetType());
+			TextWriter outfile = new StreamWriter(name);
+			x.Serialize(outfile,this);
+		}		
+		
+		public static scenario LoadScenario(string name)
+		{
+		System.Xml.Serialization.XmlSerializer x= new System.Xml.Serialization.XmlSerializer(typeof(scenario));
+		TextReader infile = new StreamReader(name);
+		scenario k= (scenario)x.Deserialize(infile);
+        k.maxDistance = (float)Math.Sqrt(k.AOIRectangle.Width * k.AOIRectangle.Width + k.AOIRectangle.Height * k.AOIRectangle.Height);
+       
+        k.name = name;
+		//Console.WriteLine(k.robot_sensors.Count);
+		return k;
+		}
+	}
+	
+
+	//simulator engine, main class in charge
+	//of the physics (e.g. collisions, movement, sensors)
+	public class engine
+	{
+       
+
+        public List<Point> POIPositions;
+		public List<wall_obj> walls;
+		public List<robot_obj> robots;
+		public CollisionManager collision;		
+		public double elapsed;
+        public int timeSteps;
+		public bool agentsVisible;
+		public bool agentsCollide;
+		public bool useCollisionGrid;
+		public collision_grid grid;
+        public int noise;
+        public int effector_noise;
+		public double heading_noise;
+		public double visual_range;
+		public double timestep;
+		public Random rng;
+        public bool useScript;
+		public IScript script;
+		public System.Reflection.Assembly assembly;
+        public static float[] sensor_angles={-1.57f, -0.74f, -0.31f, 0.31f, 0.74f, 1.57f}; 
+		
+		public engine(int seed)
+		{
+			useScript=false;
+			visual_range=11.0;
+            useCollisionGrid = false;
+		   
+			agentsVisible=true;
+			agentsCollide=true;
+			elapsed=0.0;
+            timeSteps = 0;
+			walls= new List<wall_obj>();
+			robots= new List<robot_obj>();
+			collision= new CollisionManager();
+			if(seed==-1)
+				rng=new Random();
+			else
+				rng=new Random(seed);
+			timestep=0.2;
+		}
+		
+public wall_obj find_wall_by_name(string name)
+		{
+			foreach (wall_obj wall in walls)
+			{
+				if (wall.name==name)
+					return wall;
+			}
+			return null;
+		}
+
+		public void setup_task(scenario spec,bool recordPaths)
+		{
+			robots.Clear();
+			walls.Clear();
+
+			//load scripting from scenario
+			//optimize later, may be inefficient to use relection *each* time
+			useScript=spec.useScript;
+			if(useScript)
+			{
+			  	string className = typeof(IScript).Namespace + '.' + spec.scriptFile;
+    	        script = (IScript)System.Reflection.Assembly.GetExecutingAssembly().CreateInstance(className);
+				script.reset();
+			}
+			
+			//load walls from scenario
+			walls=new List<wall_obj>();
+			foreach (wall_obj w in spec.walls)
+			{
+				wall_obj n = new wall_obj(w);
+				walls.Add(n);
+			}
+		
+			timestep=spec.timestep;
+			//load visibility & collision settings from scenario
+			agentsCollide=spec.agentsCollide;
+			agentsVisible=spec.agentsVisible;
+			
+            //Load Point of Interets
+            POIPositions = spec.POIPosition;
+
+			//load sensor configuration from scenario			
+			List<double> sensors= new List<double>();
+			//by interpolating the desired amount of sensors between
+			//the two given angular endpoints
+			double delta = (spec.sensor_end - spec.sensor_start) / (spec.sensor_density - 1);
+			double x= spec.sensor_start;
+	
+			for(int y = 0; y<spec.sensor_density; y++)
+			{	
+				sensors.Add(x);//sensor_angles[y]);
+				x+=delta;
+			}
+
+            //copy the noise variable from the scenario
+            noise = spec.noise;
+            effector_noise = spec.effector_noise;
+			heading_noise = spec.heading_noise;
+			
+			//set up deltas for spacing the robots
+			double dx = Math.Cos(spec.robot_orientation/180.0*3.14)*spec.robot_spacing;
+			double dy = Math.Sin(spec.robot_orientation/180.0*3.14)*spec.robot_spacing;
+				
+			//record z-stack coordinates
+			float zstack= -1.0f;
+			float zdelta = 2.0f/(spec.num_robots-1);
+
+			//add robots in their formation according to scenario
+			for(int num=0;num<spec.num_robots;num++)
+			{
+				robots.Add(new robot_obj(spec.start_point.x+num*dx,spec.start_point.y+num*dy,
+				                         spec.robot_size,spec.robot_heading/180.0*3.14,sensors));
+				robots[num].recordPath=recordPaths;
+				robots[num].zstack=zstack;
+				zstack+=zdelta;
+			}	
+			
+			if(useCollisionGrid) {
+                double dimx=0;
+                double dimy=0;
+                //calculate extent of map
+                foreach(wall_obj wall in walls)
+                {
+                    if (wall.line.p1.x > dimx)
+                        dimx = wall.line.p1.x;
+                    if (wall.line.p2.x > dimx)
+                        dimx = wall.line.p2.x;
+                    if (wall.line.p1.y > dimy)
+                        dimy = wall.line.p1.y;
+                    if (wall.line.p2.y > dimy)
+                        dimy = wall.line.p2.y;
+                }    
+			    grid = new collision_grid((int)dimx+50,(int)dimy+50,20);
+                
+                foreach(wall_obj wall in walls)
+             		wall.insert_into_collision_grid(grid);
+			}
+			
+		}
+		
+		public bool optimized_collision(robot_obj robot)
+		{
+			List<collision_grid_square> squares = 
+				grid.circle(robot.location.x,robot.location.y,robot.radius);
+			List<wall_obj> checked_walls = new List<wall_obj>();
+			List<robot_obj> checked_robots = new List<robot_obj>();
+			foreach(collision_grid_square square in squares)
+			{
+				if(this.agentsCollide)
+				foreach(object o in square.dynamic_objs)
+				{
+					robot_obj r = (robot_obj)o;
+					
+					if (r == robot)
+						continue;
+					
+					if (!checked_robots.Contains(r))
+					{
+						if (collision.collide(r,robot))
+							return true;
+						checked_robots.Add(r);
+					}
+				}
+				
+				foreach(object o in square.static_objs)
+				{
+					wall_obj w = (wall_obj)o;
+					if(!checked_walls.Contains(w))
+					{
+						if(collision.collide(robot,w))
+						   return true;
+						checked_walls.Add(w);
+					}
+				}
+			}
+			return false;
+		}
+		
+        public bool naive_collision(robot_obj robot)
+        {
+				//first see if robot violates a wall
+				foreach (wall_obj wall in walls)
+				{
+					if (collision.collide(robot,wall))
+					{
+					    return true;
+					}
+				}
+			
+			    //next see if robot violates other robots	
+				if(agentsCollide)
+				foreach (robot_obj robot2 in robots)
+				{
+					if(robot==robot2)
+						continue;
+					if(collision.collide(robot,robot2))
+					{
+						return true;
+					}
+				}
+				
+				//no collisions
+				return false;
+        }
+
+		public double optimized_raycast(double angle,double max_range,Point2D point,double heading,out bool hitRobot,bool view,double health)
+		{
+
+			if(Double.IsNaN(angle))
+				Console.WriteLine("angle nan");
+			
+			if(Double.IsNaN(heading))
+				Console.WriteLine("heading nan");
+			
+			if(Double.IsNaN(point.x))
+			   Console.WriteLine("x point nan");
+			
+			if(Double.IsNaN(point.y))
+			      Console.WriteLine("y point nan");
+			
+			Point2D casted = new Point2D(point);
+            double distance = max_range;
+			bool hit = false;
+			
+			hitRobot = false;
+			
+			//cast point casted out from the robot's center point along the sensor direction
+			double sum_angle = angle+heading;
+			double cosval = Math.Cos(sum_angle);
+			double sinval = Math.Sin(sum_angle);
+			double add_valx = cosval * distance;
+			double add_valy = sinval * distance;
+			casted.x += add_valx;
+			casted.y += add_valy;
+			
+			      if(Double.IsNaN(casted.x))
+			      	Console.WriteLine("casted x nan " + cosval + " " + add_valx + " " + Math.Cos(sum_angle));
+			      if(Double.IsNaN(casted.y))
+			      	Console.WriteLine("casted y nan " + sinval + " " + add_valy + " " + Math.Sin(sum_angle));
+			      
+			   
+			//create line segment from robot's center to casted point
+			Line2D cast=new Line2D(point,casted);
+					
+			List<collision_grid_square> squares =
+				grid.cast_ray(point.x,point.y,casted.x,casted.y);
+			foreach(collision_grid_square square in squares)
+			{
+				//if we had at least one collision, then quit!
+				if(hit)
+					break;
+				if(view && square.viewed < health)
+					square.viewed=health;
+				
+			//now do naive detection of collision of casted rays with objects in square
+			//first for all walls
+			foreach (object obj in square.static_objs)
+			{
+				wall_obj wall = (wall_obj)obj;
+				
+					if(!wall.visible)
+						continue;
+
+				bool found=false;
+				Point2D intersection = wall.line.intersection(cast,out found);
+				if (found)
+				{
+					double new_distance = intersection.distance(point);
+					if (new_distance<distance)
+						distance=new_distance;
+					hit=true;
+				}
+				
+			}	
+			
+				//then for all robots
+             	if(agentsVisible)
+				foreach  (object obj in square.dynamic_objs)
+				{
+					robot_obj r = (robot_obj) obj;
+					bool found=false;
+						
+					if(point==r.location)
+						continue;
+						
+					double new_distance = cast.nearest_intersection(r.circle,out found);
+						
+					if(found)
+					{
+                         if (new_distance < distance)
+                         {
+                            distance = new_distance;
+                            hitRobot = true;
+                         }
+						 hit=true;
+				    }						
+			 }
+			}
+            return distance;	
+		}
+		
+        public double naive_raycast(double angle,double max_range,Point2D point,double heading,out bool hitRobot)
+        {			
+
+            Point2D casted = new Point2D(point);
+            double distance = max_range;
+
+			//cast point casted out from the robot's center point along the sensor direction
+			casted.x += Math.Cos(angle+heading)*distance;
+			casted.y += Math.Sin(angle+heading)*distance;
+
+				  if(Double.IsNaN(casted.x))
+			      	Console.WriteLine("casted x nan ");
+			      if(Double.IsNaN(casted.y))
+			      	Console.WriteLine("casted y nan ");
+
+			//create line segment from robot's center to casted point
+			Line2D cast=new Line2D(point,casted);
+					
+			//now do naive detection of collision of casted rays with objects
+			//first for all walls
+			foreach (wall_obj wall in walls)
+			{
+				if(!wall.visible)
+					continue;
+				bool found=false;
+				Point2D intersection = wall.line.intersection(cast,out found);
+				if (found)
+				{
+					double new_distance = intersection.distance(point);
+					if (new_distance<distance)
+						distance=new_distance;
+					}
+				}	
+					
+				//then for all robots
+                hitRobot = false;
+				if(agentsVisible)
+				foreach  (robot_obj robot2 in robots)
+				{
+					bool found=false;
+
+					if(robot2.circle.p==point)
+						continue;
+						
+					double new_distance = cast.nearest_intersection(robot2.circle,out found);
+						
+					if(found)
+					{
+                         if (new_distance < distance)
+                         {
+                            distance = new_distance;
+                            hitRobot = true;
+                         }
+				    }						
+			 }
+             return distance;
+        }
+        
+		//simulate a timestep of delta seconds
+		public void simulate(double delta)
+		{
+			elapsed+=delta;
+            timeSteps++;
+            
+            if(useCollisionGrid)
+            {
+				
+                grid.reset_dynamic();
+				grid.reset_viewed();
+				
+                foreach (robot_obj robot in robots)
+                {
+                    robot.insert_into_collision_grid(grid);
+                }
+            }
+            
+			//update each position, then check for collisions
+			foreach (robot_obj robot in robots)
+			{
+				bool collide;
+				robot.update(delta,heading_noise);
+
+				if(!useCollisionGrid)
+                	collide = naive_collision(robot);
+                else
+					collide = optimized_collision(robot);
+				
+				robot.collide_last = collide;
+				
+                
+				if(collide) //in case of collision, reject position change
+				{
+                    robot.collisions++;
+					if(robot.collisions>1)
+					{
+						robot.disabled=true;
+						robot.stopped=true;
+					}
+					else
+					{
+						robot.health=(1.0/((double)robot.collisions+1.0));
+						robot.undo();
+					}
+				}
+			}
+
+            //now update sensors
+            double distortion;
+            bool hitRobot=false, dummyHit=false;
+			foreach (robot_obj robot in robots)
+			{
+				//calculate coverage fitness
+				if(!robot.disabled && useCollisionGrid)
+						{
+						for(int angle=0;angle<360;angle+=30)
+						optimized_raycast(angle,
+							visual_range,robot.circle.p,robot.heading,out hitRobot,true,robot.health);
+						}
+				//loop over every rangefinder in the given robot
+				for  (int x=0;x<robot.rangefinders.Count;x++)
+				{
+                    distortion = 1;
+					//at first, the distance is set to the maximum, meaning no intersection
+					
+		            double distance;
+
+                    if (!useCollisionGrid)
+                    {
+                         double dx = Math.Cos(robot.heading+0.5f);
+                         double dy = Math.Sin(robot.heading + 0.5f);
+                        Point2D ladarPos = new Point2D(dx * 30, dy * 30);
+
+                        distance = naive_raycast(robot.rangefinders[x].angle,
+                        robot.rangefinders[x].max_range, new Point2D(ladarPos.x+robot.circle.p.x, ladarPos.y+robot.circle.p.y), robot.heading, out hitRobot);
+                    }
+                    else
+                    {
+
+                        distance = optimized_raycast(robot.rangefinders[x].angle,
+                        robot.rangefinders[x].max_range, robot.circle.p, robot.heading, out hitRobot, false, robot.health);
+
+
+                    }
+					
+                    if (noise > 0)
+                    {
+                        //distortion += SharpNeatLib.Utilities.random.Next(-noise, noise)/100.0;
+						distortion += (rng.NextDouble()-0.5)*2.0*((double)noise)/100.0;
+                    }
+
+                    robot.rangefinders[x].hitRobot = hitRobot;
+					robot.rangefinders[x].distance=distance*distortion;
+				}
+				
+                
+                //Calculate distance to nearest POI and assigned POI
+                //TODO maybe not every timestep
+                //TODO this should be moved into a fitness update function
+                //There have to be as many POIs as agents 
+             /*   if ((timeSteps % 10 == 0) && POIPositions.Count == robots.Count)
+                {
+                    double distanceClosestPOI = double.MaxValue;
+                    foreach (Point p in POIPositions)
+                    {
+                        //TODO location float or int?
+                        double dist = euclideanDistance(p, new Point((int)robot.location.x, (int)robot.location.y));
+                        if (dist < distanceClosestPOI)
+                        {
+                            distanceClosestPOI = dist;
+                        }
+                    }
+                    if (distanceClosestPOI < robot.radius) robot.timeOnAnyPOI++;
+                    robot.distanceClosestPOI.Add(distanceClosestPOI);
+
+                    double distanceAssignedPOI = euclideanDistance(new Point((int)robot.location.x, (int)robot.location.y), POIPositions[robotNr]);
+                    if (distanceAssignedPOI < robot.radius)
+                    {
+                        robot.timeOnAssignedPOI++;
+                    }
+                    robot.distanceAssignedPOI.Add(distanceAssignedPOI);
+                }
+                robotNr++;*/
+			}
+          
+		}
+		
+        public double euclideanDistance(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p1.X-p2.X,2)+Math.Pow(p1.Y-p2.Y,2));
+        }
+
+        public double euclideanDistance(robot_obj r1, robot_obj r2)
+        {
+            return Math.Sqrt(Math.Pow(r1.location.x - r2.location.x, 2) + Math.Pow(r1.location.y - r2.location.y, 2));
+        }
+
+        public double squaredDistance(robot_obj r1, robot_obj r2)
+        {
+            return Math.Pow(r1.location.x - r2.location.x, 2) + Math.Pow(r1.location.y - r2.location.y, 2);
+        }
+    }
+	
+	//the evaluator class will run a simulation
+	//for a particular problem and assign fitness
+	public class evaluator
+	{
+		public INetwork brain;
+		public engine sim_engine;
+		public int agent_count;
+		public int autopilot_count;
+		public scenario scene;
+        public IFitnessFunction fitness_function;
+		public IBehaviorCharacterization behavior_characterization;
+		
+		public evaluator(INetwork newbrain, scenario spec,bool recordPaths,int seed)
+		{
+			List<INetwork> brains = new List<INetwork>();
+			brains.Add(newbrain);
+			evaluator_construct(brains,spec,recordPaths);
+		}
+		
+        public evaluator(List<INetwork> newbrains, scenario spec, bool recordPaths)
+        {
+			evaluator_construct(newbrains,spec,recordPaths);
+		}
+		
+        public void evaluator_construct(List<INetwork> newbrains, scenario spec, bool recordPaths)
+		{
+			//brain = newbrain[0];
+            //brain.ClearSignals();
+            if (!SharpNeatLib.Experiments.SkirmishNetworkEvaluator.homogeneous)
+            {
+                brain = newbrains[0];
+                brain.ClearSignals();
+            }
+            agent_count = spec.num_robots;
+            sim_engine = new engine(spec.seed);
+            sim_engine.setup_task(spec, recordPaths);
+            scene = spec;
+            if (SharpNeatLib.Experiments.SkirmishNetworkEvaluator.homogeneous)
+                for (int j = 0; j < sim_engine.robots.Count; j++)
+                {
+                    newbrains[j].ClearSignals();
+                    sim_engine.robots[j].brain = newbrains[j];
+                }   
+            fitness_function = FitnessFunctionFactory.getFitnessFunction(spec.fitness_function);
+            fitness_function.reset();
+            behavior_characterization = BehaviorCharacterizationFactory.getBehaviorCharacterization("FitnessBC");
+			behavior_characterization.reset();
+			autopilot_count = agent_count;
+			
+        }
+		
+		//update runs the simulation for a timestep
+		//it updates the inputs to the NN, then feeds the
+		//outputs into the robots
+		public void update()
+		{
+            double distortion;
+            if (SharpNeatLib.Experiments.SkirmishNetworkEvaluator.homogeneous)
+            {
+                float[] inputs = new float[sim_engine.robots[0].rangefinders.Count];
+                float[] outputs = new float[3];
+                List<rangefinder> rangefinders;
+
+                for (int x = 0; x < agent_count; x++)
+                {
+                    rangefinders = sim_engine.robots[x].rangefinders;
+                    for (int y = 0; y < rangefinders.Count; y++)
+                    {
+                        inputs[y] = (float)(rangefinders[y].distance / rangefinders[y].max_range);
+
+                        if (Double.IsNaN(inputs[y]))
+                            Console.WriteLine("NaN in outputs");
+                    }
+
+                    sim_engine.robots[x].brain.SetInputSignals(inputs);
+                    sim_engine.robots[x].brain.MultipleSteps(2);
+
+                    outputs[0] = sim_engine.robots[x].brain.GetOutputSignal(0);
+                    outputs[1] = sim_engine.robots[x].brain.GetOutputSignal(1);
+                    outputs[2] = sim_engine.robots[x].brain.GetOutputSignal(2);
+
+                    if (sim_engine.effector_noise > 0)
+                    {
+                        for (int k = 0; k < 3; k++)
+                        {
+                            //distortion += SharpNeatLib.Utilities.random.Next(-noise, noise)/100.0;
+                            distortion = 1.0 + (sim_engine.rng.NextDouble() - 0.5) * 2.0 * ((double)sim_engine.effector_noise) / 100.0;
+                            outputs[k] *= (float)distortion;
+                            if (outputs[k] > 1.0f)
+                                outputs[k] = 1.0f;
+                            if (outputs[k] < 0.0f)
+                                outputs[k] = 0.0f;
+                        }
+                    }
+
+                    //adjust heading & velocity based on NN output
+                    if (!sim_engine.robots[x].autopilot)
+                    {
+                      //  if (outputs[1] < .01)
+                      //      sim_engine.robots[x].stopped = true;
+                        
+                        sim_engine.robots[x].heading += (outputs[2] - outputs[0]) * 0.2 * 5.36026;
+                        sim_engine.robots[x].velocity = (outputs[1]) * 6.5;//40.0; //3.15   
+                    }
+                    else
+                    {
+                        sim_engine.robots[x].velocity = 40.0;
+                        if (scene.AOIRectangle.Contains((int)sim_engine.robots[x].location.x,
+                                                        (int)sim_engine.robots[x].location.y))
+						{
+                            sim_engine.robots[x].autopilot = false;
+							autopilot_count--;
+						}
+                    }
+                }
+            }
+            else
+            {
+
+                //this is a little hacky
+                float[] inputs = new float[agent_count * sim_engine.robots[0].rangefinders.Count];
+                float[] outputs = new float[3];
+
+                int inp_count = 0;
+
+                //feed all the inputs into each robot
+                for (int x = 0; x < agent_count; x++)
+                {
+                    List<rangefinder> rangefinders;
+                    rangefinders = sim_engine.robots[x].rangefinders;
+                    for (int y = 0; y < rangefinders.Count; y++)
+                    {
+                  
+                       //  inputs[inp_count] = (float)((((rangefinders[y].distance)/ rangefinders[y].max_range) - 0.4f)/0.6f);
+                        inputs[inp_count] = (float)((rangefinders[y].distance) / 350.0f); //  //was 300 or something
+
+                   
+                        if (inputs[inp_count] > 1.0f)
+                        {
+                           // Console.WriteLine(inputs[inp_count] + "\t");
+                            inputs[inp_count] = 1.0f;
+                        }
+    
+                       //inputs[inp_count] = (float)(rangefinders[y].max_range / (rangefinders[y].distance * 10.0f));
+                  //!     Console.WriteLine(inputs[inp_count]);
+
+                        if (Double.IsNaN(inputs[inp_count]))
+                            Console.WriteLine("NaN in outputs");
+
+                        inp_count++;
+                    }
+                }
+
+                //propagate input through NN
+                brain.SetInputSignals(inputs);
+                brain.MultipleSteps(2);
+
+                int out_count = 0;
+                float delta = 0.0f;
+
+                //interpret outputs for each agent
+                for (int x = 0; x < agent_count; x++)
+                {
+
+                    for (int y = 0; y < 3; y++)
+                    {
+                        outputs[out_count % 3] = brain.GetOutputSignal(out_count);
+
+                        if (Double.IsNaN(outputs[out_count % 3]))
+                            Console.WriteLine("NaN in outputs");
+                        out_count++;
+                    }
+
+					if (sim_engine.effector_noise > 0)
+                    {
+						for(int k=0;k<3;k++)
+						{
+                         //distortion += SharpNeatLib.Utilities.random.Next(-noise, noise)/100.0;
+						 distortion = 1.0 + (sim_engine.rng.NextDouble()-0.5)*2.0*((double)sim_engine.effector_noise)/100.0;
+							outputs[k]*=(float)distortion;
+							if(outputs[k]>1.0f)
+								outputs[k]=1.0f;
+							if(outputs[k]<0.0f)
+								outputs[k]=0.0f;
+						}		
+                    }
+
+
+                    //adjust heading & velocity based on NN output
+                    if (!sim_engine.robots[x].autopilot)
+                    {
+                      //  if (outputs[1] < .01)
+                      //      sim_engine.robots[x].stopped = true;
+                        //if (outputs[2] > outputs[1] && outputs[2] > outputs[0])
+                        //{
+                        //    sim_engine.robots[x].heading += outputs[2] * 0.05;
+                        //}
+                        //else if (outputs[0]>outputs[1] && outputs[0]>outputs[2])
+                        //{
+                        //    sim_engine.robots[x].heading -= outputs[2] * 0.05;
+                        //}
+                        //else
+                        //{
+                        //    sim_engine.robots[x].velocity = (outputs[1]) * 5.0;//EPUCK 3.0;
+                        //}
+                        //sim_engine.robots[x].heading += (outputs[2] - outputs[0]) * 0.2; //EPUCK 0.05
+                        //sim_engine.robots[x].velocity = (outputs[1]) * 5.0;//EPUCK 3.0;
+                      // Console.WriteLine(">> " + outputs[0] + "\t" + outputs[1] + "\t" + outputs[2]);
+                        sim_engine.robots[x].velocity = 0.0f;
+
+                        delta = 0.00f;
+                        if ((outputs[1] - outputs[0] > delta) && (outputs[1] - outputs[2] > delta)) //forward
+                        {
+                            sim_engine.robots[x].velocity = 50;//(outputs[1]) * 6.5
+                            //for (int y = 0; y < 6; y++)
+                            //{
+                            //    Console.WriteLine(inputs[y] + "\t");
+                            //}
+                            //Console.WriteLine();
+                        
+                        }
+                        else
+                            if ((outputs[0] - outputs[1] > delta) && (outputs[0] - outputs[2] > delta)) //turn left
+                            {
+                                sim_engine.robots[x].heading -= (sim_engine.timestep * 1.28);// / 2.0; //(0.05 * 5.36026) / 2.0;//outputs[0] * 0.05 * 5.36026;
+
+                            }//0.52
+                            else if ((outputs[2] - outputs[0] > delta) && (outputs[2] - outputs[1] > delta)) //right
+                            {
+
+
+                                sim_engine.robots[x].heading += (sim_engine.timestep * 1.28);// / 2.0; //outputs[2] * 0.05 * 5.36026;
+                        
+                            }
+
+                        //if ((outputs[1] - outputs[0] > 0.1) && (outputs[1] - outputs[2] > 0.1)) //forward
+                        //{
+                        //    sim_engine.robots[x].velocity = 6.5;//(outputs[1]) * 6.5
+                        //    //for (int y = 0; y < 6; y++)
+                        //    //{
+                        //    //    Console.WriteLine(inputs[y] + "\t");
+                        //    //}
+                        //    //Console.WriteLine();
+
+                        //}
+                        //else
+                        //    if ((outputs[0] - outputs[1] > 0.1) && (outputs[0] - outputs[2] > 0.1)) //turn left
+                        //    {
+                        //        sim_engine.robots[x].heading -= (0.05 * 5.36026) / 2.0;//outputs[0] * 0.05 * 5.36026;
+
+                        //    }
+                        //    else if ((outputs[2] - outputs[0] > 0.1) && (outputs[2] - outputs[1] > 0.1)) //right
+                        //    {
+
+
+                        //        sim_engine.robots[x].heading += (0.05 * 5.36026) / 2.0; //outputs[2] * 0.05 * 5.36026;
+
+                        //    }
+                //    sim_engine.robots[x].heading += (outputs[2] - outputs[0]) * 0.05 * 5.36026;
+                        
+       //             
+                    }
+                    else
+                    {
+                        sim_engine.robots[x].velocity = 5.0;
+                        //sim_engine.robots[x].velocity = 4.0;
+                       
+                        if (scene.AOIRectangle.Contains((int)sim_engine.robots[x].location.x,
+                                                        (int)sim_engine.robots[x].location.y))
+						{
+                            sim_engine.robots[x].autopilot = false;
+                    		autopilot_count--;
+						}
+                    }
+                }
+            }
+		
+			//call update method of fitness function
+			this.fitness_function.update(sim_engine,scene);
+			//this.behavior_characterization.update(sim_engine,scene);
+			
+			if(sim_engine.useScript)
+				sim_engine.script.onTimeStep(this);
+			
+		}
+		
+		//this will run the simulation for an amount of time
+		//by decomposing it into a series of timesteps
+		public void run(double time)
+		{
+			try
+			{
+			
+			double timestep = sim_engine.timestep;
+			double elapsed=0.0;
+			while(elapsed<time)
+			{
+				sim_engine.simulate(timestep);
+				update();
+				elapsed+=timestep;
+			}
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e.Message);
+				Console.WriteLine(e.StackTrace);
+			}
+		}
+
+		public double fitness()
+		{
+			return this.fitness_function.calculate(sim_engine,scene); 
+		}
+		public List<double> behavior()
+		{
+		    return this.behavior_characterization.calculate(sim_engine,scene);
+		}
+		
+	}
+
+}
