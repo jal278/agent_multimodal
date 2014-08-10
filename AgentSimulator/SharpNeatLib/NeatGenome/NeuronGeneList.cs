@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using SharpNeatLib.NeuralNetwork;
 
 
 namespace SharpNeatLib.NeatGenome
@@ -8,6 +9,8 @@ namespace SharpNeatLib.NeatGenome
 	{
 		static NeuronGeneComparer neuronGeneComparer = new NeuronGeneComparer();
 		public bool OrderInvalidated=false;
+        // Schrum: Added to put new output neurons back in order when needed
+        static NeuronOrderComparer neuronOrderComparer = new NeuronOrderComparer();
 
 		#region Constructors
 
@@ -33,6 +36,9 @@ namespace SharpNeatLib.NeatGenome
 			
 			for(int i=0; i<count; i++)
 				Add(new NeuronGene(copyFrom[i]));
+
+            // Schrum: Added to assure that this is the starting point
+            SortByInnovationId();
 
 //			foreach(NeuronGene neuronGene in copyFrom)
 //				InnerList.Add(new NeuronGene(neuronGene));
@@ -100,8 +106,113 @@ namespace SharpNeatLib.NeatGenome
 			OrderInvalidated=false;
 		}
 
+        // Schrum: Added to (ultimately) allow Module Mutation
+        public void SortByNeuronOrder()
+        {
+            Sort(neuronOrderComparer);
+            OrderInvalidated = true; // Innovation numbers (potentially) no longer ordered
+        }
+
+        // Schrum: (not sure it is safe to only do this sometimes)
+        // Sorts genes by innovation number, but only if necessary
+        public void InnovationSortCheck()
+        {
+            if (OrderInvalidated)
+            {
+                SortByInnovationId();
+            }
+
+            // Schrum: Debugging
+            /*
+            if (!IsInovationSorted())
+            {
+                Console.WriteLine("Not innovation sorted");
+                Console.WriteLine("OrderInvalidated:" + OrderInvalidated);
+                // Schrum
+                foreach (NeuronGene gene in this)
+                {
+                    Console.Write(gene.NeuronType + ":" + gene.InnovationId + ", ");
+                }
+                Console.WriteLine();
+                // Schrum: Break the code now
+                int[] a = new int[1];
+                a[5]++; // Will crash with exception
+            }
+            */
+        }
+
+        // Schrum: Sorts by neuron order, if necessary
+        public void NeuronSortCheck()
+        {
+            // Schrum: Debugging
+            //bool needSort = !OrderInvalidated;
+
+            // Schrum: Assumes the only "invalid" order is from a neuron order sort
+            //if (!OrderInvalidated)
+            
+            // Schrum: It is perhaps inefficient to perform this sort every time,
+            // but at the moment it is the easiest approach because I don't know
+            // why it sometimes becomes unsorted. This check will assure that it
+            // never breaks before being used.
+            SortByNeuronOrder();
+            
+
+            // Schrum: Make sure the sort happened or wasn't needed
+            // Debugging
+            /*
+            if(!IsNeuronSorted()) {
+                Console.WriteLine("Not neuron sorted");
+                Console.WriteLine("OrderInvalidated:" + OrderInvalidated);
+                // Schrum
+                foreach (NeuronGene gene in this)
+                {
+                    Console.Write(gene.NeuronType+":"+gene.InnovationId+", ");
+                }
+                Console.WriteLine();
+                // Schrum: Break the code now
+                int[] a = new int[1];
+                a[5]++; // Will crash with exception
+            }
+            */
+        }
+
+        // Schrum: For debugging
+        // Tells if neurons are in order of bias, input, output, hidden
+        /*
+        public bool IsNeuronSorted()
+        {
+            NeuronType expectedType = NeuronType.Bias;
+            foreach (NeuronGene gene in this)
+            {
+                if (expectedType == NeuronType.Bias && gene.NeuronType == NeuronType.Input)
+                {
+                    expectedType = NeuronType.Input;
+                }
+                else if (expectedType == NeuronType.Input && gene.NeuronType == NeuronType.Output)
+                {
+                    expectedType = NeuronType.Output;
+                }
+                else if (expectedType == NeuronType.Output && gene.NeuronType == NeuronType.Hidden)
+                {
+                    expectedType = NeuronType.Hidden;
+                }
+                else if (expectedType != gene.NeuronType)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        */
+
 		public int BinarySearch(uint innovationId) 
-		{            
+		{
+            // Schrum: Added this check in anticipation of changes I will make
+            // that mess up node gene order. I think that it will be safe to leave
+            // the list out of order as long as proper checks and corresponding sorts
+            // are performed just in time as needed.
+            InnovationSortCheck();
+
 			int lo = 0;
 			int hi = Count-1;
 
@@ -132,17 +243,19 @@ namespace SharpNeatLib.NeatGenome
 		}
 
 		// For debug purposes only.
-//		public bool IsSorted()
-//		{
-//			uint prevId=0;
-//			foreach(NeuronGene gene in InnerList)
-//			{
-//				if(gene.InnovationId<prevId)
-//					return false;
-//				prevId = gene.InnovationId;
-//			}
-//			return true;
-//		}
+		/*
+        public bool IsInovationSorted()
+		{
+			uint prevId=0;
+			foreach(NeuronGene gene in this)
+			{
+				if(gene.InnovationId<prevId)
+					return false;
+				prevId = gene.InnovationId;
+			}
+			return true;
+		}
+        */
 
 		#endregion
 	}

@@ -92,6 +92,11 @@ namespace SharpNeatLib.Evolution
 		public double pMutateDeleteConnection;
 		public double pMutateDeleteSimpleNeuron;
 
+        // Schrum: Added to handle module mutation
+        public double pMMP;
+        public double pMMR;
+        public double pMMD;
+
 		/// <summary>
 		/// A list of ConnectionMutationParameterGroup objects to drive the types of connection mutation
 		/// that occur.
@@ -154,7 +159,11 @@ namespace SharpNeatLib.Evolution
 		/// </summary>
 		public NeatParameters()
 		{
-		    
+            // Schrum: Default Module Mutation rates are 0.0 ... it is never on by default
+            pMMP = 0.0;
+            pMMR = 0.0;
+            pMMD = 0.0;
+
 		    histogramBins = new List<int>();
 		    
 		    noveltySearch = false;
@@ -227,6 +236,11 @@ namespace SharpNeatLib.Evolution
 		/// <param name="copyFrom"></param>
 		public NeatParameters(NeatParameters copyFrom)
 		{
+            // Schrum: Added
+            pMMP = copyFrom.pMMP;
+            pMMR = copyFrom.pMMR;
+            pMMD = copyFrom.pMMD;
+
 		    //joel
 		    noveltySearch = copyFrom.noveltySearch;
 		    noveltyHistogram = copyFrom.noveltyHistogram;

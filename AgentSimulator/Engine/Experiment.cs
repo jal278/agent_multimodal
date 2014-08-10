@@ -69,6 +69,14 @@ namespace Engine
                 if (neatParams == null)
                 {
                     NeatParameters np = new NeatParameters();
+
+                    // Schrum: Is this the best place to do this?
+                    // I'm pretty sure the answer is no.
+                    // Module Mutation Rate Parameters
+                    np.pMMP = simExp.mmpRate;
+                    np.pMMR = simExp.mmrRate;
+                    np.pMMD = simExp.mmdRate;
+                    
                     np.connectionWeightRange = 3;
                     np.pMutateAddConnection = .03;
                     np.pMutateAddNode = .01;

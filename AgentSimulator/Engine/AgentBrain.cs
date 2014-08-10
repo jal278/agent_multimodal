@@ -6,6 +6,8 @@ using Engine;
 using SharpNeatLib.NeatGenome;
 using System.Xml;
 using SharpNeatLib.CPPNs;
+using SharpNeatLib.NeatGenome.Xml;
+using System.IO;
 
 namespace Engine
 {
@@ -65,7 +67,10 @@ namespace Engine
             this.numRobots = numAgents;
             this.homogenous = homogenous;
             this.multipleBrains = multi;
-            this.numBrains = brains;
+            // Schrum: When preference neurons are used, the number of modules in the network is the
+            // more reliable source of information. Especially if Module Mutation will allow more modules
+            // to be created, each creating a new brain.
+            this.numBrains = genome != null && preferenceNeurons ? genome.NumOutputModules : brains;
             this.preferenceNeurons = preferenceNeurons;
 
             //inputCounter = 0;

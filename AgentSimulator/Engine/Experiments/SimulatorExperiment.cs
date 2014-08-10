@@ -56,8 +56,12 @@ namespace Engine
         public bool ungeometricBrains = false; // Schrum: Different brains do not have geometric relation (policy geometry)
        
        // Schrum: Preference neurons in the substrate networks can be checked to see which of multiple brains to use
-       // Schrum: Not actually implemented yet.
-       public bool preferenceNeurons = false;
+        public bool preferenceNeurons = false;
+
+       // Schrum: Decided to put Module Mutation rates here for now ... may change
+        public double mmpRate = 0.0;
+        public double mmrRate = 0.0;
+        public double mmdRate = 0.0;
 
         public string substrateDescriptionFilename;
 

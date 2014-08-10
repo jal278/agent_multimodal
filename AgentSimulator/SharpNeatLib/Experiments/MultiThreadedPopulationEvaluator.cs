@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using SharpNeatLib.Evolution;
 using SharpNeatLib.NeuralNetwork;
 using SharpNeatLib.Experiments;
+using System.Xml;
+using SharpNeatLib.NeatGenome.Xml;
+using System.IO;
 
 namespace SharpNeatLib.Experiments
 {
@@ -125,6 +128,14 @@ namespace SharpNeatLib.Experiments
                 return;
             }
             sem2.WaitOne();
+
+            // Schrum: Debugging
+            /*            
+            XmlDocument doc = new XmlDocument();
+            XmlGenomeWriterStatic.Write(doc, (SharpNeatLib.NeatGenome.NeatGenome)e.g);
+            FileInfo oFileInfo = new FileInfo("MostRecentlySaved.xml");
+            doc.Save(oFileInfo.FullName);
+            */
             INetwork network = e.g.Decode(e.Activation);
             sem2.Release();
             if (network == null)

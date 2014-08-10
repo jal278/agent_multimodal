@@ -1,6 +1,9 @@
 using System;
 using SharpNeatLib.Experiments;
 using System.Collections.Generic;
+using System.Xml;
+using SharpNeatLib.NeatGenome.Xml;
+using System.IO;
 
 namespace SharpNeatLib.NeuralNetwork
 {
@@ -472,6 +475,20 @@ namespace SharpNeatLib.NeuralNetwork
 
         private void RecursiveActivateNode(int currentNode)
         {
+            // Schrum: debug
+            /*
+            if(currentNode >= activated.Length || currentNode < 0) {
+                Console.WriteLine("About to fail: " + this.genome.GenomeId + " on node " + currentNode);
+                Console.WriteLine("NumOutputModules:" + this.NumOutputModules);
+                Console.WriteLine("OutputNeuronCount:" + this.OutputNeuronCount);
+
+                XmlDocument doc = new XmlDocument();
+                XmlGenomeWriterStatic.Write(doc, (SharpNeatLib.NeatGenome.NeatGenome)genome);
+                FileInfo oFileInfo = new FileInfo("FailGenome.xml");
+                doc.Save(oFileInfo.FullName);            
+            }
+            */
+
             // If we've reached an input node we return since the signal is already set
             if (this.activated[currentNode])
             {

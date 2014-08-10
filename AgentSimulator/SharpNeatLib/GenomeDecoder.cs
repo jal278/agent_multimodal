@@ -4,6 +4,10 @@ using System.Collections.Specialized;
 using SharpNeatLib.NeatGenome;
 using SharpNeatLib.NetworkVisualization;
 using SharpNeatLib.NeuralNetwork;
+using System;
+using System.Xml;
+using SharpNeatLib.NeatGenome.Xml;
+using System.IO;
 
 namespace SharpNeatLib
 {
@@ -230,6 +234,9 @@ namespace SharpNeatLib
 
             Dictionary<uint, int> neuronLookup = new Dictionary<uint, int>(neuronCount);
 
+            // Schrum: In case there are output neurons out of order
+            g.NeuronGeneList.NeuronSortCheck();
+
             // Create an array of the activation functions for each non-module node node in the genome.
             // Start with a bias node if there is one in the genome.
             // The genome's neuron list is assumed to be ordered by type, with the bias node appearing first.
@@ -241,8 +248,41 @@ namespace SharpNeatLib
                 neuronLookup.Add(g.NeuronGeneList[neuronGeneIndex].InnovationId, neuronGeneIndex);
             }
             int biasCount = neuronGeneIndex;
-            for (; neuronGeneIndex < neuronCount; neuronGeneIndex++) {
+            // Schrum: debug
+            //Console.WriteLine("start (after bias): " + g.GenomeId);
+
+            // Schrum: Debugging
+            //NeuronType expectedType = NeuronType.Input;
+
+            for (; neuronGeneIndex < neuronCount; neuronGeneIndex++)
+            {
                 activationFunctions[neuronGeneIndex] = g.NeuronGeneList[neuronGeneIndex].ActivationFunction;
+                // Schrum: Debug
+                /*
+                if (expectedType != g.NeuronGeneList[neuronGeneIndex].NeuronType)
+                {
+                    if (expectedType == NeuronType.Input && g.NeuronGeneList[neuronGeneIndex].NeuronType == NeuronType.Output)
+                    {
+                        expectedType = NeuronType.Output;
+                    }
+                    else if (expectedType == NeuronType.Output && g.NeuronGeneList[neuronGeneIndex].NeuronType == NeuronType.Hidden)
+                    {
+                        expectedType = NeuronType.Hidden;
+                    }
+                    else
+                    {
+                        // Error condition:
+                        Console.WriteLine("Error with genome: " + g.GenomeId);
+
+                        XmlDocument doc = new XmlDocument();
+                        XmlGenomeWriterStatic.Write(doc, (SharpNeatLib.NeatGenome.NeatGenome)g);
+                        FileInfo oFileInfo = new FileInfo("ProblemGenome.xml");
+                        doc.Save(oFileInfo.FullName);
+
+                        Environment.Exit(1);
+                    }
+                }
+                */
                 neuronLookup.Add(g.NeuronGeneList[neuronGeneIndex].InnovationId, neuronGeneIndex);
                 biasList[neuronGeneIndex] = g.NeuronGeneList[neuronGeneIndex].Bias;
             }
