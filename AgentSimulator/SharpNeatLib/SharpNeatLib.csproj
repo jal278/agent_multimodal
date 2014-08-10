@@ -224,6 +224,7 @@
     <Compile Include="NeatGenome\ConnectionGeneList.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="NeatGenome\NeuronOrderComparer.cs" />
     <Compile Include="NeuralNetwork\ActivationFunctions\ErrorSign.cs" />
     <Compile Include="NeuralNetwork\ActivationFunctions\Sign.cs" />
     <Compile Include="NeuralNetwork\ModularNetwork\ModuleOutputNeuron.cs" />
