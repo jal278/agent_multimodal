@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RoomClearingExperiment>
+    <gridCollision>false</gridCollision>
+    <substrateDescriptionFilename>substrate_PatrolPreference.xml</substrateDescriptionFilename>
+    <adaptableANN>false</adaptableANN>
+    <modulatoryANN>false</modulatoryANN>
+    <normalizeWeights>true</normalizeWeights>
+    <populationSize>500</populationSize>
+    <headingNoise>0</headingNoise>
+    <effectorNoise>0</effectorNoise>
+    <sensorNoise>0</sensorNoise>
+    <timesToRunEnvironments>1</timesToRunEnvironments>
+    <evaluationTime>80</evaluationTime>
+    <timestep>0.033</timestep>
+    <explanatoryText>Multi-Agent Experiment</explanatoryText>
+    <scriptFile />
+    <robotModelName>Khepera3RobotModel</robotModelName>
+    <fitnessFunctionName>VisitThreeFitness</fitnessFunctionName>
+    <behaviorCharacterizationName>SplitReturnBC</behaviorCharacterizationName>
+    <environmentName>crissCrossPlus.xml</environmentName>
+    <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
+    <rangefinderSensorDensity>6</rangefinderSensorDensity>
+    <overrideTeamFormation>true</overrideTeamFormation>
+    <group_orientation>90</group_orientation>
+    <group_spacing>30</group_spacing>
+    <robot_heading>270</robot_heading>
+    <useScript>false</useScript>
+    <collisionPenalty>false</collisionPenalty>
+    <multipleEnvironments>false</multipleEnvironments>
+    <evolveSubstrate>false</evolveSubstrate>
+    <modulatory>false</modulatory>
+    <numberRobots>1</numberRobots>
+    <homogeneousTeam>false</homogeneousTeam>
+    <agentsVisible>false</agentsVisible>
+    <agentsCollide>false</agentsCollide>
+    <multibrain>true</multibrain>
+    <numBrains>1</numBrains>
+    <mmrRate>0.01</mmrRate>
+    <ungeometricBrains>true</ungeometricBrains>
+    <preferenceNeurons>true</preferenceNeurons>
+  </RoomClearingExperiment>
+</ExperimentWrapper>
