@@ -60,6 +60,8 @@ namespace SharpNeatLib.NeatGenome.Xml
 			XmlUtilities.AddAttribute(xmlGenome, "age", genome.GenomeAge.ToString());
 			XmlUtilities.AddAttribute(xmlGenome, "fitness", genome.Fitness.ToString("0.00"));
 			XmlUtilities.AddAttribute(xmlGenome, "activation-fn-id", activationFn.FunctionId);
+            // Schrum: Extra properties necessary for multimodal networks to make sense
+            XmlUtilities.AddAttribute(xmlGenome, "outputsperpolicy", genome.OutputsPerPolicy.ToString());
 
 			//----- Write neurons.
 			XmlElement xmlNeurons = XmlUtilities.AddElement(xmlGenome, "neurons");

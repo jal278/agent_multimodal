@@ -1085,12 +1085,10 @@ namespace SharpNeatLib.NeatGenome
                     Module_Mutation_Previous(ea);
                     break;
                 case 7: // Schrum: MM(R)
-                    //TODO
-                    Environment.Exit(1);
+                    Module_Mutation_Random(ea);
                     break;
                 case 8: // Schrum: MM(D)
-                    //TODO
-                    Environment.Exit(1);
+                    Module_Mutation_Duplicate(ea);
                     break;
 			}
 		}
@@ -1128,6 +1126,87 @@ namespace SharpNeatLib.NeatGenome
             FileInfo oFileInfo = new FileInfo("MMPNet.xml");
             doc.Save(oFileInfo.FullName);
             */
+        }
+
+        // Schrum: Module Mutation Random creates a new module with
+        // completely random incoming links.
+        private void Module_Mutation_Random(EvolutionAlgorithm ea)
+        {
+            // Push all output neurons together
+            this.neuronGeneList.SortByNeuronOrder();
+            int numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
+            int randomModule = Utilities.Next(numModules);
+            // Because outputs come after inputs.
+            // Although list is 0-indexed, the +1 is needed because the bias does not count as an input
+            double outputLayer = neuronGeneList[1 + inputNeuronCount].Layer;
+            // Create the new module one neuron per loop iteration
+            for (int i = 0; i < outputsPerPolicy; i++)
+            {
+                // The activation function for the output layer
+                IActivationFunction outputActFunction = ActivationFunctionFactory.GetActivationFunction("BipolarSigmoid");
+                NeuronGene newNeuronGene = new NeuronGene(null, ea.NextInnovationId, outputLayer, NeuronType.Output, outputActFunction);
+                neuronGeneList.Add(newNeuronGene);
+
+                // Count links to random output neuron: bias, then inputs, then random module, then neuron within that module
+                uint randomModuleInnovation = neuronGeneList[1 + inputNeuronCount + (randomModule * outputsPerPolicy) + i].InnovationId;
+                int numIncoming = 0;
+                foreach (ConnectionGene cg in this.ConnectionGeneList)
+                {
+                    // Count the link
+                    if (cg.TargetNeuronId == randomModuleInnovation)
+                        numIncoming++;
+                }
+
+                // Give the new module (up to) the same number of links as some other module
+                for (int j = 0; j < numIncoming; j++) // Will always create ay least one link
+                {
+                    uint randomSource = NeuronGeneList[Utilities.Next(NeuronGeneList.Count)].InnovationId;
+                    // Magic equation stolen from Mutate_AddConnection below
+                    double randomWeight = (Utilities.NextDouble() * ea.NeatParameters.connectionWeightRange/4.0) - ea.NeatParameters.connectionWeightRange/8.0;
+                    if (!TestForExistingConnection(randomSource, newNeuronGene.InnovationId)) // Only create each connection once
+                    {
+                        ConnectionGene connection = new ConnectionGene(ea.NextInnovationId, randomSource, newNeuronGene.InnovationId, randomWeight);
+                        connectionGeneList.InsertIntoPosition(connection);
+                    }
+                }
+                this.outputNeuronCount++; // Increase number of outputs
+            }
+        }
+
+        // Schrum: Module Mutation Duplicate creates a new module with
+        // links copying those of another module.
+        private void Module_Mutation_Duplicate(EvolutionAlgorithm ea)
+        {
+            // Push all output neurons together
+            this.neuronGeneList.SortByNeuronOrder();
+            int numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
+            int randomModule = Utilities.Next(numModules); // Duplicate this module
+            // Because outputs come after inputs.
+            // Although list is 0-indexed, the +1 is needed because the bias does not count as an input
+            double outputLayer = neuronGeneList[1 + inputNeuronCount].Layer;
+            // Create the new module one neuron per loop iteration
+            for (int i = 0; i < outputsPerPolicy; i++)
+            {
+                // The activation function for the output layer
+                IActivationFunction outputActFunction = ActivationFunctionFactory.GetActivationFunction("BipolarSigmoid");
+                NeuronGene newNeuronGene = new NeuronGene(null, ea.NextInnovationId, outputLayer, NeuronType.Output, outputActFunction);
+                neuronGeneList.Add(newNeuronGene);
+
+                uint randomModuleInnovation = neuronGeneList[1 + inputNeuronCount + (randomModule * outputsPerPolicy) + i].InnovationId;
+                // Copy each connection to the new module neuron
+                int originalLength = ConnectionGeneList.Count; // Don't need to check the newly added connections
+                for (int j = 0; j < originalLength; j++)
+                {
+                    ConnectionGene cg = ConnectionGeneList[j];
+                    if (cg.TargetNeuronId == randomModuleInnovation)
+                    {
+                        // Copy the link
+                        ConnectionGene connection = new ConnectionGene(ea.NextInnovationId, cg.SourceNeuronId, newNeuronGene.InnovationId, cg.Weight);
+                        connectionGeneList.InsertIntoPosition(connection);
+                    }
+                }
+                this.outputNeuronCount++; // Increase number of outputs
+            }
         }
 
         /// <summary>
