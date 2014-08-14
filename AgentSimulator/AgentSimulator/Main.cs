@@ -129,6 +129,7 @@ namespace PackbotExperiment
 
                             case "-rng_seed": int seed = Convert.ToInt32(args[++j]);
                                 Utilities.random.Reinitialise(seed);
+								SharpNeatLib.Maths.RouletteWheel.random= new Random(seed);
                                 Console.WriteLine("Using RNG seed " + seed);
                                 break;
 

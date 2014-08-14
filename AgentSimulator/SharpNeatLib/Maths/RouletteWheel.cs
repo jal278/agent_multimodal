@@ -4,7 +4,7 @@ namespace SharpNeatLib.Maths
 {
 	public class RouletteWheel
 	{
-		static private Random random = new Random();
+		static public Random random = new Random();
 
 		/// <summary>
 		/// A simple single throw routine.
