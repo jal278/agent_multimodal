@@ -297,9 +297,15 @@ namespace Engine
             Point upperleft = frame.to_display((float)(circle.p.x - radius),(float)(circle.p.y- radius));
 			int size = (int)((radius*2)/frame.scale);
 			Rectangle r = new Rectangle(upperleft.X,upperleft.Y,size,size);
-            // Schrum: Colored rectangle for mode tracking 
-            Rectangle mode = new Rectangle(upperleft.X + (size / 4), upperleft.Y + (size / 4), size / 2, size / 2);
             
+            // Schrum: Colored rectangle for mode tracking 
+            //Rectangle mode = new Rectangle(upperleft.X + (size / 4), upperleft.Y + (size / 4), size / 2, size / 2);
+            // Schrum: Draw the mode rectangle
+            //g.FillRectangle(EngineUtilities.modePen(currentBrainMode), mode);
+            
+            // Schrum: Alternative mode coloring method
+            g.FillEllipse(EngineUtilities.modePen(currentBrainMode), r);
+
             if (disabled)
                 g.DrawEllipse(EngineUtilities.YellowPen, r);
             else if (collide_last || confused)
@@ -311,9 +317,6 @@ namespace Engine
             else
                 g.DrawEllipse(EngineUtilities.BluePen, r);
 			int sensCount=0;
-
-			// Schrum: Draw the mode rectangle
-            g.FillRectangle(EngineUtilities.modePen(currentBrainMode), mode);
 
 			if(display_debug)
 			foreach(float f in output_copy) {
