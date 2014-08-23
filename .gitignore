@@ -27,3 +27,11 @@ Thumbs.db
 *.pdb
 *.cache
 *.mdb
+
+# Identified by Jacob #
+#######################
+*.FileListAbsolute.txt
+*.vshost.*
+*.suo
+*.csproj.user
+*.vbproj.user
