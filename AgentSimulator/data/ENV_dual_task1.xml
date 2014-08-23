@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Environment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <evolveSubstrate>true</evolveSubstrate>
+  <walls />
+  <sensor_start>-1.57</sensor_start>
+  <sensor_end>1.57</sensor_end>
+  <sensor_density>5</sensor_density>
+  <name>C:\Users\Ladytron\Documents\code\EPlex\SubstrateEvolution\SeperateTasks_COMBINED\visualizer\bin\Debug\LEFT_RIGHT.xml</name>
+  <num_robots>1</num_robots>
+  <robot_orientation>90</robot_orientation>
+  <robot_spacing>150</robot_spacing>
+  <robot_heading>270</robot_heading>
+  <robot_size>10</robot_size>
+  <fitness_function>SingleGoalPoint</fitness_function>
+  <substrate_file>substrate_stacked.xml</substrate_file>
+  <start_point>
+    <x>297</x>
+    <y>604</y>
+  </start_point>
+  <goal_point>
+    <x>395</x>
+    <y>184</y>
+  </goal_point>
+  <maxDistance>593.246155</maxDistance>
+  <agentsVisible>true</agentsVisible>
+  <agentsCollide>true</agentsCollide>
+  <noise>0</noise>
+  <POIPosition>
+    <Point>
+      <X>171</X>
+      <Y>517</Y>
+    </Point>
+    <Point>
+      <X>398</X>
+      <Y>475</Y>
+    </Point>
+    <Point>
+      <X>204</X>
+      <Y>682</Y>
+    </Point>
+    <Point>
+      <X>399</X>
+      <Y>629</Y>
+    </Point>
+    <Point>
+      <X>394</X>
+      <Y>184</Y>
+    </Point>
+  </POIPosition>
+  <garbageList />
+  <AOIRectangle>
+    <Location>
+      <X>106</X>
+      <Y>416</Y>
+    </Location>
+    <Size>
+      <Width>479</Width>
+      <Height>350</Height>
+    </Size>
+    <X>106</X>
+    <Y>416</Y>
+    <Width>479</Width>
+    <Height>350</Height>
+  </AOIRectangle>
+</Environment>
