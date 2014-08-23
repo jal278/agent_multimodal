@@ -328,8 +328,8 @@ namespace Engine
                         // Schrum: For each output, need to check the brain that the particular robot chose
                         outp[out_count % numPolicyOutputs] = multiBrains[brainChoices[i]].GetOutputSignal(out_count);
                         // Schrum: Make the robot track the brain it is using
-                        robot.currentBrainMode = brainChoices[i];
-
+                        robot.updateBrainMode(brainChoices[i]);
+                        
                         if (Double.IsNaN(outp[out_count % numPolicyOutputs])) // Schrum: Had to change this too
                             Console.WriteLine("NaN in outputs");
                         out_count++;

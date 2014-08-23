@@ -358,6 +358,18 @@ namespace Engine
                    // this.selected_robot.displayPath = !this.selected_robot.displayPath;
                 }
             }
+
+            // Schrum: Track mode/brain usage
+            if (e.KeyChar == 'U' || e.KeyChar == 'u')
+            {
+                if (drawMode == drawModes.selectMode && selected_robot != null && selected_robot.brainHistory != null)
+                {
+                    INetwork brain = experiment.agentBrain.getBrain(selected_robot.id);
+                    ModuleUsageVisualizerForm usageForm = new ModuleUsageVisualizerForm(selected_robot, (ModularNetwork)brain, experiment.evaluationTime);
+                    usageForm.Show();
+                }
+            }
+
             if (e.KeyChar == '+' || e.KeyChar == '=')
             {
                 animation.Interval += 5;
