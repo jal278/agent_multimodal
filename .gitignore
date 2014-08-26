@@ -35,3 +35,4 @@ Thumbs.db
 *.suo
 *.csproj.user
 *.vbproj.user
+AgentSimulator/data/Engine.dll.mdb
