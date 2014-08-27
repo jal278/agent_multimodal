@@ -62,7 +62,8 @@ namespace Engine
         void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
         {
             // Schrum: Set which brain to use if the number is an experiment parameter
-            if(Experiment.numBrains == 2) {
+            if (Experiment.multibrain && !Experiment.ungeometricBrains && Experiment.numBrains == 2)
+            {
                 if (environment.name.Equals("ENV_dual_task.xml")) //HACK navigation
                 {
                     ip.agentBrain.switchBrains(0);
