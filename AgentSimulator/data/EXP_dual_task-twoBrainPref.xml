@@ -8,7 +8,7 @@
     <normalizeWeights>true</normalizeWeights>
     <inputs>5</inputs>
     <outputs>2</outputs>
-    <populationSize>150</populationSize>
+    <populationSize>300</populationSize>
     <headingNoise>0</headingNoise>
     <effectorNoise>0</effectorNoise>
     <sensorNoise>0</sensorNoise>
@@ -22,7 +22,7 @@
     <behaviorCharacterizationName>EndPointBC</behaviorCharacterizationName>
     <environmentName>ENV_dual_task.xml</environmentName>
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
-    <rangefinderSensorDensity>11</rangefinderSensorDensity>
+    <rangefinderSensorDensity>5</rangefinderSensorDensity>
     <useScript>false</useScript>
     <multipleEnvironments>true</multipleEnvironments>
     <evolveSubstrate>false</evolveSubstrate>
