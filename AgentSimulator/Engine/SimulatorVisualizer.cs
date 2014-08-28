@@ -187,8 +187,18 @@ namespace Engine
         {
             if (experiment.running)
             {
-				for(int i=0;i<frameskip;i++)
-	                experiment.run();
+                for (int i = 0; i < frameskip; i++)
+                {
+                    experiment.run();
+                    // Schrum: Added automatic pause/stop when time runs out, to get
+                    // a better idea of what happens in actual evaluations.
+                    if(experiment.elapsed >= experiment.evaluationTime) 
+                    {
+                        Console.WriteLine("Paused due to time expiring");
+                        // Schrum: Are these the right params to send?
+                        this.pauseButton_Click(sender, e);
+                    }
+                }
                 Invalidate();
             }
         }

@@ -36,8 +36,11 @@ Thumbs.db
 *.csproj.user
 *.vbproj.user
 AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/Engine/obj/Debug/*.resources
 
 # Data from experiments #
 #########################
 *bestGenome*.xml
 *logfile.txt
+AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/simulator.suo

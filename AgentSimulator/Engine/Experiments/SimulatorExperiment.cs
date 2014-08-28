@@ -36,7 +36,11 @@ namespace Engine
 		
    public class SimulatorExperiment : SimulatorExperimentInterface
     {
-	
+
+       // Schrum: Copied in from MultiAgentExperiment
+        [XmlIgnore]
+        public double elapsed;              //Elapsed simulation time
+
         [XmlIgnore]
         public AgentBrain agentBrain;
         [XmlIgnore]
