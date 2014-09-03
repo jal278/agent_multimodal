@@ -46,6 +46,8 @@ namespace Engine
  
                  if (fitness < 0) fitness = 0.00001f;
                  if (reachedGoal) fitness = 1;
+
+               //  fitness = 1;
             }
             else   //food gathering 
             {
@@ -54,6 +56,8 @@ namespace Engine
 
                 if (fitness < 0) fitness = 0.00001f;
                 if (collectedFood >= 4) fitness = 1.0f;
+
+               // fitness = 1;
             }
          
             return fitness;

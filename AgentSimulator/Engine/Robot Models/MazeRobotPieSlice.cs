@@ -54,6 +54,8 @@ namespace Engine
 
             velocity = speed * outputs[1];
             heading += (outputs[2] - outputs[0]) * turnSpeed * timeStep;
+         //   if (heading < 0) heading = 0;;
+         //   if (heading >= 3.2) heading = 0;
         }
 
         //public override void doAction()

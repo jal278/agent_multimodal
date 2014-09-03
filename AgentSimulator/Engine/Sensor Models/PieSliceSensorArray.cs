@@ -47,21 +47,38 @@ namespace simulator.Sensor_Models
 		}
 
 
+        public float angleValue(float x, float y) //in degreses
+        {
+            if (x == 0.0)
+            {
+                if (y > 0.0) return 90.0f;
+                return 270.0f;
+            }
+            float ang = (float)(Math.Atan(y / x) / 3.1415926 * 180.0);
+
+            //quadrant 1 or 4
+            if (x > 0.0)
+            {
+                return ang;
+            }
+            return ang + 180.0f;
+        }
+
         //per default we use the goal point of the environment as our target point. 
         public void update(Engine.Environment env, List<Robot> robots, CollisionManager cm)
         {
             Point2D temp = new Point2D((int)env.goal_point.x, (int)env.goal_point.y);
 
-            temp.rotate((float)-(owner.heading * 180.0 / 3.14), owner.circle.p);
+            temp.rotate((float)-(owner.heading), owner.circle.p);  //((float)-(owner.heading * 180.0 / 3.14), owner.circle.p);
 
             //translate with respect to location of navigator
             temp.x -= (float)owner.circle.p.x;
             temp.y -= (float)owner.circle.p.y;
 
             //what angle is the vector between target & navigator
-            float angle = (float)temp.angle();
+            float angle = angleValue((float)temp.x, (float) temp.y);// (float)temp.angle();
 
-            angle *= 57.297f;//convert to degrees
+        //!    angle *= 57.297f;//convert to degrees
 
             //fire the appropriate radar sensor
             for (int i = 0; i < radarAngles1.Count; i++)

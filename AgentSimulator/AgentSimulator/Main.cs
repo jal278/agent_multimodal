@@ -17,9 +17,9 @@ namespace PackbotExperiment
          * 
          *  evolve -experiment hardmaze_exp.xml -es true
          *  evolve -experiment roomclear_exp2.xml -seed seedGenome2x.xml -multiobjective true
-         *  
+         *  evolve -experiment EXP_dual_task.xml
          **/
-       
+
         public static string info = "MultiAgent-HyperSharpNEAT Simulator v1.0";
 
         [STAThreadAttribute]
@@ -328,7 +328,7 @@ namespace PackbotExperiment
             }
             else
             {
-                experimentName = "hardmaze_exp.xml";      //Default experiment 
+                experimentName = "EXP_dual_task.xml";//"hardmaze_exp.xml";//EXP_dual_task.xml";      //Default experiment 
                 //"hardmaze_exp.xml";//
 
                 for (int j = 0; j < args.Length; j++)

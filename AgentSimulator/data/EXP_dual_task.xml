@@ -5,31 +5,29 @@
     <substrateDescriptionFilename>hardmaze_substrate.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
-    <normalizeWeights>true</normalizeWeights>
-    <inputs>5</inputs>
-    <outputs>2</outputs>
+    <normalizeWeights>false</normalizeWeights>
     <populationSize>150</populationSize>
     <headingNoise>0</headingNoise>
     <effectorNoise>0</effectorNoise>
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
-    <evaluationTime>35</evaluationTime>
-    <timestep>0.2</timestep>
+    <evaluationTime>80</evaluationTime>
+    <timestep>0.099</timestep>
     <explanatoryText>Multi-Agent Experiment</explanatoryText>
     <scriptFile />
     <robotModelName>MazeRobotPieSlice</robotModelName>
     <fitnessFunctionName>DualTaskFitness</fitnessFunctionName>
-    <behaviorCharacterizationName>EndPointBC</behaviorCharacterizationName>
+    <behaviorCharacterizationName>null</behaviorCharacterizationName>
     <environmentName>ENV_dual_task.xml</environmentName>
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
-    <rangefinderSensorDensity>11</rangefinderSensorDensity>
+    <rangefinderSensorDensity>5</rangefinderSensorDensity>
     <useScript>false</useScript>
     <multipleEnvironments>true</multipleEnvironments>
     <evolveSubstrate>false</evolveSubstrate>
     <modulatory>false</modulatory>
     <numberRobots>1</numberRobots>
-    <homogeneousTeam>false</homogeneousTeam>
-    <agentsVisible>false</agentsVisible>
+    <homogeneousTeam>true</homogeneousTeam>
+    <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
   </RoomClearingExperiment>
 </ExperimentWrapper>
