@@ -1,6 +1,8 @@
+set term postscript eps enhanced color
 set style data lines
 set key bottom right
 
+set output "lone_patrol-all.eps"
 plot \
 "lone_patrol_single-0/lone_patrol_single-0logfile.txt" u 1:2 t "lone_patrol_single" lt 1, \
 "lone_patrol_single-1/lone_patrol_single-1logfile.txt" u 1:2 notitle lt 1, \
@@ -65,6 +67,7 @@ plot \
 
 pause -1
 
+set output "lone_patrol-avg.eps"
 plot \
 "< bash group.bash average.bash lone_patrol_single-" u 1:2 t "lone_patrol_single" lt 1, \
 "< bash group.bash average.bash lone_patrol_switch3-" u 1:2 t "lone_patrol_switch3" lt 2, \
