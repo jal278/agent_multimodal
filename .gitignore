@@ -27,3 +27,20 @@ Thumbs.db
 *.pdb
 *.cache
 *.mdb
+
+# Identified by Jacob #
+#######################
+*.FileListAbsolute.txt
+*.vshost.*
+*.suo
+*.csproj.user
+*.vbproj.user
+AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/Engine/obj/Debug/*.resources
+
+# Data from experiments #
+#########################
+*bestGenome*.xml
+*logfile.txt
+AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/simulator.suo

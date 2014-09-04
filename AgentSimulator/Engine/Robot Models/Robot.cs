@@ -38,6 +38,8 @@ namespace Engine
 	    protected float timeStep;
         // Schrum: Added to track which brain each robot is using
         public int currentBrainMode = 0;
+        // Schrum: For remembering every brain/mode used through evaluation
+        public List<int> brainHistory = new List<int>();
 		
         //z-stack coordinate
         public float zstack;
@@ -91,6 +93,13 @@ namespace Engine
         public override void update()
         {
             throw new NotImplementedException();
+        }
+
+        // Schrum: Track which of several brains is being chosen
+        public void updateBrainMode(int newMode)
+        {
+            currentBrainMode = newMode;
+            brainHistory.Add(currentBrainMode);                        
         }
 
         //Called when robot collides

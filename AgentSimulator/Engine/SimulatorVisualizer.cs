@@ -187,8 +187,18 @@ namespace Engine
         {
             if (experiment.running)
             {
-				for(int i=0;i<frameskip;i++)
-	                experiment.run();
+                for (int i = 0; i < frameskip; i++)
+                {
+                    experiment.run();
+                    // Schrum: Added automatic pause/stop when time runs out, to get
+                    // a better idea of what happens in actual evaluations.
+                    if(experiment.elapsed >= experiment.evaluationTime) 
+                    {
+                        Console.WriteLine("Paused due to time expiring");
+                        // Schrum: Are these the right params to send?
+                        this.pauseButton_Click(sender, e);
+                    }
+                }
                 Invalidate();
             }
         }
@@ -358,6 +368,18 @@ namespace Engine
                    // this.selected_robot.displayPath = !this.selected_robot.displayPath;
                 }
             }
+
+            // Schrum: Track mode/brain usage
+            if (e.KeyChar == 'U' || e.KeyChar == 'u')
+            {
+                if (drawMode == drawModes.selectMode && selected_robot != null && selected_robot.brainHistory != null)
+                {
+                    INetwork brain = experiment.agentBrain.getBrain(selected_robot.id);
+                    ModuleUsageVisualizerForm usageForm = new ModuleUsageVisualizerForm(selected_robot, (ModularNetwork)brain, experiment.evaluationTime);
+                    usageForm.Show();
+                }
+            }
+
             if (e.KeyChar == '+' || e.KeyChar == '=')
             {
                 animation.Interval += 5;

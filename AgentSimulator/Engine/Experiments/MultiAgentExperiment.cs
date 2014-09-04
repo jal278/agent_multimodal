@@ -23,8 +23,9 @@ namespace Engine
         public bool modulatory;
 		public bool benchmark;
 
-        [XmlIgnore]
-        public double elapsed;              //Elapsed simulation time
+        // Schrum: Removed this to move it into SimulatorExperiment
+        //[XmlIgnore]
+        //public double elapsed;              //Elapsed simulation time
 
         public int numberRobots;
         public bool agentsVisible;          //Can the agents see each other
