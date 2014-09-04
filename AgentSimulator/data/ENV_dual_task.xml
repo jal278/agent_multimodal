@@ -174,13 +174,8 @@
     </Wall>
   </walls>
   <name>C:\Users\Ladytron\Documents\code\EPlex\SubstrateEvolution\SeperateTasks_COMBINED\commandline\bin\Debug\LEFT_RIGHT.xml</name>
-  <num_robots>1</num_robots>
-  <robot_orientation>90</robot_orientation>
-  <robot_spacing>150</robot_spacing>
-  <robot_heading>270</robot_heading>
-  <robot_size>10</robot_size>
-  <fitness_function>SingleGoalPoint</fitness_function>
-  <substrate_file>substrate_stacked.xml</substrate_file>
+
+
   <start_point>
     <x>255</x>
     <y>393</y>
@@ -190,9 +185,7 @@
     <y>184</y>
   </goal_point>
   <maxDistance>593.246155</maxDistance>
-  <agentsVisible>true</agentsVisible>
-  <agentsCollide>true</agentsCollide>
-  <noise>0</noise>
+
   <POIPosition>
     <Point>
       <X>171</X>

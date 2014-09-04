@@ -18,6 +18,7 @@ plot \
 "patrol_switch-1/patrol_switch-1logfile.txt" u 1:2 notitle lt 2, \
 "patrol_switch-2/patrol_switch-2logfile.txt" u 1:2 notitle lt 2, \
 "patrol_switch-3/patrol_switch-3logfile.txt" u 1:2 notitle lt 2, \
+<<<<<<< HEAD
 "patrol_switch-4/patrol_switch-4logfile.txt" u 1:2 notitle lt 2, \
 "patrol_signalUngeomMMD-0/patrol_signalUngeomMMD-0logfile.txt" u 1:2 t "patrol_signalUngeomMMD" lt 3, \
 "patrol_signalUngeomMMD-1/patrol_signalUngeomMMD-1logfile.txt" u 1:2 notitle lt 3, \
@@ -49,6 +50,9 @@ plot \
 "patrol_signalUngeomMMR-7/patrol_signalUngeomMMR-7logfile.txt" u 1:2 notitle lt 5, \
 "patrol_signalUngeomMMR-8/patrol_signalUngeomMMR-8logfile.txt" u 1:2 notitle lt 5, \
 "patrol_signalUngeomMMR-9/patrol_signalUngeomMMR-9logfile.txt" u 1:2 notitle lt 5
+=======
+"patrol_switch-4/patrol_switch-4logfile.txt" u 1:2 notitle lt 2 
+>>>>>>> origin/master
 
 pause -1
 

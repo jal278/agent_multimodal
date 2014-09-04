@@ -28,7 +28,7 @@
     <useScript>false</useScript>
     <collisionPenalty>false</collisionPenalty>
     <multipleEnvironments>false</multipleEnvironments>
-    <evolveSubstrate>true</evolveSubstrate>
+    <evolveSubstrate>false</evolveSubstrate>
     <numberRobots>1</numberRobots>
     <homogeneousTeam>true</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
