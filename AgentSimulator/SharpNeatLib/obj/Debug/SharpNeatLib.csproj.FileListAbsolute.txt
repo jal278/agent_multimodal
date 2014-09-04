@@ -14,3 +14,12 @@ C:\Users\Sebastian\Google Drive\code\agent_multimodal-master\agent_multimodal\Ag
 C:\Users\Sebastian\Google Drive\code\agent_multimodal-master\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 C:\Users\Sebastian\Google Drive\code\agent_multimodal-master\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 C:\Users\Sebastian\Google Drive\code\agent_multimodal-master\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.dll
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.pdb
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.Experiments.AbstractExperimentView.resources
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.NetworkVisualization.NetworkControl.resources
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.NetworkVisualization.Viewport.resources
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
