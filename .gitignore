@@ -44,3 +44,5 @@ AgentSimulator/Engine/obj/Debug/*.resources
 *logfile.txt
 AgentSimulator/data/Engine.dll.mdb
 AgentSimulator/simulator.suo
+AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/simulator.suo
