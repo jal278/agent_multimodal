@@ -17,7 +17,7 @@ namespace PackbotExperiment
          * 
          *  evolve -experiment hardmaze_exp.xml -es true
          *  evolve -experiment roomclear_exp2.xml -seed seedGenome2x.xml -multiobjective true
-         *  evolve -experiment EXP_dual_task.xml
+         *  evolve -experiment EXP_dual_task.xml -rng_seed 1
          **/
 
         public static string info = "MultiAgent-HyperSharpNEAT Simulator v1.0";

@@ -57,7 +57,7 @@ namespace Engine
                 if (fitness < 0) fitness = 0.00001f;
                 if (collectedFood >= 4) fitness = 1.0f;
 
-               // fitness = 1;
+             //  fitness = 1;
             }
          
             return fitness;
@@ -86,7 +86,7 @@ namespace Engine
 
 
             //For food gathering
-            if (Experiment.timeSteps == 1)
+            if (ip.timeSteps == 1)
             {
                 environment.goal_point.x = environment.POIPosition[0].X;
                 environment.goal_point.y = environment.POIPosition[0].Y;

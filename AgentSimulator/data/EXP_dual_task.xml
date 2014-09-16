@@ -12,7 +12,7 @@
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
 
-    <evaluationTime>80</evaluationTime>
+    <evaluationTime>65</evaluationTime>
     <timestep>0.099</timestep>
     <explanatoryText>Multi-Agent Experiment</explanatoryText>
     <scriptFile />
