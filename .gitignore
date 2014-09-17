@@ -13,7 +13,6 @@
 *.sql
 *.sqlite
 
-
 # OS generated files #
 ######################
 .svn
@@ -36,13 +35,10 @@ Thumbs.db
 *.csproj.user
 *.vbproj.user
 AgentSimulator/data/Engine.dll.mdb
+AgentSimulator/simulator.suo
 AgentSimulator/Engine/obj/Debug/*.resources
 
 # Data from experiments #
 #########################
 *bestGenome*.xml
 *logfile.txt
-AgentSimulator/data/Engine.dll.mdb
-AgentSimulator/simulator.suo
-AgentSimulator/data/Engine.dll.mdb
-AgentSimulator/simulator.suo

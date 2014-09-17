@@ -65,8 +65,9 @@ namespace Engine
 
         void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
         {
+            //Console.WriteLine(Experiment.multibrain + " && " + !Experiment.preferenceNeurons + " && " + (Experiment.numBrains == 2));
             // Schrum: Set which brain to use if the number is an experiment parameter
-            if (Experiment.multibrain && !Experiment.ungeometricBrains && Experiment.numBrains == 2)
+            if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains == 2)
             {
                 if (environment.name.Equals("ENV_dual_task.xml")) //HACK navigation
                 {

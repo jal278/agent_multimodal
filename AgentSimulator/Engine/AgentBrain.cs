@@ -91,6 +91,8 @@ namespace Engine
         // Schrum: New method to specifically choose the brain to use (assuming only one is being used)
         public void switchBrains(int index)
         {
+            //Console.WriteLine("switchBrains(" + index + ")");
+            //Console.WriteLine(multipleBrains + " && " + (index >= 0) + " && " + multiBrains.Count);
             if (multipleBrains && index >= 0 && index < multiBrains.Count)
             {
                 //Console.WriteLine("Switch to brain: " + index + " out of " + multiBrains.Count);

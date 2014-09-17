@@ -32,5 +32,9 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
+	
+    <multibrain>true</multibrain>
+    <numBrains>2</numBrains>
+    <ungeometricBrains>true</ungeometricBrains>
   </RoomClearingExperiment>
 </ExperimentWrapper>
