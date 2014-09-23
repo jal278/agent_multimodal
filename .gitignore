@@ -42,3 +42,4 @@ AgentSimulator/Engine/obj/Debug/*.resources
 #########################
 *bestGenome*.xml
 *logfile.txt
+*.zip

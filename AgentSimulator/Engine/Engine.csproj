@@ -74,6 +74,7 @@
     <Compile Include="Experiments\HardMazeExperiment.cs" />
     <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
     <Compile Include="ExperimentWrapper.cs" />
+    <Compile Include="Fitness Functions\TwoRoomFitness.cs" />
     <Compile Include="Fitness Functions\DualTaskFitness.cs" />
     <Compile Include="Fitness Functions\HardMazeFitness.cs" />
     <Compile Include="Fitness Functions\VisitThreeFitness.cs" />
