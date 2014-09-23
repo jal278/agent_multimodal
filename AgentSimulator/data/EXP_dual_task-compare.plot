@@ -1,7 +1,8 @@
-#set term postscript eps enhanced color
+set term postscript eps enhanced color
 set style data lines
 set key bottom right
 
+set output "Dual-Task-All.eps"
 plot \
 "EXP_dual_task-0/EXP_dual_task-0logfile.txt" u 1:2 t "EXP_dual_task" lt 1, \
 "EXP_dual_task-1/EXP_dual_task-1logfile.txt" u 1:2 notitle lt 1, \
@@ -34,8 +35,7 @@ plot \
 "EXP_dual_task-twoBrainPref-3/EXP_dual_task-twoBrainPref-3logfile.txt" u 1:2 notitle lt 6, \
 "EXP_dual_task-twoBrainPref-4/EXP_dual_task-twoBrainPref-4logfile.txt" u 1:2 notitle lt 6
 
-pause -1
-
+set output "Dual-Task-AVG.eps"
 plot \
 "< bash group.bash average.bash EXP_dual_task-" u 1:2 t "EXP_dual_task" lt 1, \
 "< bash group.bash average.bash EXP_dual_task-MMD-" u 1:2 t "EXP_dual_task-MMD" lt 3, \
@@ -43,6 +43,4 @@ plot \
 "< bash group.bash average.bash EXP_dual_task-MMP-" u 1:2 t "EXP_dual_task-MMP" lt 5, \
 "< bash group.bash average.bash EXP_dual_task-twoBrainSwitch-" u 1:2 t "EXP_dual_task-twoBrainSwitch" lt 2, \
 "< bash group.bash average.bash EXP_dual_task-twoBrainPref-" u 1:2 t "EXP_dual_task-twoBrainPref" lt 6
-
-pause -1
 
