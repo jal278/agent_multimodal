@@ -7,7 +7,7 @@ namespace Engine
 {
     class TwoRoomFitness : IFitnessFunction
     {
-        const int NUM_FOOD_ITEMS = 8;
+        const int NUM_FOOD_ITEMS = 9;
         int collectedFood=0;
         int POINr = 0;
 
@@ -47,7 +47,7 @@ namespace Engine
 
             // Schrum: This error checking shouldn't be necessary
             if (fitness < 0) fitness = 0.00001f;
-            if (collectedFood >= 8) fitness = 1.0f;
+            if (collectedFood >= NUM_FOOD_ITEMS) fitness = 1.0f;
 
             return fitness;
         }

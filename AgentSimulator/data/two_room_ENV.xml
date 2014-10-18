@@ -350,7 +350,11 @@
       <X>399</X>
       <Y>929</Y>
     </Point>
-    <Point>
+	<Point>
+      <X>400</X>
+      <Y>520</Y>
+    </Point>
+	<Point>
       <X>450</X>
       <Y>400</Y>
     </Point>
