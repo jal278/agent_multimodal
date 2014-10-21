@@ -7,7 +7,6 @@ namespace Engine
 {
     class TwoRoomFitness : IFitnessFunction
     {
-        const int NUM_FOOD_ITEMS = 9;
         int collectedFood=0;
         int POINr = 0;
 
@@ -43,11 +42,11 @@ namespace Engine
             //food gathering 
             // Schrum: sets goal to a new food item
             float distFood = (float)(1.0f - (engine.robots[0].location.distance(environment.goal_point) / environment.maxDistance));
-            fitness = (collectedFood + distFood) / (NUM_FOOD_ITEMS*1.0f);
+            fitness = (collectedFood + distFood) / (environment.POIPosition.Count * 1.0f);
 
             // Schrum: This error checking shouldn't be necessary
             if (fitness < 0) fitness = 0.00001f;
-            if (collectedFood >= NUM_FOOD_ITEMS) fitness = 1.0f;
+            if (collectedFood >= environment.POIPosition.Count) fitness = 1.0f;
 
             return fitness;
         }
@@ -71,7 +70,7 @@ namespace Engine
             {
                 collectedFood++;
                 POINr++;
-                if (POINr >= NUM_FOOD_ITEMS) POINr = 0;
+                if (POINr >= environment.POIPosition.Count) POINr = 0;
                 environment.goal_point.x = environment.POIPosition[POINr].X;
                 environment.goal_point.y = environment.POIPosition[POINr].Y;
 
