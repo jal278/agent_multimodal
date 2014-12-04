@@ -189,6 +189,8 @@ namespace Engine
         //Right now all brains have the same number of inputs
         public void updateInputDensity()
         {
+            // Schrum: Debug
+            //Console.WriteLine("substrateDescription.InputCount = " + substrateDescription.InputCount);
             teamInput = new float[numRobots * substrateDescription.InputCount];
             //Check if the number of sensors changed so we have to regenerate the ANNs
             if (homogenous)
@@ -444,6 +446,9 @@ namespace Engine
         //Activate the agents network with the given inputs
         public void setInputSignals(int agentNumber, float[] inputs)
         {
+            // Schrum: Debug
+            //Console.WriteLine("inputs.Length = " + inputs.Length);
+            //Console.WriteLine("teamInput.Length = " + teamInput.Length);
             for (int i = 0; i < inputs.Length; i++)
             {
                 teamInput[(i + agentNumber * inputs.Length)] = inputs[i];

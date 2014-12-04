@@ -31,6 +31,16 @@ namespace Engine
             return 5;
         }
 
+        // Schrum: Added so pie-slice sensors would be initialized even with specialized number of rangefinders
+        public override void populateSensors(int numRangeFinders)
+        {
+            base.populateSensors(numRangeFinders);
+
+            //Adds the pieSlice sensor to the robot
+            pieSliceSensor = new PieSliceSensorArray(this);
+        }
+
+
         public override void populateSensors()
         {
             base.populateSensors();

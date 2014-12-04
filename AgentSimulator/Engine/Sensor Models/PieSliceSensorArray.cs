@@ -16,6 +16,7 @@ namespace simulator.Sensor_Models
 
         public PieSliceSensorArray(Robot o)
         {
+            // Schrum: Magic number! 4 is the default number of pie-slice sensors
             signalsSensors = new List<SignalSensor>(4);
 
             radarAngles1 = new List<float>();

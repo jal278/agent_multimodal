@@ -74,6 +74,7 @@
     <Compile Include="Experiments\HardMazeExperiment.cs" />
     <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
     <Compile Include="ExperimentWrapper.cs" />
+    <Compile Include="Fitness Functions\DangerousForagingFitness.cs" />
     <Compile Include="Fitness Functions\TwoRoomFitness.cs" />
     <Compile Include="Fitness Functions\DualTaskFitness.cs" />
     <Compile Include="Fitness Functions\HardMazeFitness.cs" />
@@ -131,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Robot Models\DangerousForagingRobot.cs" />
     <Compile Include="Robot Models\MazeRobotPieSlice.cs" />
     <Compile Include="Robot Models\Khepera3RobotModel.cs" />
     <Compile Include="Robot Models\Khepera3RobotModelAutopilot.cs" />

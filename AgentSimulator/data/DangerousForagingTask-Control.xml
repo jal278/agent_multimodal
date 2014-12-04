@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RoomClearingExperiment>
+    <gridCollision>false</gridCollision>
+    <substrateDescriptionFilename>dangerous_foraging_substrate.xml</substrateDescriptionFilename>
+    <adaptableANN>false</adaptableANN>
+    <modulatoryANN>false</modulatoryANN>
+     <normalizeWeights>false</normalizeWeights>
+    <populationSize>150</populationSize>
+    <headingNoise>0</headingNoise>
+    <effectorNoise>0</effectorNoise>
+    <sensorNoise>0</sensorNoise>
+    <timesToRunEnvironments>1</timesToRunEnvironments>
+
+    <evaluationTime>50</evaluationTime>
+    <timestep>0.2</timestep>
+    <explanatoryText>Dangerous Foraging Experiment</explanatoryText>
+    <scriptFile />
+    <robotModelName>DangerousForagingRobot</robotModelName>
+    <fitnessFunctionName>DangerousForagingFitness</fitnessFunctionName>
+    <behaviorCharacterizationName>null</behaviorCharacterizationName>
+    <environmentName>ENV_dual_task1.xml</environmentName>
+    <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
+
+    <rangefinderSensorDensity>0</rangefinderSensorDensity>
+    <useScript>false</useScript>
+    <multipleEnvironments>true</multipleEnvironments>
+    <evolveSubstrate>false</evolveSubstrate>
+    <modulatory>false</modulatory>
+    <numberRobots>1</numberRobots>
+
+    <homogeneousTeam>false</homogeneousTeam>
+    <agentsVisible>true</agentsVisible>
+    <agentsCollide>true</agentsCollide>
+  </RoomClearingExperiment>
+</ExperimentWrapper>

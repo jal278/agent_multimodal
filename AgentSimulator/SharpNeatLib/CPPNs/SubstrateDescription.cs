@@ -83,7 +83,9 @@ namespace SharpNeatLib.CPPNs
                     InputCount += dx * dy;
                 }
 
-                //  Console.WriteLine(id + " " + neuronGroupType + " " + startX + " " + startY + " " + endX + " " + endY + " " + dx + " " + dy);
+                // Debug
+                //Console.WriteLine(id + " " + neuronGroupType + " " + startX + " " + startY + " " + endX + " " + endY + " " + dx + " " + dy);
+                //Console.WriteLine("InputCount = " + InputCount);
 
                 neuronGroups.Add(ng);
             }
