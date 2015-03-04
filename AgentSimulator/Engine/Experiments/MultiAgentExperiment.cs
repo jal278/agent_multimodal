@@ -252,6 +252,7 @@ namespace Engine
                 }
             }
 
+            //Console.WriteLine("Range finder count : " + count);
             //By convention the rangefinders are in layer zero so scale that layer
             // Schrum: HOWEVER, if there are no rangefinders, then we do not want to do this
             if (count != 0) { // don't rescale rangefinders if there are none.
