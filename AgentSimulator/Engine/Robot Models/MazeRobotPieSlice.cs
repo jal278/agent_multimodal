@@ -32,22 +32,24 @@ namespace Engine
         }
         
         /*
-         * TODO! Schrum
-         * 
-         * This method is needed to make dangerous foraging work, but breaks Two Room and other domains.
-         * Leave out until I know how to implement correctly.
-         * 
+         * Schrum: Adding the if statement seems to fix this method so that it works
+         * with both Dangerous Foraging and Two Rooms experiments. Need to keep an eye on
+         * it though.
+         */ 
         // Schrum: Added so pie-slice sensors would be initialized even with specialized number of rangefinders
         public override void populateSensors(int numRangeFinders)
         {
             //Console.WriteLine("numRangeFinders:" + numRangeFinders);
             base.populateSensors(numRangeFinders);
             //Console.WriteLine("before: " + pieSliceSensor);
-            //Adds the pieSlice sensor to the robot
-            pieSliceSensor = new PieSliceSensorArray(this);
+            
+            //This code only seems to be needed for Dangerous Foraging, which
+            // has not range finders.
+            if (numRangeFinders == 0) 
+                pieSliceSensor = new PieSliceSensorArray(this);
             //Console.WriteLine("after: " + pieSliceSensor);
         }
-        */
+        
 
         public override void populateSensors()
         {
