@@ -232,16 +232,20 @@ namespace PackbotExperiment
 					Engine.NetworkEvaluator x = new Engine.NetworkEvaluator(experiment);
 					SharpNeatLib.BehaviorType behavior;
 					Console.WriteLine("Fitness score:" + x.EvaluateNetwork(experiment.genome.Decode(null),out behavior));
-					Console.Write("Behavior: ");
-					foreach (double d in behavior.behaviorList) {
-						Console.Write(d+ " ");
-					}
-					Console.WriteLine();
-					Console.Write("MO: ");
-					foreach (double d in behavior.objectives) {
-						Console.Write(d+" ");	
-					}
-					return;
+					// schrum2: Prevent this from crashing in domains with no behavior measure defined
+                    if (behavior != null && behavior.behaviorList != null) {
+                        Console.Write("Behavior: ");
+                        foreach (double d in behavior.behaviorList)
+                        {
+	    					Console.Write(d+ " ");
+				    	}
+        			    Console.WriteLine();
+					    Console.Write("MO: ");
+					    foreach (double d in behavior.objectives) {
+						    Console.Write(d+" ");	
+					    }
+                    } // schrum2
+                    return;
 					}
 
 				
