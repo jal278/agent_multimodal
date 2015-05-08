@@ -1,0 +1,1 @@
+copy ..\AgentSimulator\bin\Debug\* .

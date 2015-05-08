@@ -11,7 +11,8 @@ namespace Engine
         [
             System.Xml.Serialization.XmlElement(typeof(SimulatorExperiment)),
             System.Xml.Serialization.XmlElement(typeof(MultiAgentExperiment)),
-        System.Xml.Serialization.XmlElement(typeof(RoomClearingExperiment))
+        System.Xml.Serialization.XmlElement(typeof(RoomClearingExperiment)),
+        System.Xml.Serialization.XmlElement(typeof(AdversarialRoomClearingExperiment)) // schrum2: Had to ad my experiment in order to decode it properly
         ] 
 
         public SimulatorExperiment experiment;

@@ -72,6 +72,7 @@
     <Compile Include="EngineUtilities.cs" />
     <Compile Include="Experiment.cs" />
     <Compile Include="Experiments\HardMazeExperiment.cs" />
+    <Compile Include="Experiments\AdversarialRoomClearingExperiment.cs" />
     <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
     <Compile Include="ExperimentWrapper.cs" />
     <Compile Include="Fitness Functions\DangerousForagingFitness.cs" />
@@ -133,6 +134,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Robot Models\DangerousForagingRobot.cs" />
+    <Compile Include="Robot Models\EnemyRobot.cs" />
     <Compile Include="Robot Models\MazeRobotPieSlice.cs" />
     <Compile Include="Robot Models\Khepera3RobotModel.cs" />
     <Compile Include="Robot Models\Khepera3RobotModelAutopilot.cs" />
