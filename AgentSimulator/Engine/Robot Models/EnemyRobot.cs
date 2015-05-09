@@ -10,7 +10,9 @@ namespace Engine
 {
     class EnemyRobot : Khepera3RobotModelContinuous
     {
-        public EnemyRobot()
+        Robot evolved; // Enemy always knows where evolved bot is
+
+        public EnemyRobot(Robot evolvedBot)
             : base()
         {
             name = "EnemyRobot";
@@ -20,6 +22,7 @@ namespace Engine
             collisionAvoidance = false;
             autopilot = false;
             addtimer = false;
+            evolved = evolvedBot;
         }
 
         public override float defaultRobotSize()
@@ -47,7 +50,20 @@ namespace Engine
             // Speed calculation taken from Khepera3RobotModelContinuous
             float speed = 9.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
             velocity = speed;
-            heading = 0; // TODO: set intelligently
+
+            const double TURN_AMOUNT = Math.PI / 50.0;
+            Line2D toEvolved = new Line2D(location, evolved.location);
+            double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
+            // Schrum2: Debug
+            //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
+            //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
+            if (angleDifference < 0)
+            { // turn towards evolved bot
+                heading -= TURN_AMOUNT;
+            } else {
+                heading += TURN_AMOUNT;
+            }
+
             // Schrum2: Need to do this manually.
             updatePosition(); // Moves robot based on velocity and heading
         }

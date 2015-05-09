@@ -63,15 +63,15 @@ namespace Engine
 			if(x==0.0)
 			{
 				if(y>0)
-					return 3.14/2.0;
+					return Math.PI/2.0; // schrum: Use PI (straight up)
 				else
-					return 3.14*3.0/2.0;
+					return Math.PI*3.0/2.0; // schrum: Use PI (straight down)
 			}
 			double ang = Math.Atan(y/x);
 			if(x>0)
 				return ang;
-			
-			return ang+3.14;
+			else
+			    return ang+Math.PI; // schrum: use PI
 		}
 
 		//rotate this point about another point
@@ -109,6 +109,17 @@ namespace Engine
 		{
 			return Math.Sqrt(distance_sq(point));
 		}
+
+        // Schrum2: Vector subtraction of one point from another
+        public Point2D subtract(Point2D other) {
+            return new Point2D(x - other.x, y - other.y);
+        }
+
+        // Schrum2: For debugging
+        public override String ToString()
+        {
+            return "(" + x + "," + y + ")";
+        }
 	}
 	
 	//line segment class, does some basic trig
@@ -126,6 +137,44 @@ namespace Engine
 			p1=other.p1;
 			p2=other.p2;
 		}
+
+        // Schrum2: For debugging
+        public override String ToString()
+        {
+            return p1.ToString() + " to " + p2.ToString();
+        }
+
+      /** Schrum2: Taken from MM-NEAT
+       * Assuming that something at p1 is aimed towards the position at
+       * sourceRads radians on the unit circle, compare the resulting vector to a
+       * vector from p1 to p2. The difference in radians between
+       * the angles of the two vectors is returned, with different signs
+       * indicating which side of each other the two vectors are.
+       *
+       * @param sourceRads between 0 and 2pi
+       * @return difference in angles
+       */
+        public double signedAngleFromSourceHeadingToTarget(double sourceRads)
+        {
+            Point2D sourceToTarget = p2.subtract(p1);
+            double angleToTarget = sourceToTarget.angle();
+            return signedAngleDifference(sourceRads, angleToTarget);
+        }
+
+        // Schrum2: Taken from MM-NEAT utils
+        public static double signedAngleDifference(double rad1, double rad2)
+        {
+            double angleDifference = rad1 - rad2;
+            if (angleDifference > Math.PI)
+            {
+                angleDifference -= 2 * Math.PI;
+            }
+            else if (angleDifference < -Math.PI)
+            {
+                angleDifference += 2 * Math.PI;
+            }
+            return -angleDifference;
+        }
 
 		public void scale(double factor)
 		{

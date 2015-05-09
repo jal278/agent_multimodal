@@ -30,7 +30,9 @@ namespace Engine
             base.initializeRobots(agentBrain, e, headingNoise, sensorNoise, effectorNoise, ip);
 
             // schrum2: here is where the enemy robot is added
-            Robot r = RobotModelFactory.getRobotModel("EnemyRobot");
+            // Location of evolved robot is needed to track it
+            // Assumes that robot is in position 0 (problem?)
+            Robot r = new EnemyRobot(robots[0]);
 
             double _timestep = 0.0;
             if (ip == null) {
