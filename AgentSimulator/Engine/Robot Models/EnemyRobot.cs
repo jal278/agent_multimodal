@@ -57,11 +57,51 @@ namespace Engine
             // Schrum2: Debug
             //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
             //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
-            if (angleDifference < 0)
-            { // turn towards evolved bot
+            
+
+            // schrum2: check sensors for walls.
+            // sensor values of 1 mean there is no wall contact.
+            // Lesser values means wall is closer along that sensor
+            //Console.WriteLine("Check");
+            double left = 0;
+            int half = sensors.Count / 2;
+            for (int j = 0; j < half; j++) {
+                if (!(sensors[j] is SignalSensor)) {
+                    left += transformSensor(sensors[j].get_value_raw());
+                }
+            }
+            //Console.WriteLine("\t:left:" + left);
+            double right = 0;
+            for (int j = half+1; j < sensors.Count; j++)
+            {
+                if (!(sensors[j] is SignalSensor))
+                {
+                    right += transformSensor(sensors[j].get_value_raw());
+                }
+            }
+            //Console.WriteLine("\t:right:" + right);
+
+            if (right < left) 
+            { // right sensors are closer to wall
+                // turn left
                 heading -= TURN_AMOUNT;
-            } else {
+            }
+            else if (left < right)
+            { // left sensors are closer to wall
+                // turn right
                 heading += TURN_AMOUNT;
+            }
+            else
+            {
+                // Base turn purely on evolved bot location if there are no wall problems
+                if (angleDifference < 0)
+                { // turn towards evolved bot
+                    heading -= TURN_AMOUNT;
+                }
+                else
+                {
+                    heading += TURN_AMOUNT;
+                }
             }
 
             // Schrum2: Need to do this manually.
