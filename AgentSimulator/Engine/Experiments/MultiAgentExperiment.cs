@@ -411,6 +411,8 @@ namespace Engine
 
                     while (inst.elapsed < evalTime)
                     {
+                        // Schrum2: Only called for non-visual evaluations
+                        //Console.WriteLine("MAE:" + inst.elapsed + "/" + evalTime);
                         runEnvironment(env,inst,sem);
                     }
 					}		catch( Exception e) {

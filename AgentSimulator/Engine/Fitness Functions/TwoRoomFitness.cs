@@ -76,6 +76,15 @@ namespace Engine
 
             }
 
+            // Schrum2: Added to detect robot collisions and end the evaluation when they happen
+            if (ip.robots[0].collisions > 0)
+            { // Disabling prevents further action
+                //Console.WriteLine("Fitness before:" + ip.elapsed + "/" + Experiment.evaluationTime + ":" + ip.timeSteps);
+                ip.elapsed = Experiment.evaluationTime; // force end time: only affects non-visual evaluation
+                Experiment.running = false; // Ends visual evaluation
+                //Console.WriteLine("Collision");
+                //Console.WriteLine("Fitness after:" + ip.elapsed + "/" + Experiment.evaluationTime + ":" + ip.timeSteps);
+            }
         }
 
         void IFitnessFunction.reset()
