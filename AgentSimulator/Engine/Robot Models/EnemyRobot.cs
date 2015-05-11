@@ -4,7 +4,11 @@ using System.Text;
 using simulator.Sensor_Models;
 
 /**
- * Schrum2: Made this robot to serve as an NPC enemy 
+ * Schrum2: Made this robot to serve as an NPC enemy.
+ * It approaches the evolving robot, assuming it is in
+ * index 0 of the robots array. Bot also turns to avoid walls,
+ * but when doing this it does not take the evolved bot
+ * location into account, so there is room for improvement here.
  */
 namespace Engine
 {

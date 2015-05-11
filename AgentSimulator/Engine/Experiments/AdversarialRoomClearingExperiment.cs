@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 
 /**
- * Schrum2: Make an experiment that allows for an NPC adversary
+ * Schrum2: Make an experiment that allows for an NPC adversary.
+ * Simply modifies RoomClearingExperiment by adding an NPC enemy.
+ * Currently, the enemy is added at a fixed location (magic numbers),
+ * which should be improved in the future.
  */
 namespace Engine
 {
