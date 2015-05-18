@@ -30,31 +30,50 @@ namespace Engine
         // Schrum2: Add extra enemy robot after deault robots
         public override void initializeRobots(AgentBrain agentBrain, Environment e, float headingNoise, float sensorNoise, float effectorNoise, instance_pack ip)
         {
+            // Debug:schrum2
+            //Console.WriteLine("Init Robots");
             base.initializeRobots(agentBrain, e, headingNoise, sensorNoise, effectorNoise, ip);
 
-            // schrum2: here is where the enemy robot is added
-            // Location of evolved robot is needed to track it
-            // Assumes that robot is in position 0 (problem?)
-            Robot r = new EnemyRobot(robots[0]);
+            // Only add enemy if it is not already present
+            if (robots.Count < 2) // Makes limiting assumption that this experiment will always be used with only one evolved bot and one enemy
+            {
 
-            double _timestep = 0.0;
-            if (ip == null) {
-                _timestep = this.timestep;
-            } else {
-                _timestep = ip.timestep;
+                // schrum2: here is where the enemy robot is added
+                // Location of evolved robot is needed to track it
+                // Assumes that robot is in position 0 (problem?)
+                Robot r = new EnemyRobot(robots[0]);
+
+                double _timestep = 0.0;
+                if (ip == null)
+                {
+                    _timestep = this.timestep;
+                }
+                else
+                {
+                    _timestep = ip.timestep;
+                }
+
+                // Schrum: will definitely need to change these into parameters
+                double nx = 300;
+                double ny = 300;
+                r.init(robots.Count, // id is last position in list of robots
+                    nx, ny, 0, // starting position and heading of 0 (change?)
+                    agentBrain, // Has evolved brain (to avoid NullPointers, etc), but should never actually use it (problem?) 
+                    e, sensorNoise, effectorNoise, headingNoise, (float)_timestep);
+
+                r.collisionPenalty = collisionPenalty;
+                robots.Add(r);
+                //Console.WriteLine("Added enemy to list: " + robots.Count);
             }
 
-            // Schrum: will definitely need to change these into parameters
-            double nx = 300;
-            double ny = 300;
-            r.init(robots.Count, // id is last position in list of robots
-                nx, ny, 0, // starting position and heading of 0 (change?)
-                agentBrain, // Has evolved brain (to avoid NullPointers, etc), but should never actually use it (problem?) 
-                e, sensorNoise, effectorNoise, headingNoise, (float)_timestep);
-
-            r.collisionPenalty = collisionPenalty;
-            robots.Add(r);
-        }
+            // Required so that experiment works properly in both visual and non-visual mode
+            // (The non-visual mode takes the robots from the instance_pack instead of the experiment)
+            if (ip != null)
+            {
+                //Console.WriteLine("Gave robots to ip");
+                ip.robots = robots;
+            }
+       }
         
     }
 }

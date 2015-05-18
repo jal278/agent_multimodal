@@ -285,6 +285,9 @@ namespace Engine
 
             if (ip == null)
             {
+                // Schrum2: Debug
+                //Console.WriteLine("rbts from experiment");
+
                 ip = new instance_pack();
                 ab = agentBrain;
                 cm = collisionManager;
@@ -302,6 +305,9 @@ namespace Engine
             }
             else
             {
+                // Schrum2: Debug
+                //Console.WriteLine("rbts from ip");
+
                 ab = ip.agentBrain;
                 cm = ip.collisionManager;
                 rbts = ip.robots;
@@ -310,6 +316,9 @@ namespace Engine
             }
 
             cm.SimulationStepCallback();
+
+            // Schrum2: Debug
+            //Console.WriteLine("rbts.Count = " + rbts.Count);
 
             for (int x = 0; x < rbts.Count; x++)
             {

@@ -27,6 +27,9 @@ namespace Engine
             autopilot = false;
             addtimer = false;
             evolved = evolvedBot;
+
+            // Schrum: debug
+            //Console.WriteLine("Create enemy robot");
         }
 
         public override float defaultRobotSize()
@@ -47,7 +50,8 @@ namespace Engine
 
         public override void doAction()
         {
-            // Schrum: Ok to do nothing here?
+            //Schrum: debug
+            //Console.WriteLine(evolved.location.x + "\t" + evolved.location.y + "\t" + location.x + "\t" + location.y);
             //Console.WriteLine("Enemy doAction");
             
             // Schrum2: Simple behavior

@@ -40,6 +40,12 @@ namespace Engine
 
         public override void doAction()
         {
+            // Schrum: For debug
+            //if (!(this is EnemyRobot))
+            //{
+            //    Console.WriteLine(location.x + "\t" + location.y);
+            //}
+
             //TODO: probably need another function for heading noise?
             double distortion;
 
