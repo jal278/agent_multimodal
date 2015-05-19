@@ -28,6 +28,9 @@ namespace Engine
             addtimer = false;
             evolved = evolvedBot;
 
+            // Schrum: Start facing down
+            heading = 3 * Math.PI / 2;
+
             // Schrum: debug
             //Console.WriteLine("Create enemy robot");
         }

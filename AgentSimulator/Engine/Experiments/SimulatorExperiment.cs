@@ -58,6 +58,10 @@ namespace Engine
         public int numBrains = 1;
        // Schrum: Added: Whether the CPPN can have a separate weight output for each of multiple brains
         public bool ungeometricBrains = false; // Schrum: Different brains do not have geometric relation (policy geometry)
+
+       // Schrum: Starting location of EnemyRobot, if there is one.
+        public double enemyX = 0;
+        public double enemyY = 0;
        
        // Schrum: Preference neurons in the substrate networks can be checked to see which of multiple brains to use
         public bool preferenceNeurons = false;

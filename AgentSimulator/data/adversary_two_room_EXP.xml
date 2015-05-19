@@ -32,5 +32,8 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
+
+    <enemyX>500</enemyX>
+    <enemyY>400</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>

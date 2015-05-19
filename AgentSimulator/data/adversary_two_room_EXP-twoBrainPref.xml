@@ -37,5 +37,8 @@
     <numBrains>2</numBrains>
     <preferenceNeurons>true</preferenceNeurons>
     <ungeometricBrains>true</ungeometricBrains>
+
+    <enemyX>500</enemyX>
+    <enemyY>400</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>
