@@ -33,7 +33,7 @@
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
 
-    <enemyX>500</enemyX>
-    <enemyY>400</enemyY>
+    <enemyX>400</enemyX>
+    <enemyY>350</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>

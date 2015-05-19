@@ -28,8 +28,8 @@ namespace Engine
             addtimer = false;
             evolved = evolvedBot;
 
-            // Schrum: Start facing down
-            heading = 3 * Math.PI / 2;
+            // Schrum: Start facing down: Doesn't seem to work
+            //heading = 3 * Math.PI / 2;
 
             // Schrum: debug
             //Console.WriteLine("Create enemy robot");
@@ -58,8 +58,8 @@ namespace Engine
             //Console.WriteLine("Enemy doAction");
             
             // Schrum2: Simple behavior
-            // Speed calculation taken from Khepera3RobotModelContinuous
-            float speed = 9.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
+            // Speed calculation taken from Khepera3RobotModelContinuous, but made faster
+            float speed = 10.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
             velocity = speed;
 
             const double TURN_AMOUNT = Math.PI / 50.0;
