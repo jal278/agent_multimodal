@@ -59,16 +59,20 @@ namespace Engine
             
             // Schrum2: Simple behavior
             // Speed calculation taken from Khepera3RobotModelContinuous, but made faster
-            float speed = 10.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
+            // Perhaps too fast? Originally 9 ... 10 still seems reasonable. Not sure about 11.
+            // Make parameter?
+            float speed = 11.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
             velocity = speed;
 
             const double TURN_AMOUNT = Math.PI / 50.0;
             Line2D toEvolved = new Line2D(location, evolved.location);
             double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
+            double distance = toEvolved.length();
             // Schrum2: Debug
             //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
             //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
-            
+
+            Boolean evolvedClose = distance < 40; // Magic number ... needs tweaking
 
             // schrum2: check sensors for walls.
             // sensor values of 1 mean there is no wall contact.
@@ -92,12 +96,12 @@ namespace Engine
             }
             //Console.WriteLine("\t:right:" + right);
 
-            if (right < left) 
+            if (!evolvedClose && right < left) 
             { // right sensors are closer to wall
                 // turn left
                 heading -= TURN_AMOUNT;
             }
-            else if (left < right)
+            else if (!evolvedClose && left < right)
             { // left sensors are closer to wall
                 // turn right
                 heading += TURN_AMOUNT;
