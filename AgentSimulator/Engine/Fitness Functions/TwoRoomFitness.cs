@@ -9,6 +9,9 @@ namespace Engine
     {
         int collectedFood=0;
         int POINr = 0;
+        // Schrum: tracks whether evaluation ends in collision
+        Boolean collided = false;
+        double portionAlive = 0;
 
         public IFitnessFunction copy()
         {
@@ -42,11 +45,9 @@ namespace Engine
             //food gathering 
             // Schrum: sets goal to a new food item
             float distFood = (float)(1.0f - (engine.robots[0].location.distance(environment.goal_point) / environment.maxDistance));
-            fitness = (collectedFood + distFood) / (environment.POIPosition.Count * 1.0f);
-
-            // Schrum: This error checking shouldn't be necessary
-            if (fitness < 0) fitness = 0.00001f;
-            if (collectedFood >= environment.POIPosition.Count) fitness = 1.0f;
+            // Schrum: collision has fitness score like another food collected. Hence the 1.0 added in the divisor.
+            // The longer a collision is avoided, the more points are earned.
+            fitness = (collectedFood + distFood + (collided ? portionAlive : 1)) / (environment.POIPosition.Count * 1.0f + 1.0);
 
             return fitness;
         }
@@ -63,6 +64,8 @@ namespace Engine
 
                 collectedFood = 0;
                 POINr = 0;
+                collided = false;
+                portionAlive = 0;
             }
 
             float d = (float)ip.robots[0].location.distance(environment.goal_point);
@@ -79,6 +82,8 @@ namespace Engine
             // Schrum2: Added to detect robot collisions and end the evaluation when they happen
             if (ip.robots[0].collisions > 0)
             { // Disabling prevents further action
+                collided = true;
+                portionAlive = (ip.elapsed * 1.0) / Experiment.evaluationTime;
                 //Console.WriteLine("Fitness before:" + ip.elapsed + "/" + Experiment.evaluationTime + ":" + ip.timeSteps);
                 ip.elapsed = Experiment.evaluationTime; // force end time: only affects non-visual evaluation
                 Experiment.running = false; // Ends visual evaluation
