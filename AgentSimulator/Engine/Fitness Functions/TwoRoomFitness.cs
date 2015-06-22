@@ -56,6 +56,21 @@ namespace Engine
         {
             // Schrum: Is a brain-switching policy needed?
 
+            // Schrum: Debug: For comparing non-visual eval with visual
+            // Prints out locations visited by all robots
+            /*
+            for (int i = 0; i < ip.robots.Count; i++)
+            {
+                Console.Write(ip.robots[i].location.x + "\t" + ip.robots[i].location.y + "\t");
+                if (ip.robots[i] is EnemyRobot)
+                {
+                    Console.Write(((EnemyRobot)ip.robots[i]).wallResponse + "\t" + ((EnemyRobot)ip.robots[i]).chaseResponse + "\t" + ip.robots[i].heading + "\t" + ((EnemyRobot)ip.robots[i]).angle + "\t");
+                }
+            }
+            Console.WriteLine();
+            */
+            // End debug
+
             //For food gathering
             if (ip.timeSteps == 1)
             {

@@ -53,6 +53,11 @@ namespace SharpNeatLib.Maths
 		/// </summary>
 		public FastRandom()
 		{
+            // Schrum: From debugging
+            //Console.WriteLine("FastRandom()");
+            //System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+            //Console.WriteLine(t.ToString());
+
 			// Initialise using the system tick count.
 			Reinitialise((int)Environment.TickCount);
 		}
@@ -64,7 +69,12 @@ namespace SharpNeatLib.Maths
 		/// </summary>
 		public FastRandom(int seed)
 		{
-			Reinitialise(seed);
+            // Schrum: From debugging
+            //Console.WriteLine("FastRandom(" + seed + ")");
+            //System.Diagnostics.StackTrace t = new System.Diagnostics.StackTrace();
+            //Console.WriteLine(t.ToString());
+
+            Reinitialise(seed);
 		}
 
 		#endregion

@@ -15,6 +15,9 @@ namespace Engine
     class EnemyRobot : Khepera3RobotModelContinuous
     {
         Robot evolved; // Enemy always knows where evolved bot is
+        public double wallResponse = 0;
+        public double chaseResponse = 0;
+        public double angle = 0;
 
         public EnemyRobot(Robot evolvedBot)
             : base()
@@ -54,6 +57,8 @@ namespace Engine
         public override void doAction()
         {
             //Schrum: debug
+            //Console.WriteLine("-------------------------------------------------------");
+            //Console.WriteLine("Start EnemyRobot.doAction(): heading = " + heading);
             //Console.WriteLine(evolved.location.x + "\t" + evolved.location.y + "\t" + location.x + "\t" + location.y);
             //Console.WriteLine("Enemy doAction");
             
@@ -67,6 +72,7 @@ namespace Engine
             const double TURN_AMOUNT = Math.PI / 50.0;
             Line2D toEvolved = new Line2D(location, evolved.location);
             double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
+            //Console.WriteLine("Start EnemyRobot.doAction(): angleDifference = " + angleDifference);
             double distance = toEvolved.length();
             // Schrum2: Debug
             //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
@@ -96,15 +102,22 @@ namespace Engine
             }
             //Console.WriteLine("\t:right:" + right);
 
+            wallResponse = 0;
+            chaseResponse = 0;
+            angle = angleDifference;
             if (!evolvedClose && right < left) 
             { // right sensors are closer to wall
                 // turn left
                 heading -= TURN_AMOUNT;
+                wallResponse = -TURN_AMOUNT;
+                //Console.WriteLine("Turn left to dodge wall: heading = " + heading);
             }
             else if (!evolvedClose && left < right)
             { // left sensors are closer to wall
                 // turn right
                 heading += TURN_AMOUNT;
+                wallResponse = TURN_AMOUNT;
+                //Console.WriteLine("Turn right to dodge wall: heading = " + heading);
             }
             else
             {
@@ -112,15 +125,29 @@ namespace Engine
                 if (angleDifference < 0)
                 { // turn towards evolved bot
                     heading -= TURN_AMOUNT;
+                    chaseResponse = -TURN_AMOUNT;
+                    //Console.WriteLine("Turn left to chase enemy: heading = " + heading);
                 }
                 else
                 {
                     heading += TURN_AMOUNT;
+                    chaseResponse = TURN_AMOUNT;
+                    //Console.WriteLine("Turn right to chase enemy: heading = " + heading);
                 }
             }
 
             // Schrum2: Need to do this manually.
             updatePosition(); // Moves robot based on velocity and heading
+            //Console.WriteLine("After updatePosition(): heading = " + heading);
+
+            /*
+            if (heading > Math.PI * 2)
+            {
+                Console.WriteLine("Heading out of range (doAction): " + heading);
+                System.Windows.Forms.Application.Exit();
+                System.Environment.Exit(1);
+            }
+            */
         }
     }
 }

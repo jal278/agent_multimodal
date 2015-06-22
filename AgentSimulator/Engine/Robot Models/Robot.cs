@@ -160,7 +160,9 @@ namespace Engine
             //update current coordinates (may be revoked if new position forces collision)
             if (!stopped)
             {
+                //Console.WriteLine("In updatePosition() before noisyHeading(): heading = " + heading);
                 double tempHeading = noisyHeading();
+                //Console.WriteLine("After noisyHeading(): tempHeading = " + tempHeading + ",heading = " + heading);
 				heading=tempHeading;
 				//Console.WriteLine(velocity + " " + timeStep);
                 double dx = Math.Cos(tempHeading) * velocity * timeStep;
@@ -170,6 +172,19 @@ namespace Engine
 				//Console.WriteLine(dx);
             }
 			history.Add(new Point2D(location));
+
+            // Schrum: I think the heading should always be from 0 to 2PI. This check assures that.
+            while (heading > Math.PI * 2)
+            {
+                heading -= Math.PI * 2;
+                /*
+                Console.WriteLine("Heading out of range (updatePosition): " + heading);
+                Console.WriteLine(this.GetType().ToString());
+                System.Windows.Forms.Application.Exit();
+                System.Environment.Exit(1);
+                */
+            }
+
         }
 
         public override void undo()
