@@ -51,7 +51,7 @@ namespace Engine
             */
             return portionAlive;
         }
-        int i = 0;
+        //int i = 0;
         void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
         {
             // Schrum: Debug: For comparing non-visual eval with visual
@@ -72,7 +72,7 @@ namespace Engine
             {
                 Console.WriteLine("Different locations:");
                 Console.WriteLine("Robot 0: " + ip.robots[0].location);
-                Console.WriteLine("Enemy's reference to evolved: " + ((EnemyRobot)ip.robots[1]).getEvolved().location);
+                Console.WriteLine("Enemy's reference refr   to evolved: " + ((EnemyRobot)ip.robots[1]).getEvolved().location);
                 if (i++ > 5)
                 {
                     System.Windows.Forms.Application.Exit();
