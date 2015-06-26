@@ -14,12 +14,17 @@ namespace Engine
 {
     class EnemyRobot : Khepera3RobotModelContinuous
     {
-        Robot evolved; // Enemy always knows where evolved bot is
+        public Robot evolved; // Enemy always knows where evolved bot is
         public double wallResponse = 0;
         public double chaseResponse = 0;
         public double angle = 0;
 
-        public EnemyRobot(Robot evolvedBot)
+        public Robot getEvolved()
+        {
+            return evolved;
+        }
+
+        public EnemyRobot(Robot bot)
             : base()
         {
             name = "EnemyRobot";
@@ -29,7 +34,7 @@ namespace Engine
             collisionAvoidance = false;
             autopilot = false;
             addtimer = false;
-            evolved = evolvedBot;
+            evolved = bot;
 
             // Schrum: Start facing down: Doesn't seem to work
             //heading = 3 * Math.PI / 2;
@@ -70,7 +75,10 @@ namespace Engine
             velocity = speed;
 
             const double TURN_AMOUNT = Math.PI / 50.0;
-            Line2D toEvolved = new Line2D(location, evolved.location);
+            // Schrum: Debug lines from EnemyRobot to evolved bot.
+            //Console.WriteLine(location.x + "\t" + location.y + "\n" + evolved.location.x + "\t" + evolved.location.y + "\n");
+
+            Line2D toEvolved = new Line2D(location, getEvolved().location);
             double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
             //Console.WriteLine("Start EnemyRobot.doAction(): angleDifference = " + angleDifference);
             double distance = toEvolved.length();

@@ -261,7 +261,9 @@ namespace Engine
             ab.updateInputDensity();
         }
 
-        protected internal virtual bool runEnvironment(Environment e, instance_pack ip, System.Threading.Semaphore sem)
+        // Schrum: Removed "internal" from this so I could override it ... probably not the best design decision, but it works.
+        //protected internal virtual bool runEnvironment(Environment e, instance_pack ip, System.Threading.Semaphore sem)
+        protected virtual bool runEnvironment(Environment e, instance_pack ip, System.Threading.Semaphore sem)
         {
             bool collide;
 

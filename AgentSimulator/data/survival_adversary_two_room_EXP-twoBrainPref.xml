@@ -14,10 +14,10 @@
 
     <evaluationTime>200</evaluationTime>
     <timestep>0.1</timestep>
-    <explanatoryText>Two Room Adversarial</explanatoryText>
+    <explanatoryText>Two Room Survival Adversarial</explanatoryText>
     <scriptFile />
     <robotModelName>MazeRobotPieSlice</robotModelName>
-    <fitnessFunctionName>TwoRoomFitness</fitnessFunctionName>
+    <fitnessFunctionName>AdversarySurvivalFitness</fitnessFunctionName>
     <behaviorCharacterizationName>null</behaviorCharacterizationName>
     <environmentName>two_room_ENV.xml</environmentName>
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>

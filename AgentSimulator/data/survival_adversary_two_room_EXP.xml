@@ -2,7 +2,7 @@
 <ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AdversarialRoomClearingExperiment>
     <gridCollision>false</gridCollision>
-    <substrateDescriptionFilename>hardmaze_substrate-preference.xml</substrateDescriptionFilename>
+    <substrateDescriptionFilename>hardmaze_substrate.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
     <normalizeWeights>false</normalizeWeights>
@@ -14,10 +14,10 @@
 
     <evaluationTime>200</evaluationTime>
     <timestep>0.1</timestep>
-    <explanatoryText>Two Room Adversarial</explanatoryText>
+    <explanatoryText>Two Room Survival Adversarial</explanatoryText>
     <scriptFile />
     <robotModelName>MazeRobotPieSlice</robotModelName>
-    <fitnessFunctionName>TwoRoomFitness</fitnessFunctionName>
+    <fitnessFunctionName>AdversarySurvivalFitness</fitnessFunctionName>
     <behaviorCharacterizationName>null</behaviorCharacterizationName>
     <environmentName>two_room_ENV.xml</environmentName>
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
@@ -33,11 +33,6 @@
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
     <numEnemies>1</numEnemies>
-
-    <multibrain>true</multibrain>
-    <numBrains>2</numBrains>
-    <preferenceNeurons>true</preferenceNeurons>
-    <ungeometricBrains>true</ungeometricBrains>
 
     <enemyX>400</enemyX>
     <enemyY>350</enemyY>

@@ -13,6 +13,8 @@ namespace Engine
     public class AdversarialRoomClearingExperiment : RoomClearingExperiment
     {
 
+        List<EnemyRobot> enemies = new List<EnemyRobot>();
+
         public AdversarialRoomClearingExperiment()
             : base()
         {
@@ -27,6 +29,22 @@ namespace Engine
             //Console.WriteLine("Init AdversarialRoomClearingExperiment With MultiAgentExperiment");
         }
 
+        override protected bool runEnvironment(Environment e, instance_pack ip, System.Threading.Semaphore sem)
+        {
+            // Schrum: ip is null initially, but should not be after first step
+            if (ip != null)
+            {
+                //Console.WriteLine("Update ip");
+                // Make sure enemies have accurate reference for evolved bot
+                foreach(EnemyRobot r in enemies){
+                    r.evolved = ip.robots[0];
+                }
+            }
+            //else Console.WriteLine("IP NULL!");
+            // Then run the environment as normal
+            return base.runEnvironment(e, ip, sem);
+        }
+
         // Schrum2: Add extra enemy robot after deault robots
         public override void initializeRobots(AgentBrain agentBrain, Environment e, float headingNoise, float sensorNoise, float effectorNoise, instance_pack ip)
         {
@@ -34,16 +52,14 @@ namespace Engine
             //Console.WriteLine("Init Robots");
             base.initializeRobots(agentBrain, e, headingNoise, sensorNoise, effectorNoise, ip);
 
-
-            int numEnemies = 2;
-
             for (int i = 0; i < numEnemies; i++)
             {
 
                 // schrum2: here is where the enemy robot is added
                 // Location of evolved robot is needed to track it
                 // Assumes that robot is in position 0 (problem?)
-                Robot r = new EnemyRobot(robots[0]);
+                EnemyRobot r = new EnemyRobot(robots[0]);
+                enemies.Add(r);
 
                 double _timestep = 0.0;
                 if (ip == null)

@@ -71,6 +71,9 @@ namespace Engine
         public double mmrRate = 0.0;
         public double mmdRate = 0.0;
 
+       // Schrum: Number of enemy robots for experiments that have them
+        public int numEnemies = 0;
+
         public string substrateDescriptionFilename;
 
         public bool multiobjective = false;

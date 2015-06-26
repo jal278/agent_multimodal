@@ -173,10 +173,20 @@ namespace Engine
             }
 			history.Add(new Point2D(location));
 
-            // Schrum: I think the heading should always be from 0 to 2PI. This check assures that.
-            while (heading > Math.PI * 2)
+            // Schrum: I think the heading should always be from -PI to PI. This check assures that.
+            while (heading > Math.PI)
             {
                 heading -= Math.PI * 2;
+                /*
+                Console.WriteLine("Heading out of range (updatePosition): " + heading);
+                Console.WriteLine(this.GetType().ToString());
+                System.Windows.Forms.Application.Exit();
+                System.Environment.Exit(1);
+                */
+            }
+            while (heading < -Math.PI)
+            {
+                heading += Math.PI * 2;
                 /*
                 Console.WriteLine("Heading out of range (updatePosition): " + heading);
                 Console.WriteLine(this.GetType().ToString());

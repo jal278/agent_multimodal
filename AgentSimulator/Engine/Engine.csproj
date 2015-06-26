@@ -75,6 +75,7 @@
     <Compile Include="Experiments\AdversarialRoomClearingExperiment.cs" />
     <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
     <Compile Include="ExperimentWrapper.cs" />
+    <Compile Include="Fitness Functions\AdversarySurvivalFitness.cs" />
     <Compile Include="Fitness Functions\DangerousForagingFitness.cs" />
     <Compile Include="Fitness Functions\TwoRoomFitness.cs" />
     <Compile Include="Fitness Functions\DualTaskFitness.cs" />
