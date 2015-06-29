@@ -15,9 +15,12 @@ namespace Engine
     class EnemyRobot : Khepera3RobotModelContinuous
     {
         public Robot evolved; // Enemy always knows where evolved bot is
-        public double wallResponse = 0;
-        public double chaseResponse = 0;
-        public double angle = 0;
+        // Schrum: These were only needed for debugging
+        //public double wallResponse = 0;
+        //public double chaseResponse = 0;
+        //public double angle = 0;
+        public int lastCollisions = 0;
+        public double lastTurn = 0;
 
         public Robot getEvolved()
         {
@@ -74,75 +77,82 @@ namespace Engine
             float speed = 11.0f * (1.0f + (effectorNoise / 100.0f * (float)(2.0 * (rng.NextDouble() - 0.5))));
             velocity = speed;
 
-            const double TURN_AMOUNT = Math.PI / 50.0;
-            // Schrum: Debug lines from EnemyRobot to evolved bot.
-            //Console.WriteLine(location.x + "\t" + location.y + "\n" + evolved.location.x + "\t" + evolved.location.y + "\n");
-
-            Line2D toEvolved = new Line2D(location, getEvolved().location);
-            double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
-            //Console.WriteLine("Start EnemyRobot.doAction(): angleDifference = " + angleDifference);
-            double distance = toEvolved.length();
-            // Schrum2: Debug
-            //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
-            //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
-
-            Boolean evolvedClose = distance < 40; // Magic number ... needs tweaking
-
-            // schrum2: check sensors for walls.
-            // sensor values of 1 mean there is no wall contact.
-            // Lesser values means wall is closer along that sensor
-            //Console.WriteLine("Check");
-            double left = 0;
-            int half = sensors.Count / 2;
-            for (int j = 0; j < half; j++) {
-                if (!(sensors[j] is SignalSensor)) {
-                    left += transformSensor(sensors[j].get_value_raw());
-                }
-            }
-            //Console.WriteLine("\t:left:" + left);
-            double right = 0;
-            for (int j = half+1; j < sensors.Count; j++)
+            double turn = 0;
+            // Schrum: A collision overrides all other behaviors
+            if (this.collisions > lastCollisions)
             {
-                if (!(sensors[j] is SignalSensor))
+                velocity = -velocity; // back up
+            }
+            else // Not currently colliding
+            {
+                const double WALL_TURN_AMOUNT = Math.PI / 50.0;
+                const double CHASE_TURN_AMOUNT = Math.PI / 40.0;
+                // Schrum: Debug lines from EnemyRobot to evolved bot.
+                //Console.WriteLine(location.x + "\t" + location.y + "\n" + evolved.location.x + "\t" + evolved.location.y + "\n");
+
+                Line2D toEvolved = new Line2D(location, getEvolved().location);
+                double angleDifference = toEvolved.signedAngleFromSourceHeadingToTarget(heading);
+                //Console.WriteLine("Start EnemyRobot.doAction(): angleDifference = " + angleDifference);
+                double distance = toEvolved.length();
+                // Schrum2: Debug
+                //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
+                //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
+
+                Boolean evolvedClose = distance < 50; // Magic number ... needs tweaking
+
+                // schrum2: check sensors for walls.
+                // sensor values of 1 mean there is no wall contact.
+                // Lesser values means wall is closer along that sensor
+                //Console.WriteLine("Check");
+                double left = 0;
+                int half = sensors.Count / 2;
+                for (int j = 0; j < half; j++)
                 {
-                    right += transformSensor(sensors[j].get_value_raw());
+                    if (!(sensors[j] is SignalSensor))
+                    {
+                        left += transformSensor(sensors[j].get_value_raw());
+                    }
                 }
-            }
-            //Console.WriteLine("\t:right:" + right);
+                //Console.WriteLine("\t:left:" + left);
+                double right = 0;
+                for (int j = half + 1; j < sensors.Count; j++)
+                {
+                    if (!(sensors[j] is SignalSensor))
+                    {
+                        right += transformSensor(sensors[j].get_value_raw());
+                    }
+                }
+                //Console.WriteLine("\t:right:" + right);
 
-            wallResponse = 0;
-            chaseResponse = 0;
-            angle = angleDifference;
-            if (!evolvedClose && right < left) 
-            { // right sensors are closer to wall
-                // turn left
-                heading -= TURN_AMOUNT;
-                wallResponse = -TURN_AMOUNT;
-                //Console.WriteLine("Turn left to dodge wall: heading = " + heading);
-            }
-            else if (!evolvedClose && left < right)
-            { // left sensors are closer to wall
-                // turn right
-                heading += TURN_AMOUNT;
-                wallResponse = TURN_AMOUNT;
-                //Console.WriteLine("Turn right to dodge wall: heading = " + heading);
-            }
-            else
-            {
-                // Base turn purely on evolved bot location if there are no wall problems
-                if (angleDifference < 0)
-                { // turn towards evolved bot
-                    heading -= TURN_AMOUNT;
-                    chaseResponse = -TURN_AMOUNT;
-                    //Console.WriteLine("Turn left to chase enemy: heading = " + heading);
+                // Schrum: For debugging
+                //wallResponse = 0;
+                //chaseResponse = 0;
+                //angle = angleDifference;
+                if (!evolvedClose && right < left)
+                { // right sensors are closer to wall
+                    // turn left
+                    turn = -WALL_TURN_AMOUNT;
+                }
+                else if (!evolvedClose && left < right)
+                { // left sensors are closer to wall
+                    // turn right
+                    turn = WALL_TURN_AMOUNT;
                 }
                 else
                 {
-                    heading += TURN_AMOUNT;
-                    chaseResponse = TURN_AMOUNT;
-                    //Console.WriteLine("Turn right to chase enemy: heading = " + heading);
+                    // Base turn purely on evolved bot location if there are no wall problems
+                    if (angleDifference < 0)
+                    { // turn towards evolved bot
+                        turn = -CHASE_TURN_AMOUNT;
+                    }
+                    else
+                    {
+                        turn = CHASE_TURN_AMOUNT;
+                    }
                 }
+                heading += turn;
             }
+            lastCollisions = this.collisions; // Keep up to date
 
             // Schrum2: Need to do this manually.
             updatePosition(); // Moves robot based on velocity and heading

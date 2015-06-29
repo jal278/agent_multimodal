@@ -32,9 +32,9 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
-    <numEnemies>1</numEnemies>
+    <numEnemies>2</numEnemies>
 
-    <enemyX>400</enemyX>
-    <enemyY>350</enemyY>
+    <enemyX>550</enemyX>
+    <enemyY>400</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>

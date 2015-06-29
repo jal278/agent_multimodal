@@ -32,14 +32,14 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
-    <numEnemies>1</numEnemies>
+    <numEnemies>2</numEnemies>
 
     <multibrain>true</multibrain>
     <numBrains>2</numBrains>
     <preferenceNeurons>true</preferenceNeurons>
     <ungeometricBrains>true</ungeometricBrains>
 
-    <enemyX>400</enemyX>
-    <enemyY>350</enemyY>
+    <enemyX>550</enemyX>
+    <enemyY>400</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>

@@ -34,7 +34,7 @@
     <agentsCollide>true</agentsCollide>
     <numEnemies>1</numEnemies>
 
-    <enemyX>400</enemyX>
-    <enemyY>350</enemyY>
+    <enemyX>550</enemyX>
+    <enemyY>400</enemyY>
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>
