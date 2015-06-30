@@ -87,6 +87,9 @@ namespace Engine
             {
                 const double WALL_TURN_AMOUNT = Math.PI / 50.0;
                 const double CHASE_TURN_AMOUNT = Math.PI / 40.0;
+                const double TOO_CLOSE_WALL_THRESHOLD = 17;
+                const double TOO_CLOSE_EVOLVED_THRESHOLD = 50;
+                const double EXTREME_CLOSE_EVOLVED_THRESHOLD = 23;
                 // Schrum: Debug lines from EnemyRobot to evolved bot.
                 //Console.WriteLine(location.x + "\t" + location.y + "\n" + evolved.location.x + "\t" + evolved.location.y + "\n");
 
@@ -95,10 +98,14 @@ namespace Engine
                 //Console.WriteLine("Start EnemyRobot.doAction(): angleDifference = " + angleDifference);
                 double distance = toEvolved.length();
                 // Schrum2: Debug
+                //Console.WriteLine(distance);
                 //Console.WriteLine(location + ":"+ evolved.location + ":"+ toEvolved + ":" + angleDifference);
                 //Console.WriteLine(angleDifference + ":" + TURN_AMOUNT);
 
-                Boolean evolvedClose = distance < 50; // Magic number ... needs tweaking
+                Boolean evolvedClose = distance < TOO_CLOSE_EVOLVED_THRESHOLD;
+                Boolean extremeEvolvedClose = distance < EXTREME_CLOSE_EVOLVED_THRESHOLD;
+                Boolean wallTooClose = false;
+                double closestWall = Double.MaxValue;
 
                 // schrum2: check sensors for walls.
                 // sensor values of 1 mean there is no wall contact.
@@ -110,6 +117,10 @@ namespace Engine
                 {
                     if (!(sensors[j] is SignalSensor))
                     {
+                        double raw = sensors[j].get_value_raw();
+                        closestWall = Math.Min(raw, closestWall);
+                        //Console.WriteLine(j + ":" + raw);
+                        wallTooClose = wallTooClose || TOO_CLOSE_WALL_THRESHOLD > raw; 
                         left += transformSensor(sensors[j].get_value_raw());
                     }
                 }
@@ -119,24 +130,37 @@ namespace Engine
                 {
                     if (!(sensors[j] is SignalSensor))
                     {
+                        double raw = sensors[j].get_value_raw();
+                        closestWall = Math.Min(raw, closestWall);
+                        //Console.WriteLine(j + ":" + raw);
+                        wallTooClose = wallTooClose || TOO_CLOSE_WALL_THRESHOLD > raw;
                         right += transformSensor(sensors[j].get_value_raw());
                     }
                 }
                 //Console.WriteLine("\t:right:" + right);
 
+                if (wallTooClose && closestWall < distance && !extremeEvolvedClose) // Must also be closer to wall than evolved bot
+                {
+                    //Console.WriteLine("Before " + velocity);
+                    velocity /= 4; // Go slower when collision imminent
+                    //Console.WriteLine("Wall Too Close! " + velocity);
+                }
+
                 // Schrum: For debugging
                 //wallResponse = 0;
                 //chaseResponse = 0;
                 //angle = angleDifference;
-                if (!evolvedClose && right < left)
+                if (!extremeEvolvedClose && (!evolvedClose || wallTooClose) && right < left)
                 { // right sensors are closer to wall
                     // turn left
                     turn = -WALL_TURN_AMOUNT;
+                    //Console.WriteLine("Turn left to avoid wall: right = " + right + " left = " + left);
                 }
-                else if (!evolvedClose && left < right)
+                else if (!extremeEvolvedClose && (!evolvedClose || wallTooClose) && left < right)
                 { // left sensors are closer to wall
                     // turn right
                     turn = WALL_TURN_AMOUNT;
+                    //Console.WriteLine("Turn right to avoid wall: right = " + right + " left = " + left);
                 }
                 else
                 {
@@ -144,10 +168,12 @@ namespace Engine
                     if (angleDifference < 0)
                     { // turn towards evolved bot
                         turn = -CHASE_TURN_AMOUNT;
+                        //Console.WriteLine("Turn left to chase: " + angleDifference);
                     }
                     else
                     {
                         turn = CHASE_TURN_AMOUNT;
+                        //Console.WriteLine("Turn right to chase: " + angleDifference);
                     }
                 }
                 heading += turn;
