@@ -72,8 +72,8 @@ namespace Engine
                 }
 
                 // Schrum: will definitely need to change these into parameters
-                double nx = enemyX - i*100; // 300;
-                double ny = enemyY - i*100; // 300;
+                double nx = enemyX; // -i * 100;
+                double ny = enemyY - i*100;
                 r.init(robots.Count, // id is last position in list of robots
                     nx, ny, 0, // starting position and heading of 0 (change?)
                     agentBrain, // Has evolved brain (to avoid NullPointers, etc), but should never actually use it (problem?) 

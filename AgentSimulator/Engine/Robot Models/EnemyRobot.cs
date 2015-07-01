@@ -89,7 +89,7 @@ namespace Engine
                 const double CHASE_TURN_AMOUNT = Math.PI / 40.0;
                 const double TOO_CLOSE_WALL_THRESHOLD = 17;
                 const double TOO_CLOSE_EVOLVED_THRESHOLD = 50;
-                const double EXTREME_CLOSE_EVOLVED_THRESHOLD = 23;
+                const double EXTREME_CLOSE_EVOLVED_THRESHOLD = 25;
                 // Schrum: Debug lines from EnemyRobot to evolved bot.
                 //Console.WriteLine(location.x + "\t" + location.y + "\n" + evolved.location.x + "\t" + evolved.location.y + "\n");
 
