@@ -12,7 +12,7 @@
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
 
-    <evaluationTime>200</evaluationTime>
+    <evaluationTime>300</evaluationTime>
     <timestep>0.1</timestep>
     <explanatoryText>Two Room Survival Adversarial</explanatoryText>
     <scriptFile />

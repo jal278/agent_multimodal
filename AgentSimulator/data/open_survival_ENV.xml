@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Environment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <start_point>
+    <x>500</x>
+    <y>500</y>
+  </start_point>
+  <maxDistance>1000</maxDistance>
+
+  <garbageList />
+  <AOIRectangle>
+    <Location>
+      <X>10</X>
+      <Y>10</Y>
+    </Location>
+    <Size>
+      <Width>1000</Width>
+      <Height>1000</Height>
+    </Size>
+    <X>10</X>
+    <Y>10</Y>
+    <Width>1000</Width>
+    <Height>1000</Height>
+  </AOIRectangle>
+</Environment>

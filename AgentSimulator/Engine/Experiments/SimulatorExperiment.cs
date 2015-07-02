@@ -62,6 +62,7 @@ namespace Engine
        // Schrum: Starting location of EnemyRobot, if there is one.
         public double enemyX = 0;
         public double enemyY = 0;
+        public bool enemiesSurround = false; // If multiple enemies in circle
        
        // Schrum: Preference neurons in the substrate networks can be checked to see which of multiple brains to use
         public bool preferenceNeurons = false;

@@ -71,11 +71,25 @@ namespace Engine
                     _timestep = ip.timestep;
                 }
 
-                // Schrum: will definitely need to change these into parameters
                 double nx = enemyX; // -i * 100;
                 double ny = enemyY - i*100;
+                double h = 0;
+
+                // Alternative starting positions for enemies
+                if (enemiesSurround)
+                {
+                    double evolvedX = robots[0].location.x;
+                    double evolvedY = robots[0].location.y;
+
+                    double radius = 200.0;
+
+                    nx = evolvedX + radius*Math.Cos((i * 2.0 * Math.PI) / numEnemies);
+                    ny = evolvedY + radius*Math.Sin((i * 2.0 * Math.PI) / numEnemies);
+                    h = Math.PI + i * (2 * Math.PI / numEnemies);
+                }
+
                 r.init(robots.Count, // id is last position in list of robots
-                    nx, ny, 0, // starting position and heading of 0 (change?)
+                    nx, ny, h, // starting position and heading
                     agentBrain, // Has evolved brain (to avoid NullPointers, etc), but should never actually use it (problem?) 
                     e, sensorNoise, effectorNoise, headingNoise, (float)_timestep);
 
