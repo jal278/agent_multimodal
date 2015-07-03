@@ -63,6 +63,7 @@ namespace Engine
         public double enemyX = 0;
         public double enemyY = 0;
         public bool enemiesSurround = false; // If multiple enemies in circle
+        public bool flee = false; // EnemyRobots run from evolved bot
        
        // Schrum: Preference neurons in the substrate networks can be checked to see which of multiple brains to use
         public bool preferenceNeurons = false;

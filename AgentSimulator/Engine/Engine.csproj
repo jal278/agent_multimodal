@@ -76,6 +76,7 @@
     <Compile Include="Experiments\SimulatorExperimentInterface.cs" />
     <Compile Include="ExperimentWrapper.cs" />
     <Compile Include="Fitness Functions\AdversarySurvivalFitness.cs" />
+    <Compile Include="Fitness Functions\PreyCaptureFitness.cs" />
     <Compile Include="Fitness Functions\DangerousForagingFitness.cs" />
     <Compile Include="Fitness Functions\TwoRoomFitness.cs" />
     <Compile Include="Fitness Functions\DualTaskFitness.cs" />
@@ -134,6 +135,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Robot Models\EnemyRobotPieSlice.cs" />
     <Compile Include="Robot Models\DangerousForagingRobot.cs" />
     <Compile Include="Robot Models\EnemyRobot.cs" />
     <Compile Include="Robot Models\MazeRobotPieSlice.cs" />
@@ -141,6 +143,7 @@
     <Compile Include="Robot Models\Khepera3RobotModelAutopilot.cs" />
     <Compile Include="Robot Models\Khepera3RobotModelComeHome.cs" />
     <Compile Include="Robot Models\Khepera3RobotModelContinuous.cs" />
+    <Compile Include="Sensor Models\EnemyPieSliceSensorArray.cs" />
     <Compile Include="Sensor Models\ISensor.cs" />
     <Compile Include="Experiments\RoomClearingExperiment.cs" />
     <Compile Include="Forms\ObjectRenamer.cs">

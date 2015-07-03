@@ -44,7 +44,7 @@ namespace Engine
             //Console.WriteLine("before: " + pieSliceSensor);
             
             //This code only seems to be needed for Dangerous Foraging, which
-            // has not range finders.
+            // has no range finders.
             if (numRangeFinders == 0) 
                 pieSliceSensor = new PieSliceSensorArray(this);
             //Console.WriteLine("after: " + pieSliceSensor);
