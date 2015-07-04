@@ -20,18 +20,22 @@ namespace simulator.Sensor_Models
             // Start at 1: Assume all robots after first are enemies
             for (int i = 1; i < robots.Count; i++)
             {
-                Point2D temp = new Point2D((int)robots[i].location.x, (int)robots[i].location.y);
+                EnemyRobot er = (EnemyRobot) robots[i];
+                if (!er.stopped) // Only sense prey robots that are active
+                {
+                    Point2D temp = new Point2D((int)er.location.x, (int)er.location.y);
 
-                temp.rotate((float)-(owner.heading), owner.circle.p);  //((float)-(owner.heading * 180.0 / 3.14), owner.circle.p);
+                    temp.rotate((float)-(owner.heading), owner.circle.p);  //((float)-(owner.heading * 180.0 / 3.14), owner.circle.p);
 
-                //translate with respect to location of navigator
-                temp.x -= (float)owner.circle.p.x;
-                temp.y -= (float)owner.circle.p.y;
+                    //translate with respect to location of navigator
+                    temp.x -= (float)owner.circle.p.x;
+                    temp.y -= (float)owner.circle.p.y;
 
-                //what angle is the vector between target & navigator
-                float angle = angleValue((float)temp.x, (float)temp.y);// (float)temp.angle();
+                    //what angle is the vector between target & navigator
+                    float angle = angleValue((float)temp.x, (float)temp.y);// (float)temp.angle();
 
-                translatedEnemyAngles.Add(angle);
+                    translatedEnemyAngles.Add(angle);
+                }
             }
 
             //fire the appropriate radar sensor
