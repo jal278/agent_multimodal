@@ -71,8 +71,8 @@ namespace Engine
                     _timestep = ip.timestep;
                 }
 
-                double nx = enemyX; // -i * 100;
-                double ny = enemyY - i*100;
+                double nx = enemyX - i * enemyDeltaX;
+                double ny = enemyY - i * enemyDeltaY;
                 double h = 0;
 
                 // Alternative starting positions for enemies

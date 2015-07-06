@@ -2,7 +2,7 @@
 <ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AdversarialRoomClearingExperiment>
     <gridCollision>false</gridCollision>
-    <substrateDescriptionFilename>hardmaze_substrate.xml</substrateDescriptionFilename>
+    <substrateDescriptionFilename>hardmaze_substrate-preference.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
     <normalizeWeights>false</normalizeWeights>
@@ -39,5 +39,11 @@
     <enemyY>800</enemyY>
     
     <enemyDeltaY>500</enemyDeltaY>
+    
+    <multibrain>true</multibrain>
+    <numBrains>2</numBrains>
+    <preferenceNeurons>true</preferenceNeurons>
+    <ungeometricBrains>true</ungeometricBrains>
+
   </AdversarialRoomClearingExperiment>
 </ExperimentWrapper>

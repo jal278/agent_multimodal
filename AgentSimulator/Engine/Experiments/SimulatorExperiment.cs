@@ -62,6 +62,12 @@ namespace Engine
        // Schrum: Starting location of EnemyRobot, if there is one.
         public double enemyX = 0;
         public double enemyY = 0;
+
+       // Schrum: offset position for multiple agents
+        public double enemyDeltaX = 0;
+        public double enemyDeltaY = 100;
+
+       // Schrum: different enemy setups
         public bool enemiesSurround = false; // If multiple enemies in circle
         public bool flee = false; // EnemyRobots run from evolved bot
        
