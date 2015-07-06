@@ -22,6 +22,7 @@ namespace Engine
         public int lastCollisions = 0;
         public double lastTurn = 0;
         public bool flee;
+        public bool collisionWithEvolved;
 
         public Robot getEvolved()
         {
@@ -40,6 +41,8 @@ namespace Engine
             autopilot = false;
             addtimer = false;
             evolved = bot;
+            // This is set by EngineUtilities when a collision occurs
+            collisionWithEvolved = false;
         }
 
         public override float defaultRobotSize()

@@ -63,8 +63,16 @@ namespace Engine
                 EnemyRobot er = (EnemyRobot)ip.robots[i];
                 if (!er.disabled) // Not captured yet
                 {
+                    //Console.WriteLine("Robot "+i+" not disabled");
+
                     allCaptured = false;
-                    if (EngineUtilities.collide(evolved, er))
+                    // The collisionWithEvolved bool should always be the primary means of detecting these
+                    // collisions, but the other call is here as a precaution. This check is needed because
+                    // when the evolved bot normally collides with the enemy, the "undo" method is called,
+                    // which prevents the collision from being detected using normal means in this method.
+                    // Fortunately, the collisionWithEvolved member is used to remember when this collision
+                    // occurs.
+                    if (er.collisionWithEvolved || EngineUtilities.collide(evolved, er))
                     { // Reward evolved bot for colliding with prey, and disable prey
                         er.disabled = true;
                         er.stopped = true;

@@ -105,6 +105,9 @@ namespace Engine
         //Called when robot collides
         public virtual void onCollision()
         {
+            // Schrum: Debug
+            //Console.WriteLine("Collide:"+this.GetType().Name);
+
 			dist_trav-=temp_dist;
             collisions++;
 			undo();

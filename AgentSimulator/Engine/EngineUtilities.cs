@@ -588,7 +588,16 @@ namespace Engine
 
         public static bool collide(Robot a, Robot b)
         {
-            return a.circle.collide(b.circle);
+            // Schrum: The "undo" that happens on collisions makes it hard for
+            // all robots to be aware of collisions, and to be aware of with whom
+            // they collided. Therefore, I changed this code so that the evolved
+            // bot will tell an enemy when it collides with it.
+            bool result = a.circle.collide(b.circle);
+            if (result && b is EnemyRobot && !(a is EnemyRobot))
+            {
+                ((EnemyRobot)b).collisionWithEvolved = true;
+            }
+            return result;
         }
 
         #endregion
