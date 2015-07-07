@@ -13,7 +13,7 @@ namespace Engine
     public class AdversarialRoomClearingExperiment : RoomClearingExperiment
     {
 
-        List<EnemyRobot> enemies = new List<EnemyRobot>();
+        List<EnemyRobot> enemies;
 
         public AdversarialRoomClearingExperiment()
             : base()
@@ -29,6 +29,7 @@ namespace Engine
             //Console.WriteLine("Init AdversarialRoomClearingExperiment With MultiAgentExperiment");
         }
 
+        // Schrum: This method executes a single time step. It is called repeatedly during an evaluation
         override protected bool runEnvironment(Environment e, instance_pack ip, System.Threading.Semaphore sem)
         {
             // Schrum: ip is null initially, but should not be after first step
@@ -42,16 +43,32 @@ namespace Engine
             }
             //else Console.WriteLine("IP NULL!");
             // Then run the environment as normal
-            return base.runEnvironment(e, ip, sem);
+            bool result = base.runEnvironment(e, ip, sem);
+
+            // Schrum: To avoid a memory leak, remove references to the evolved bot from the enemies
+            foreach (EnemyRobot r in enemies)
+            {
+                r.evolved = null;
+            }
+
+            return result;
         }
 
+        // Schrum: This runs multiple time steps to evaluate the agent
+        public override double evaluateNetwork(SharpNeatLib.NeuralNetwork.INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem)
+        {
+            double result = base.evaluateNetwork(network, out behavior, sem);
+            // Schrum: remove reference to enemy list after each eval.
+            enemies = null; 
+            return result;
+        }
         // Schrum2: Add extra enemy robot after deault robots
         public override void initializeRobots(AgentBrain agentBrain, Environment e, float headingNoise, float sensorNoise, float effectorNoise, instance_pack ip)
         {
             // Debug:schrum2
             //Console.WriteLine("Init Robots");
             base.initializeRobots(agentBrain, e, headingNoise, sensorNoise, effectorNoise, ip);
-
+            enemies = new List<EnemyRobot>();
             for (int i = 0; i < numEnemies; i++)
             {
 

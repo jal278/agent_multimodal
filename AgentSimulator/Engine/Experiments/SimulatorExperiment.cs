@@ -194,7 +194,8 @@ namespace Engine
             environment.reset();
         }
 
-        internal virtual double evaluateNetwork(INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem) { behavior = null;  return 0.0; }
+       // Schrum: Changed "internal" to "public". Probably a bad idea, but it works!
+        public virtual double evaluateNetwork(INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem) { behavior = null;  return 0.0; }
 
         public void resetEnvironment()
         {
