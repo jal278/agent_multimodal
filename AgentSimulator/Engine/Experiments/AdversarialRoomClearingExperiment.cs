@@ -46,9 +46,12 @@ namespace Engine
             bool result = base.runEnvironment(e, ip, sem);
 
             // Schrum: To avoid a memory leak, remove references to the evolved bot from the enemies
-            foreach (EnemyRobot r in enemies)
-            {
-                r.evolved = null;
+            if (ip != null) // Only do when ip is not null
+            { // ip is used during evolution, but not during visual post-eval
+                foreach (EnemyRobot r in enemies)
+                {
+                    r.evolved = null;
+                }
             }
 
             return result;
