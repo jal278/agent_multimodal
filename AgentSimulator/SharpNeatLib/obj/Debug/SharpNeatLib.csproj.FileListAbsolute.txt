@@ -31,4 +31,3 @@ C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimul
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
-C:\Users\He_Deceives\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
