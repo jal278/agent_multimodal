@@ -11,6 +11,8 @@
     <connection src-id="1" tg-id="2" type="fully-connected" />
     <connection src-id="2" tg-id="2" type="fully-connected" />
     <connection src-id="2" tg-id="3" type="fully-connected" />
+    <connection src-id="0" tg-id="4" type="fully-connected" />
+    <connection src-id="1" tg-id="4" type="fully-connected" />
     <connection src-id="2" tg-id="4" type="fully-connected" />
   </connections>
 </substrate>

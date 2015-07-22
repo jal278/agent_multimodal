@@ -58,6 +58,8 @@ namespace Engine
         public int numBrains = 1;
        // Schrum: Added: Whether the CPPN can have a separate weight output for each of multiple brains
         public bool ungeometricBrains = false; // Schrum: Different brains do not have geometric relation (policy geometry)
+       // Schrum: Added: Whether the CPPN has an output that is dedicated to defining preference neuron links, that distinguishes it more
+        public bool dedicatedPreferenceOutputInCPPN = false;
 
        // Schrum: Starting location of EnemyRobot, if there is one.
         public double enemyX = 0;
@@ -227,8 +229,10 @@ namespace Engine
             {
                 if (modulatoryANN) outputs = 8; else outputs = 7;
             }
+            else if (dedicatedPreferenceOutputInCPPN)
+                outputs = 3; // Schrum: CPPN output used to define preference neuron link weights
             else
-                outputs = 2;
+                outputs = 2; // Schrum: Default ... why 2 again?
             return outputs;
         }
 

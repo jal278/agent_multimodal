@@ -844,6 +844,7 @@ namespace SharpNeatLib.CPPNs
 
                                 double leo = 0.0;
 
+                                // Schrum: Observation: It seems impossible to use both LEO and adaptive networks because of these hardcoded magic numbers
                                 if (adaptiveNetwork)
                                 {
                                     A = network.GetOutputSignal(2);
@@ -862,10 +863,28 @@ namespace SharpNeatLib.CPPNs
                                     modConnection = 0.0f;
                                 }
 
+                                // Schrum: Observation: In long run, might be desirable to use LEO, but incompatible with special preference neuron output
                                 if (useLeo)
                                 {
                                     threshold = 0.0;
                                     leo = network.GetOutputSignal(2);
+                                }
+
+                                // Schrum: This is a horrible hack, but it gets the job done for now. 
+                                // The reason this works is that it makes the following assumptions that could easily be broken in the future:
+                                // 1) It is assumed that the only reason a CPPN would have 3 outputs per policy is if the third is for preference links
+                                // 2) It is assumed that in a substrate with a preference neuron, the y-coord will always be 0.8, and no other neuron will have
+                                //    that y-coord.
+                                //Console.WriteLine("output:" + coordinates[0] + "," + coordinates[1] + ":" + coordinates[2] + "," + coordinates[3]);
+                                //Console.WriteLine("network.OutputsPerPolicy == 3" + (network.OutputsPerPolicy == 3));
+                                //Console.WriteLine("target.Y == 0.8" + (target.Y == 0.8f));
+                                if (network.OutputsPerPolicy == 3 && target.Y == 0.8f)
+                                {
+                                    // The output from the link for the preference neuron replaces the standard output.
+                                    // Because the link weight is defined by a totally different CPPN output, the preference
+                                    // neuron is more free to behave very differently.
+                                    output = network.GetOutputSignal(2);
+                                    //Console.WriteLine("Preference output:" + coordinates[0] + "," + coordinates[1] + ":" + coordinates[2] + "," + coordinates[3]);
                                 }
 
                                 if (!useLeo || leo > 0.0)

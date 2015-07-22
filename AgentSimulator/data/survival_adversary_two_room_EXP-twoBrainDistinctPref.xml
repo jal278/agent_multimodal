@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <AdversarialRoomClearingExperiment>
+    <gridCollision>false</gridCollision>
+    <substrateDescriptionFilename>hardmaze_substrate-preference.xml</substrateDescriptionFilename>
+    <adaptableANN>false</adaptableANN>
+    <modulatoryANN>false</modulatoryANN>
+    <normalizeWeights>false</normalizeWeights>
+    <populationSize>200</populationSize>
+    <headingNoise>0</headingNoise>
+    <effectorNoise>0</effectorNoise>
+    <sensorNoise>0</sensorNoise>
+    <timesToRunEnvironments>1</timesToRunEnvironments>
+
+    <evaluationTime>300</evaluationTime>
+    <timestep>0.1</timestep>
+    <explanatoryText>Two Room Survival Adversarial</explanatoryText>
+    <scriptFile />
+    <robotModelName>MazeRobotPieSlice</robotModelName>
+    <fitnessFunctionName>AdversarySurvivalFitness</fitnessFunctionName>
+    <behaviorCharacterizationName>null</behaviorCharacterizationName>
+    <environmentName>two_room_ENV.xml</environmentName>
+    <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
+
+    <rangefinderSensorDensity>5</rangefinderSensorDensity>
+    <useScript>false</useScript>
+    <multipleEnvironments>false</multipleEnvironments>
+    <evolveSubstrate>false</evolveSubstrate>
+    <modulatory>false</modulatory>
+    <numberRobots>1</numberRobots>
+
+    <homogeneousTeam>false</homogeneousTeam>
+    <agentsVisible>true</agentsVisible>
+    <agentsCollide>true</agentsCollide>
+    <numEnemies>2</numEnemies>
+
+    <multibrain>true</multibrain>
+    <numBrains>2</numBrains>
+    <preferenceNeurons>true</preferenceNeurons>
+    <ungeometricBrains>true</ungeometricBrains>
+
+    <enemyX>550</enemyX>
+    <enemyY>400</enemyY>
+    <dedicatedPreferenceOutputInCPPN>true</dedicatedPreferenceOutputInCPPN>
+    
+  </AdversarialRoomClearingExperiment>
+</ExperimentWrapper>
