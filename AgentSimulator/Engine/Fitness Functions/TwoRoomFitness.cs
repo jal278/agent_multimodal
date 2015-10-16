@@ -45,9 +45,11 @@ namespace Engine
             //food gathering 
             // Schrum: sets goal to a new food item
             float distFood = (float)(1.0f - (engine.robots[0].location.distance(environment.goal_point) / environment.maxDistance));
+			//distFood = 0;
             // Schrum: collision has fitness score like another food collected. Hence the 1.0 added in the divisor.
             // The longer a collision is avoided, the more points are earned.
-            fitness = (collectedFood + distFood + (collided ? portionAlive : 1)) / (environment.POIPosition.Count * 1.0f + 1.0);
+			//fitness = (collectedFood + distFood + (collided ? portionAlive : 1)) / (environment.POIPosition.Count * 1.0f + 1.0);
+			fitness = (collectedFood + distFood) / (environment.POIPosition.Count * 1.0f + 1.0);
 
             return fitness;
         }
@@ -83,19 +85,31 @@ namespace Engine
                 portionAlive = 0;
             }
 
-            float d = (float)ip.robots[0].location.distance(environment.goal_point);
-            if (d < 20.0f)
+			Point2D goalPoint = new Point2D (environment.POIPosition [POINr].X, environment.POIPosition [POINr].Y);
+	
+			float d = (float)ip.robots[0].location.distance(goalPoint);
+			bool guidance = true;
+			if (d < 20.0f)
             {
                 collectedFood++;
                 POINr++;
-                if (POINr >= environment.POIPosition.Count) POINr = 0;
-                environment.goal_point.x = environment.POIPosition[POINr].X;
-                environment.goal_point.y = environment.POIPosition[POINr].Y;
 
+                if (POINr >= environment.POIPosition.Count) POINr = 0;
+
+				if (POINr > 4 && POINr < 11) {
+					guidance = false;
+				}
+
+				if (guidance) {
+					environment.goal_point.x = environment.POIPosition [POINr].X;
+					environment.goal_point.y = environment.POIPosition [POINr].Y;
+				}
+
+			
             }
 
             // Schrum2: Added to detect robot collisions and end the evaluation when they happen
-            if (ip.robots[0].collisions > 0)
+			if (ip.robots[0].collisions > 0)
             { // Disabling prevents further action
                 collided = true;
                 portionAlive = (ip.elapsed * 1.0) / Experiment.evaluationTime;
