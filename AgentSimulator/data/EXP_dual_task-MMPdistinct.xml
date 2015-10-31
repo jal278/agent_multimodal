@@ -5,26 +5,26 @@
     <substrateDescriptionFilename>hardmaze_substrate-preference.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
-    <normalizeWeights>false</normalizeWeights>
-    <populationSize>200</populationSize>
+     <normalizeWeights>false</normalizeWeights>
+    <populationSize>150</populationSize>
     <headingNoise>0</headingNoise>
     <effectorNoise>0</effectorNoise>
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
 
-    <evaluationTime>300</evaluationTime>
-    <timestep>0.1</timestep>
-    <explanatoryText>Two Room Foraging</explanatoryText>
+    <evaluationTime>35</evaluationTime>
+    <timestep>0.2</timestep>
+    <explanatoryText>Multi-Agent Experiment</explanatoryText>
     <scriptFile />
     <robotModelName>MazeRobotPieSlice</robotModelName>
-    <fitnessFunctionName>TwoRoomFitness</fitnessFunctionName>
+    <fitnessFunctionName>DualTaskFitness</fitnessFunctionName>
     <behaviorCharacterizationName>null</behaviorCharacterizationName>
-    <environmentName>two_room_ENV2.xml</environmentName>
+    <environmentName>ENV_dual_task.xml</environmentName>
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
 
     <rangefinderSensorDensity>5</rangefinderSensorDensity>
     <useScript>false</useScript>
-    <multipleEnvironments>false</multipleEnvironments>
+    <multipleEnvironments>true</multipleEnvironments>
     <evolveSubstrate>false</evolveSubstrate>
     <modulatory>false</modulatory>
     <numberRobots>1</numberRobots>
@@ -32,12 +32,14 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>true</agentsVisible>
     <agentsCollide>true</agentsCollide>
-
+	
     <multibrain>true</multibrain>
     <numBrains>1</numBrains>
-    <preferenceNeurons>true</preferenceNeurons>
+    <mmpRate>0.01</mmpRate>
     <ungeometricBrains>true</ungeometricBrains>
-    <mmrRate>0.01</mmrRate> 
-    <dedicatedPreferenceOutputInCPPN>false</dedicatedPreferenceOutputInCPPN>
-</RoomClearingExperiment>
+    <preferenceNeurons>true</preferenceNeurons>
+    
+    <dedicatedPreferenceOutputInCPPN>true</dedicatedPreferenceOutputInCPPN>
+    
+  </RoomClearingExperiment>
 </ExperimentWrapper>

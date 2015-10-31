@@ -34,10 +34,9 @@
     <agentsCollide>true</agentsCollide>
 
     <multibrain>true</multibrain>
-    <numBrains>1</numBrains>
+    <numBrains>2</numBrains>
     <preferenceNeurons>true</preferenceNeurons>
     <ungeometricBrains>true</ungeometricBrains>
-    <mmrRate>0.01</mmrRate> 
-    <dedicatedPreferenceOutputInCPPN>false</dedicatedPreferenceOutputInCPPN>
-</RoomClearingExperiment>
+    <dedicatedPreferenceOutputInCPPN>true</dedicatedPreferenceOutputInCPPN>
+  </RoomClearingExperiment>
 </ExperimentWrapper>

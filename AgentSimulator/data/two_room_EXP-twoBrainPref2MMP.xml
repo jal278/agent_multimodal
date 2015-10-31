@@ -38,5 +38,6 @@
     <preferenceNeurons>true</preferenceNeurons>
     <ungeometricBrains>true</ungeometricBrains>
     <mmpRate>0.01</mmpRate> 
+    <dedicatedPreferenceOutputInCPPN>false</dedicatedPreferenceOutputInCPPN>
 </RoomClearingExperiment>
 </ExperimentWrapper>
