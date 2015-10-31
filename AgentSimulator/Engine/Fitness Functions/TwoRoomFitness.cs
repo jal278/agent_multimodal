@@ -11,6 +11,7 @@ namespace Engine
         int POINr = 0;
         // Schrum: tracks whether evaluation ends in collision
         Boolean collided = false;
+		Boolean finished = false;
         double portionAlive = 0;
 
         public IFitnessFunction copy()
@@ -45,6 +46,9 @@ namespace Engine
             //food gathering 
             // Schrum: sets goal to a new food item
             float distFood = (float)(1.0f - (engine.robots[0].location.distance(environment.goal_point) / environment.maxDistance));
+			if (finished) {
+				distFood = 1.0f;
+			}
 			//distFood = 0;
             // Schrum: collision has fitness score like another food collected. Hence the 1.0 added in the divisor.
             // The longer a collision is avoided, the more points are earned.
@@ -82,6 +86,7 @@ namespace Engine
                 collectedFood = 0;
                 POINr = 0;
                 collided = false;
+				finished = false;
                 portionAlive = 0;
             }
 
@@ -89,12 +94,15 @@ namespace Engine
 	
 			float d = (float)ip.robots[0].location.distance(goalPoint);
 			bool guidance = true;
-			if (d < 20.0f)
+			if (d < 20.0f && !finished)
             {
                 collectedFood++;
                 POINr++;
 
-                if (POINr >= environment.POIPosition.Count) POINr = 0;
+				if (POINr >= environment.POIPosition.Count) {
+					POINr = 0;
+					finished = true;
+				}
 
 				if (POINr > 4 && POINr < 11) {
 					guidance = false;
