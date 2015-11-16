@@ -6,13 +6,13 @@
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
      <normalizeWeights>false</normalizeWeights>
-    <populationSize>150</populationSize>
+    <populationSize>300</populationSize>
     <headingNoise>0</headingNoise>
     <effectorNoise>0</effectorNoise>
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
 
-    <evaluationTime>35</evaluationTime>
+    <evaluationTime>45</evaluationTime>
     <timestep>0.2</timestep>
     <explanatoryText>Multi-Agent Experiment</explanatoryText>
     <scriptFile />
