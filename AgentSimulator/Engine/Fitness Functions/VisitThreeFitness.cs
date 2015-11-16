@@ -4,6 +4,8 @@ using System.Text;
 using System.Drawing;
 
 // Schrum: A fitness function for the plus maze with a single agent that needs to visit all points
+// Schrum: 11/15/15: Made minor improvement in terms of consistency.
+//         MAX_DISTANCE added, and Manhattan distance now used, as in Team Patrol. Fitness still very different.
 
 namespace Engine
 {
@@ -42,6 +44,8 @@ namespace Engine
 
         void incrementFitness(Environment environment, instance_pack ip) 
         {
+            // Schrum: Added to avoid magic numbers and make purpose clear
+            float MAX_DISTANCE = 300.0f;
             // Schrum: Last POI is actually goal: Return to start
             for (int i = 0; i < reachedPOI.Length; i++)
             {
@@ -50,7 +54,7 @@ namespace Engine
                     fitness += 1.0f;
                 }
                 else if (i == 3) { // Schrum: Hack: Last POI is actually the goal
-                    double gain = (1.0f - ip.robots[0].location.distance(environment.goal_point) / 300.0f);
+                    double gain = (1.0f - ip.robots[0].location.manhattenDistance(environment.goal_point) / MAX_DISTANCE);
                     //Console.WriteLine("Goal Gain = " + gain);
                     fitness += gain;
                     break;
@@ -60,7 +64,8 @@ namespace Engine
                     // Schrum: From HardMaze
                     //fitness += (1.0f - ip.robots[0].location.distance(new Point2D(environment.POIPosition[i].X, environment.POIPosition[i].Y)) / 650.0f);
                     // Schrum: Guessing at distance to divide by
-                    double gain = (1.0f - ip.robots[0].location.distance(new Point2D(environment.POIPosition[i].X, environment.POIPosition[i].Y)) / 250.0f);
+                    // Schrum: Switched to Manhattan distance since Team Patrol uses it
+                    double gain = (1.0f - ip.robots[0].location.manhattenDistance(new Point2D(environment.POIPosition[i].X, environment.POIPosition[i].Y)) / MAX_DISTANCE);
                     //Console.WriteLine("Gain = " + gain);
                     fitness += gain;
                     break;

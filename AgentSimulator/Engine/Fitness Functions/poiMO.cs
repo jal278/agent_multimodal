@@ -149,7 +149,8 @@ namespace Engine
             obj[0] = go_sum;
             obj[1] = ret_sum;
             obj[2] = -collide_count;
-			if(solve) fitness+=100.0;
+			// Schrum: This 100 point fitness bonus shouldn't be here
+            //if(solve) fitness+=100.0;
 			return fitness;
         }
 
@@ -255,9 +256,11 @@ Point2D((double)p.X,(double)p.Y);
 
                     if (!first)
                     {
+                        // Schrum: Magic numbers everywhere! I think robot has reached the POI if within 10 units
                         if (d1 <= 10)
                             gl[i] = 1;
                         else
+                            // Otherwise, add (D - d)/D where D = 110 and d = d1 = distance from POI
                             gl[i] = Math.Max(gl[i], (110.0 - d1) / 110.0);
                     }
 
