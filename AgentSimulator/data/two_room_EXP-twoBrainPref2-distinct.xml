@@ -12,7 +12,7 @@
     <sensorNoise>0</sensorNoise>
     <timesToRunEnvironments>1</timesToRunEnvironments>
 
-    <evaluationTime>150</evaluationTime>
+    <evaluationTime>200</evaluationTime>
     <timestep>0.1</timestep>
     <explanatoryText>Two Room Foraging</explanatoryText>
     <scriptFile />
