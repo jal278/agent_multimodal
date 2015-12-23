@@ -93,14 +93,18 @@ namespace Engine
                 else if (ip.robots[0].location.distance(new Point2D((int)environment.POIPosition[i].X, (int)environment.POIPosition[i].Y)) < 10.0f)
                 {
                     reachedPOI[i] = true;
-                    if (ip.agentBrain.numBrains == 3) // Schrum: Playing with special cases. Still need something more general.
+                    // Schrum: Only manually change brains if preference neurons are not used
+                    if (Experiment.multibrain && !Experiment.preferenceNeurons)
                     {
-                        int[] mapping = new int[] {1,2,1,0}; // Mapping to the next module to use. Module 1 is repeated since it is for straight corridors.
-                        ip.agentBrain.switchBrains(mapping[i]);
-                    }
-                    else
-                    {
-                        ip.agentBrain.switchBrains(i + 1); // Schrum: Switch to next brain (one for each step of task)
+                        if (ip.agentBrain.numBrains == 3) // Schrum: Playing with special cases. Still need something more general.
+                        {
+                            int[] mapping = new int[] { 1, 2, 1, 0 }; // Mapping to the next module to use. Module 1 is repeated since it is for straight corridors.
+                            ip.agentBrain.switchBrains(mapping[i]);
+                        }
+                        else
+                        {
+                            ip.agentBrain.switchBrains(i + 1); // Schrum: Switch to next brain (one for each step of task)
+                        }
                     }
                 }
                 break; // Schrum: Can't reach two at once, and must reach in order. Only "continue" can get past this

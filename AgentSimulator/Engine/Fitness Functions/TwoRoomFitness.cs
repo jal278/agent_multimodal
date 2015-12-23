@@ -60,7 +60,24 @@ namespace Engine
 
         void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
         {
-            // Schrum: Is a brain-switching policy needed?
+            // Schrum: brain-switching policy
+            if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains == 2)
+            {
+                // Schrum: These magic numbers directly correspond to the Two Rooms environment.
+                //         This range of y values is the portion of the environment that is taken
+                //         up by the hallway.
+                if (ip.agentBrain.getBrainCounter() == 1 && // Don't "switch" if already using right brain
+                    ip.robots[0].location.y < 716 && ip.robots[0].location.y > 465) //hallway
+                {
+                    //Console.WriteLine("Switch to 0");
+                    ip.agentBrain.switchBrains(0); // use brain 0 for hallway
+                }
+                else if (ip.agentBrain.getBrainCounter() == 0)   //room
+                {
+                    //Console.WriteLine("Switch to 1");
+                    ip.agentBrain.switchBrains(1); // use brain 1 when in the open
+                }
+            }
 
             // Schrum: Debug: For comparing non-visual eval with visual
             // Prints out locations visited by all robots

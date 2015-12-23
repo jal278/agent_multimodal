@@ -40,7 +40,8 @@ namespace SharpNeatLib.Evolution
 		public const double DEFAULT_COMPATIBILITY_THRESHOLD = 8 ;
 		public const double DEFAULT_COMPATIBILITY_DISJOINT_COEFF = 1.0; 
 		public const double DEFAULT_COMPATIBILITY_EXCESS_COEFF = 1.0; 
-		public const double DEFAULT_COMPATIBILITY_WEIGHTDELTA_COEFF = 0.05; 
+        // Schrum: The 2011 IROS paper with Situational Policy Geometry claims the weight coeff was 0.1
+		public const double DEFAULT_COMPATIBILITY_WEIGHTDELTA_COEFF = 0.1; // 0.05; // Schrum: changed to match IROS 2011 
 
 		public const double DEFAULT_ELITISM_PROPORTION = 0.2;
 		public const double DEFAULT_SELECTION_PROPORTION = 0.2;

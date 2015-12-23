@@ -677,7 +677,7 @@ namespace SharpNeatLib.CPPNs
         #endregion
 
         #region Generate heterogenous genomes with situational policy
-        public List<NeatGenome.NeatGenome> generateGenomeStackSituationalPolicy(INetwork network, uint numberOfAgents, bool normalizeWeights, bool adaptiveNetwork, bool modNetwork, int numBrains, out List<float> coords)
+        public List<NeatGenome.NeatGenome> generateGenomeStackSituationalPolicy(INetwork network, uint numberOfAgents, bool normalizeWeights, bool adaptiveNetwork, bool modNetwork, int numBrains, out List<float> coords, bool forcedSituationalPolicyGeometry)
         {
             float signal = 0;
             List<NeatGenome.NeatGenome> genomes = new List<NeatGenome.NeatGenome>(numBrains);
@@ -688,6 +688,10 @@ namespace SharpNeatLib.CPPNs
             {
                 if (numBrains <= 1)
                     signal = 0;
+                else if (forcedSituationalPolicyGeometry) // Schrum: Use SPG in domains where it doesn't make sense, like Dual Task
+                {
+                    signal = j; // Each brain simply exists along S dimension starting from 0
+                }
                 else if (numBrains % 2 == 0) // Schrum: for even modes, split into negative and positive
                 {
                     int half = numBrains / 2;
@@ -705,9 +709,11 @@ namespace SharpNeatLib.CPPNs
                 if(network.NumOutputModules > 1) { // Schrum: Code for dealing with modular CPPN
                     network.CurrentOutputModule = j; // Schrum: Specify module from CPPN
                 }
+
+                //Console.WriteLine(j + "/" + numBrains + ": signal = " + signal);
                 genomes.Add(generateGenomeStackSituationalPolicy(network, numberOfAgents, normalizeWeights, adaptiveNetwork, modNetwork, out coords, signal));
             }
-
+            //Console.WriteLine("Num genomes = " + genomes.Count);
             return genomes;
         }
 
@@ -731,11 +737,14 @@ namespace SharpNeatLib.CPPNs
         {
             // Schrum: For debugging
             //Console.WriteLine("generateGenomeStackSituationalPolicy:signal=" + signal);
+            //Console.WriteLine("CPPN inputs = " + network.InputNeuronCount);
 
             uint numberOfAgents = (uint)stackCoordinates.Count;
             IActivationFunction activationFunction = HyperNEATParameters.substrateActivationFunction;
             ConnectionGeneList connections = new ConnectionGeneList((int)(numberOfAgents * (InputCount * HiddenCount) + numberOfAgents * (HiddenCount * OutputCount)));
-            float[] coordinates = new float[5 + 1];
+            // Schrum: Too many inputs: Only store those that are needed
+            //float[] coordinates = new float[5 + 1]; // <-- Schrum: bit sloppy: frequently results in unused CPPN inputs. Should make more precise
+            float[] coordinates = new float[network.InputNeuronCount]; // Schrum: CPPN tracks how many inputs it needs
             float output;
             uint connectionCounter = 0;
             float agentDelta = 2.0f / (numberOfAgents - 1);
@@ -750,7 +759,15 @@ namespace SharpNeatLib.CPPNs
             double threshold = HyperNEATParameters.threshold;
 
             bool[] biasCalculated = new bool[totalHiddenCount + totalOutputCount+totalInputCount];
-            coordinates[5] = signal;
+
+            // Schrum: If we are inside this function, then we either have a heterogeneous team
+            //         of a single agent (not sure why that ended up being the case; odd use of homogeneousTeam).
+            //         Therefore, numberOfAgents tells us whether we need to save space for a Z-coordinate,
+            //         and whether we are expecting a Situation input.
+            if (numberOfAgents == 1 && coordinates.Length > 4)
+                coordinates[4] = signal; // No Z coord, but save situation
+            else if (coordinates.Length > 5)
+                coordinates[5] = signal; // Both Z coord and situation
 
             NeuronGeneList neurons;
             // SharpNEAT requires that the neuron list be in thisorder: bias|input|output|hidden
@@ -778,7 +795,14 @@ namespace SharpNeatLib.CPPNs
 
             foreach (float stackCoordinate in stackCoordinates)
             {
-                coordinates[4] = stackCoordinate;
+                // Schrum: Only include Z-coord as input if there are multiple team members
+                if (numberOfAgents > 1)
+                    coordinates[4] = stackCoordinate; // Schrum: z-coord will always be at index 4
+
+                // Schrum: Debug
+                //Console.WriteLine("CPPN inputs (first 4 blank): " + string.Join(",", coordinates));
+
+
                 uint sourceID = uint.MaxValue, targetID = uint.MaxValue;
                 NeuronGroup connectedNG;
 
@@ -835,6 +859,9 @@ namespace SharpNeatLib.CPPNs
                                 coordinates[1] = source.Y;
                                 coordinates[2] = target.X;
                                 coordinates[3] = target.Y;
+
+                                // Schrum: Debug
+                                //Console.WriteLine("CPPN inputs: " + string.Join(",", coordinates));
 
                                 network.ClearSignals();
                                 network.SetInputSignals(coordinates);

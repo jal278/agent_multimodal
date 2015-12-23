@@ -14,6 +14,7 @@ namespace Engine.Forms
         SolidBrush brush;
         Pen penConnection;
         ModularNetwork net;
+        bool checkZ = false; // Schrum: added
         float dtx = 100;
         float dty = 100;
         float w;
@@ -24,12 +25,14 @@ namespace Engine.Forms
         public GenomeVisualizerForm genomeVisualizerForm;
 
         // Schrum: Old constructor, without a brain counter, simply calls new one with extra argument
-        public NetworkVisualizerForm(Robot _selectedRobot, ModularNetwork _net) : this(_selectedRobot, _net, -1) {
+        public NetworkVisualizerForm(Robot _selectedRobot, ModularNetwork _net) : this(_selectedRobot, _net, -1, false) {
         }
 
         // Schrum: Just added the brainCounter to the old constructor
-        public NetworkVisualizerForm(Robot _selectedRobot, ModularNetwork _net, int brainCounter) 
+        public NetworkVisualizerForm(Robot _selectedRobot, ModularNetwork _net, int brainCounter, bool checkZ) 
         {
+            this.checkZ = checkZ; // Schrum: added
+            //Console.WriteLine("Draw:" + brainCounter);
             _net.UpdateNetworkEvent += networkUpdated;
             InitializeComponent();
             net = _net;
@@ -52,6 +55,7 @@ namespace Engine.Forms
         //This function gets called when the current simulated network sends an update event
         public void networkUpdated(ModularNetwork _net)
         {
+            //Console.WriteLine("networkUpdated");
             //net = _net;
             Refresh();
         }
@@ -76,16 +80,15 @@ namespace Engine.Forms
 
         private void NetworkVisualizerForm_Paint(object sender, PaintEventArgs e)
         {
-
+            //Console.WriteLine("NetworkVisualizerForm_Paint");
             if (net != null && net.genome.ConnectionGeneList != null)
             {
-
                 g = e.Graphics;
                 index = 0;
                 foreach (ConnectionGene gene in net.genome.ConnectionGeneList)
                 {
                     //Check z values
-                    if (gene.coordinates.Length > 4)
+                    if (checkZ && gene.coordinates.Length > 4)
                     {
                         if (gene.coordinates[4] != selectedRobot.zstack)        //Only valid if robot has z-values
                         {
@@ -119,7 +122,7 @@ namespace Engine.Forms
                 //Draw neurons
                 foreach (ConnectionGene gene in net.genome.ConnectionGeneList)
                 {
-                    if (gene.coordinates.Length > 4)
+                    if (checkZ && gene.coordinates.Length > 4)
                     {
                         //Check z values
                         if (gene.coordinates[4] != selectedRobot.zstack)

@@ -60,6 +60,8 @@ namespace Engine
         public bool ungeometricBrains = false; // Schrum: Different brains do not have geometric relation (policy geometry)
        // Schrum: Added: Whether the CPPN has an output that is dedicated to defining preference neuron links, that distinguishes it more
         public bool dedicatedPreferenceOutputInCPPN = false;
+       // Schrum: Added: Forcing situational policy geometry means the situation inputs simply go up from 0
+        public bool forcedSituationalPolicyGeometry = false;
 
        // Schrum: Starting location of EnemyRobot, if there is one.
         public double enemyX = 0;
@@ -208,15 +210,33 @@ namespace Engine
             return null;
         }
 
-        public int getNumCPPNInputs()
+        // Schrum: had to make this method "virtual" to allow it to be overridden in MultiAgentExperiment
+        public virtual int getNumCPPNInputs()
         {
             int inputs;
 
-            if (homogeneousTeam)
-                inputs = 4;
-            else
-                inputs = 5;
+            inputs = 4; // Base inputs: x1, y1, x2, y2
+
+            // Schrum: Z-coordinate input now handled by overridden version of this
+            // method in MultiAgentExperiment
+
+            // Schrum: Check for signal from situational policy geometry.
+            //         Make sure there are actually multiple brains, and
+            //         make sure that the brains depend on policy geometry.
+            if (this.multibrain && this.numBrains > 1 && !this.ungeometricBrains)
+            {
+                //Console.WriteLine("Include situation input S");
+                inputs++; // Schrum: S-input that determines which brain is being made
+            }
+
             return inputs;
+
+            // Schrum: original definition below. Did not account for situational policy geometry input
+            //if (homogeneousTeam)
+            //    inputs = 4; // Schrum: Typical (x1,y1) and (x2,y2) coordinates
+            //else
+            //    inputs = 5; // Schrum: (x1,y1) and (x2,y2) plus a z-coordinate (improperly used constant z = 0 in some experiments?)
+            //return inputs;
         }
 
         // Schrum: This used to be the original getNumCPPNOutputs() method, but now it

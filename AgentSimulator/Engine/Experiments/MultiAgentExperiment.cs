@@ -67,6 +67,25 @@ namespace Engine
             running = false;
         }
 
+        // Schrum: Added to add the Z coordinate input when using a heterogeneous team
+        public override int getNumCPPNInputs()
+        {
+            // Schrum: debug
+            //Console.WriteLine("Multiagent experiment");
+
+            int inputs = base.getNumCPPNInputs();
+            // Schrum: Homogeneous team doesn't need Z input because each robot is the same.
+            //         homogeneousTeam may equal false even when there is no team. Don't add
+            //         a Z input if there is only one robot, because the Z coordinate is not needed.
+            if (!homogeneousTeam && this.numberRobots > 1)
+            {
+                //Console.WriteLine("Include Z-coord");
+                inputs++; // Schrum: Z-coordinate for specific team member (aka Stack coord)
+            }
+
+            return inputs;
+        }
+
         public override void initialize()
         {
             setupVariables();
@@ -80,7 +99,7 @@ namespace Engine
             robots = new List<Robot>();
             substrateDescription = new SubstrateDescription(substrateDescriptionFilename);
 
-            agentBrain = new AgentBrain(homogeneousTeam, numberRobots, substrateDescription, genome != null ? genome.Decode(null) : null, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons);
+            agentBrain = new AgentBrain(homogeneousTeam, numberRobots, substrateDescription, genome != null ? genome.Decode(null) : null, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
 
             //if(homogeneousTeam)
             //Console.WriteLine("inc:"+agentBrain.getBrain(0).InputNeuronCount);
@@ -409,7 +428,7 @@ namespace Engine
                     float new_ef = evalRand.NextUInt() % noise_lev;
 
 
-                    inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons);
+                    inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
                     initializeRobots(agentBrain, env, headingNoise, new_sn, new_ef, inst);
 
                     inst.elapsed = 0;

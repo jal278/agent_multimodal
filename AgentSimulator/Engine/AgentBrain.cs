@@ -43,6 +43,7 @@ namespace Engine
 
         // Schrum: Added
         public bool preferenceNeurons;
+        public bool forcedSituationalPolicyGeometry;
 
         public bool multipleBrains = false;
         public bool evolveSubstrate = false;
@@ -56,7 +57,7 @@ namespace Engine
         public int numBrains; // Schrum: Total number
 
         public AgentBrain(bool homogenous, int numAgents, SubstrateDescription substrateDescription, INetwork genome,
-            bool normalizeANNWeights, bool adaptableANN, bool modulatoryANN, bool multi, int brains, bool evolveSubstrate, bool preferenceNeurons)
+            bool normalizeANNWeights, bool adaptableANN, bool modulatoryANN, bool multi, int brains, bool evolveSubstrate, bool preferenceNeurons, bool forcedSituationalPolicyGeometry)
         {
             this.evolveSubstrate = evolveSubstrate;
             this.normalizeANNWeights = normalizeANNWeights;
@@ -67,6 +68,7 @@ namespace Engine
             this.numRobots = numAgents;
             this.homogenous = homogenous;
             this.multipleBrains = multi;
+            this.forcedSituationalPolicyGeometry = forcedSituationalPolicyGeometry;
             // Schrum: When preference neurons are used, the number of modules in the network is the
             // more reliable source of information. Especially if Module Mutation will allow more modules
             // to be created, each creating a new brain.
@@ -102,6 +104,7 @@ namespace Engine
         }
 
         // Schrum: This is the original version of this method, which is only kept for backwards compatability
+        //         It is only used by Team Patrol domain.
         public void switchBrains()
         {
             if (multipleBrains)
@@ -141,7 +144,7 @@ namespace Engine
 
                         // Schrum: The original code hard codes "2" as the nubmer of brains for any multi brain scenario TODO
                         //List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, 2, out zcoordinates);
-                        List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, numBrains, out zcoordinates);
+                        List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, numBrains, out zcoordinates, forcedSituationalPolicyGeometry);
 
                         for (int j = 0; j < genes.Count; j++)
                         {
@@ -239,8 +242,10 @@ namespace Engine
                 if (brains == null) return null;
                 return brains[number];
             }
-            else
+            else {
+                //Console.WriteLine("getBrain("+number+") returns " + brain + ":" + brain.InputNeuronCount + " to " + brain.OutputNeuronCount);
                 return brain;   //only one brain for heterogenous teams
+            }
         }
 
         //Clear the listener list

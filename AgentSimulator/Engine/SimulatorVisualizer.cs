@@ -339,8 +339,9 @@ namespace Engine
                                 experiment.agentBrain.switchBrains(i); // Schrum: Select the right brain
                                 INetwork brain = experiment.agentBrain.getBrain(selected_robot.id);
                                 int brainCounter = experiment.agentBrain.getBrainCounter(); // Schrum: Added to know which brain is being used
+                                bool checkZ = experiment.robots.Count > 1;
                                 if (brain == null) return; //TODO maybe show dialog
-                                netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)brain, brainCounter); // Schrum: Know which brain is being used
+                                netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)brain, brainCounter, checkZ); // Schrum: Know which brain is being used
                                 netForm.genomeVisualizerForm = genomeVisualizerForm; 
                                 netForm.Show();
                             }
@@ -350,8 +351,13 @@ namespace Engine
                         {
                             INetwork brain = experiment.agentBrain.getBrain(selected_robot.id);
                             int brainCounter = experiment.agentBrain.getBrainCounter(); // Schrum: Added to know which brain is being used
-                            if (brain == null) return; //TODO maybe show dialog
-                            netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)brain, brainCounter); // Schrum: Know which brain is being used
+                            bool checkZ = experiment.robots.Count > 1;
+                            if (brain == null)
+                            {
+                                Console.WriteLine("NULL Brain!");
+                                return; //TODO maybe show dialog
+                            }
+                            netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)brain, brainCounter,checkZ); // Schrum: Know which brain is being used
                         }
                     }
                     else 
@@ -359,7 +365,8 @@ namespace Engine
                       //  TODO test with non MultiAgentExperiment
                         if (experiment.agentBrain.brain == null) return;
                         int brainCounter = experiment.agentBrain.getBrainCounter(); // Schrum: Added to know which brain is being used
-                        netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)experiment.agentBrain.brain, brainCounter); // Schrum: Know which brain is being used
+                        bool checkZ = experiment.robots.Count > 1;
+                        netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)experiment.agentBrain.brain, brainCounter, checkZ); // Schrum: Know which brain is being used
                     }
 
                     netForm.genomeVisualizerForm = genomeVisualizerForm;
