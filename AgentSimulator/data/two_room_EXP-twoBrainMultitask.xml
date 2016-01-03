@@ -2,7 +2,7 @@
 <ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <RoomClearingExperiment>
     <gridCollision>false</gridCollision>
-    <substrateDescriptionFilename>hardmaze_substrate-preference.xml</substrateDescriptionFilename>
+    <substrateDescriptionFilename>hardmaze_substrate.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
     <normalizeWeights>false</normalizeWeights>
