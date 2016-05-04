@@ -1,7 +1,92 @@
-MultiAgent-HyperSharpNEAT Simulator Documentation
+Multi-Brain HyperNEAT is an extension of the
+MultiAgent-HyperSharpNEAT Simulator
 
-MultiAgent-HyperSharpNEAT Simulator Now Including the Evolvable Substrate v1.0 C#,
-By David D'Ambrosio, Joel Lehman, and Sebastian Risi
+Multi-Brain HyperNEAT was developed by
+Jacob Schrum, Joel Lehman, and Sebastian Risi
+http://people.southwestern.edu/~schrum2/re/mb-hyperneat.php
+For questions about Multi-Brain HyperNEAT, 
+contact Jacob Schrum at schrum2@southwestern.edu
+
+The documentation for MultiAgent-HyperSharpNEAT Simulator appears further below:
+
+-------------------------
+0. Multi-Brain HyperNEAT
+-------------------------
+
+Usage details for Multi-Brain HyperNEAT are essentially the same as for
+MultiAgent-HyperSharpNEAT. However, you will find several xml experiment
+files in the data subdirectory that evolve agents with multiple brains.
+Four domains relevant to Multi-Brain HyperNEAT are
+
+Team Patrol
+	patrol-compare.plot	
+	patrol_signal.xml	
+	patrol_signalUngeomDistinctPref.xml	
+	patrol_signalUngeomDistinctPref3M.xml	
+	patrol_signalUngeomMMD.xml	
+	patrol_signalUngeomMMDdistinct.xml	
+	patrol_signalUngeomMMP.xml	
+	patrol_signalUngeomMMPdistinct.xml	
+	patrol_signalUngeomMMR.xml	
+	patrol_signalUngeomMMRdistinct.xml	
+	patrol_signalUngeomPref.xml	
+	patrol_switch.xml	
+	patrol_switchUngeom.xml	
+	patrol_switchUngeomDistinctPref.xml	
+	patrol_switchUngeomPref.xml	
+
+Lone Patrol
+	lone_patrol_single.xml	
+	lone_patrol_switch3.xml	
+	lone_patrol_switchUngeom2DistinctPref.xml	
+	lone_patrol_switchUngeom2Pref.xml	
+	lone_patrol_switchUngeom3.xml	
+	lone_patrol_switchUngeom3DistinctPref.xml	
+	lone_patrol_switchUngeom3Pref.xml	
+	lone_patrol_switchUngeomMMD.xml	
+	lone_patrol_switchUngeomMMDdistinct.xml	
+	lone_patrol_switchUngeomMMP.xml	
+	lone_patrol_switchUngeomMMPdistinct.xml	
+	lone_patrol_switchUngeomMMR.xml	
+	lone_patrol_switchUngeomMMRdistinct.xml	
+
+Dual Task
+	EXP_dual_task-MMD.xml	
+	EXP_dual_task-MMDdistinct.xml	
+	EXP_dual_task-MMP.xml	
+	EXP_dual_task-MMPdistinct.xml	
+	EXP_dual_task-MMR.xml	
+	EXP_dual_task-MMRdistinct.xml	
+	EXP_dual_task-threeBrainDistinctPref.xml	
+	EXP_dual_task-twoBrainDistinctPref.xml	
+	EXP_dual_task-twoBrainPref.xml	
+	EXP_dual_task-twoBrainSituationalPolicyGeometry.xml	
+	EXP_dual_task-twoBrainSwitch.xml	
+	EXP_dual_task.xml
+
+Two Rooms
+	two_room_EXP-threeBrainPref2-distinct.xml	
+	two_room_EXP-twoBrainDistinctPref.xml	
+	two_room_EXP-twoBrainMultitask.xml	
+	two_room_EXP-twoBrainPref.xml	
+	two_room_EXP-twoBrainPref2-distinct.xml	
+	two_room_EXP-twoBrainPref2.xml	
+	two_room_EXP-twoBrainPref2MMD-distinct.xml	
+	two_room_EXP-twoBrainPref2MMD.xml	
+	two_room_EXP-twoBrainPref2MMP-distinct.xml	
+	two_room_EXP-twoBrainPref2MMP.xml	
+	two_room_EXP-twoBrainPref2MMR-distinct.xml	
+	two_room_EXP-twoBrainPref2MMR.xml	
+	two_room_EXP-twoBrainSituationalPolicyGeometry.xml	
+	two_room_EXP.xml	
+	two_room_EXP2.xml
+
+Details about MultiAgent-HyperSharpNEAT follow.
+
+---------------------------------------------------------------------------
+
+The original MultiAgent-HyperSharpNEAT Simulator was developed by
+David D'Ambrosio, Joel Lehman, and Sebastian Risi
 http://eplex.cs.ucf.edu
 ddambro@eecs.ucf.edu, jlehman@eecs.ucf.edu, sebastian.risi@gmail.com
 
