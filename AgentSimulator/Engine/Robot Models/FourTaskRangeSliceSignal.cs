@@ -14,6 +14,7 @@ namespace Engine
     class FourTaskRangeSliceSignal : Khepera3RobotModelContinuous
     {
         private PieSliceSensorArray pieSliceSensor;
+        public static float robotSize = 6.5f;
 
         public FourTaskRangeSliceSignal()
             : base()
@@ -29,7 +30,8 @@ namespace Engine
 
         public override float defaultRobotSize()
         {
-            return 10.5f;
+            // return 10.5f; // From MazeRobotPieSlice (Dual Task and Two Rooms)
+            return robotSize;
         }
 
         public override int defaultSensorDensity()
@@ -57,7 +59,15 @@ namespace Engine
         public override void updateSensors(Environment env, List<Robot> robots, CollisionManager cm)
         {
             base.updateSensors(env, robots, cm);
-            pieSliceSensor.update(env, robots, cm);
+            if (env.name.EndsWith("FourTasks-ENV3.xml") || env.name.EndsWith("FourTasks-ENV4.xml")) 
+            { // Only update pie slice sensors in dual task forage and two rooms
+                pieSliceSensor.update(env, robots, cm);
+            }
+            else // For domains that usually have rangefinders only, but are added to the FourTasks group
+            {
+                // This will clear all pie slice sensor inputs
+                pieSliceSensor.update(null, null, null);
+            }
         }
 
         protected override void decideAction(float[] outputs, float timeStep)

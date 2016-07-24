@@ -538,7 +538,7 @@
       <colored>false</colored>
     </Wall>
   </walls>
-  <name>two_room_ENV.xml</name>
+  <name>TwoRooms</name>
   <maxDistance>1209.33862</maxDistance>
   <start_point>
     <x>255</x>

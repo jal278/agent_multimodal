@@ -68,6 +68,17 @@ namespace simulator.Sensor_Models
         //per default we use the goal point of the environment as our target point. 
         public void update(Engine.Environment env, List<Robot> robots, CollisionManager cm)
         {
+            // Schrum: Provides an easy way to clear sensors for domains
+            // where way points should not be sensed
+            if (env == null)
+            {
+                for (int i = 0; i < radarAngles1.Count; i++)
+                {
+                    signalsSensors[i].setSignal(0.0);
+                }
+                return;
+            }
+
             Point2D temp = new Point2D((int)env.goal_point.x, (int)env.goal_point.y);
 
             temp.rotate((float)-(owner.heading), owner.circle.p);  //((float)-(owner.heading * 180.0 / 3.14), owner.circle.p);

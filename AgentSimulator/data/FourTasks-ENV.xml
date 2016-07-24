@@ -254,7 +254,7 @@
       <colored>false</colored>
     </Wall>
   </walls>
-  <name>mediumPlus.xml</name>
+  <name>TeamPatrol</name>
   <maxDistance>292.745636</maxDistance>
   <start_point>
     <x>93.50375</x>

@@ -49,38 +49,60 @@ namespace Engine
                     // that differ from the other experiments
                     experiment.evaluationTime = 45;
                     experiment.timestep = 0.033;
-                    //experiment.overrideTeamFormation = true;
-                    //experiment.group_orientation = 90;
-                    //experiment.group_spacing = 30;
-                    //experiment.robot_heading = 270;
+                    
+                    experiment.overrideTeamFormation = true;
+                    experiment.group_orientation = 90;
+                    experiment.robot_heading = 270;
+
                     experiment.numberRobots = 3;
                     experiment.agentsVisible = false;
                     experiment.agentsCollide = false;
+
+                    // Robot sizes are different in the different experiments
+                    FourTaskRangeSliceSignal.robotSize = 6.5f;
                 }
             }
             else if (currentEnvironment == 1)
             { // Lone patrol
                 experiment.evaluationTime = 80;
                 experiment.timestep = 0.033;
+                
+                experiment.overrideTeamFormation = false;
+                experiment.group_orientation = 0;
+                experiment.robot_heading = 0;
+
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
+                FourTaskRangeSliceSignal.robotSize = 6.5f;
             }
             else if (currentEnvironment == 2 || currentEnvironment == 3)
             { // Dual task
                 experiment.evaluationTime = 45;
                 experiment.timestep = 0.2;
+                
+                experiment.overrideTeamFormation = false;
+                experiment.group_orientation = 0;
+                experiment.robot_heading = 90;
+
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
+                FourTaskRangeSliceSignal.robotSize = 10.5f;
             }
             else if (currentEnvironment == 4)
             { // Two rooms
                 experiment.evaluationTime = 200;
                 experiment.timestep = 0.1; // Is this correct? See paper
+
+                experiment.overrideTeamFormation = false;
+                experiment.group_orientation = 0;
+                experiment.robot_heading = 270;
+
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
+                FourTaskRangeSliceSignal.robotSize = 10.5f;
             }
             else
             {
