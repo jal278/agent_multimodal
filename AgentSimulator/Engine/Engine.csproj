@@ -139,6 +139,7 @@
     <Compile Include="Robot Models\EnemyRobotPieSlice.cs" />
     <Compile Include="Robot Models\DangerousForagingRobot.cs" />
     <Compile Include="Robot Models\EnemyRobot.cs" />
+    <Compile Include="Robot Models\FourTaskRangeSliceSignal.cs" />
     <Compile Include="Robot Models\MazeRobotPieSlice.cs" />
     <Compile Include="Robot Models\Khepera3RobotModel.cs" />
     <Compile Include="Robot Models\Khepera3RobotModelAutopilot.cs" />

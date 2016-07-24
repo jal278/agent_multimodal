@@ -16,7 +16,7 @@
     <timestep>0.033</timestep>
     <explanatoryText>All Four Tasks</explanatoryText>
     <scriptFile />
-    <robotModelName>MazeRobotPieSlice</robotModelName>
+    <robotModelName>FourTaskRangeSliceSignal</robotModelName>
     <fitnessFunctionName>FourTasksFitness</fitnessFunctionName>
     <behaviorCharacterizationName>null</behaviorCharacterizationName>
     <environmentName>FourTasks-ENV.xml</environmentName>
