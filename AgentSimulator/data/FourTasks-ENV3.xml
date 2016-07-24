@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Environment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <walls />
+
+  <name>C:\Users\Ladytron\Documents\code\EPlex\SubstrateEvolution\SeperateTasks_COMBINED\visualizer\bin\Debug\LEFT_RIGHT.xml</name>
+
+  <start_point>
+    <x>297</x>
+    <y>604</y>
+  </start_point>
+  <goal_point>
+    <x>395</x>
+    <y>184</y>
+  </goal_point>
+  <maxDistance>593.246155</maxDistance>
+  <agentsVisible>true</agentsVisible>
+  <agentsCollide>true</agentsCollide>
+  <noise>0</noise>
+  <POIPosition>
+    <Point>
+      <X>171</X>
+      <Y>517</Y>
+    </Point>
+    <Point>
+      <X>398</X>
+      <Y>475</Y>
+    </Point>
+    <Point>
+      <X>204</X>
+      <Y>682</Y>
+    </Point>
+    <Point>
+      <X>399</X>
+      <Y>629</Y>
+    </Point>
+    <Point>
+      <X>394</X>
+      <Y>184</Y>
+    </Point>
+  </POIPosition>
+  <garbageList />
+  <AOIRectangle>
+    <Location>
+      <X>106</X>
+      <Y>416</Y>
+    </Location>
+    <Size>
+      <Width>479</Width>
+      <Height>350</Height>
+    </Size>
+    <X>106</X>
+    <Y>416</Y>
+    <Width>479</Width>
+    <Height>350</Height>
+  </AOIRectangle>
+</Environment>

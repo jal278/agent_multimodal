@@ -193,6 +193,40 @@ namespace PackbotExperiment
                 {
                     experiment.environmentName = environment_name;
                     experiment.environmentList.Add(Engine.Environment.loadEnvironment(environment_name));
+
+                    // Schrum: FourTasks needs to make sure the fitness function is set up right
+                    // for each environment.
+                    if (experiment.fitnessFunction is FourTasksFitness)
+                    {
+                        int environmentNumber = 0; // team patrol, default
+                        if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
+                        { // Team patrol
+                            environmentNumber = 0;
+                        }
+                        else if (experiment.environmentName.EndsWith("FourTasks-ENV1.xml"))
+                        { // Lone patrol
+                            environmentNumber = 1;
+                        }
+                        else if (experiment.environmentName.EndsWith("FourTasks-ENV2.xml")) 
+                        { // dual task hallway
+                            environmentNumber = 2;
+                        }
+                        else if (experiment.environmentName.EndsWith("FourTasks-ENV3.xml"))
+                        { // Dual task foraging
+                            environmentNumber = 3;
+                        }
+                        else if (experiment.environmentName.EndsWith("FourTasks-ENV4.xml"))
+                        { // Two rooms
+                            environmentNumber = 4;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Error! Unknown environment! " + experiment.environmentName);
+                            System.Environment.Exit(1);
+                        }
+
+                        experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment) experiment, environmentNumber);
+                    }
                 }
 				
                 //change sensor density if requested
@@ -222,6 +256,7 @@ namespace PackbotExperiment
 				
 				if (eval)
 				{
+                    Console.WriteLine("Time to evaluate");
 					experiment.loadGenome(to_eval);
 					experiment.initialize();
 					if(benchmark) {
@@ -248,8 +283,9 @@ namespace PackbotExperiment
                     return;
 					}
 
-				
+                Console.WriteLine("Experiment initialize");
                 experiment.initialize();
+                Console.WriteLine("Experiment done initializing");
 
                 if (experiment.adaptableANN && evolveSubstrate)
                 {
@@ -260,8 +296,9 @@ namespace PackbotExperiment
 				if(overrideLeo) 
 					experiment.substrateDescription.useLeo=leo_setting;
 
-				
-				//change fitness function if requested
+
+                Console.WriteLine("Override fitness?");
+                //change fitness function if requested
                 if (overrideFitnessFunction)
                     experiment.setFitnessFunction(fitness_function_override);
 
@@ -300,6 +337,7 @@ namespace PackbotExperiment
                     Console.WriteLine("Hidden Density afterwards: " + dx.ToString() + " " + dy.ToString());
                 }
 
+                Console.WriteLine("New evolver");
                 HyperNEATEvolver evolve = new HyperNEATEvolver(experiment);
 
 				if(novelty) {
@@ -308,8 +346,9 @@ namespace PackbotExperiment
 
 				if(multiobjective)
 					evolve.experiment.DefaultNeatParameters.multiobjective=true;
-				
-				evolve.setOutputFolder(folder);
+
+                Console.WriteLine("Set output: " + folder);
+                evolve.setOutputFolder(folder);
                 
 				if(filename!=null)
 				{
@@ -323,7 +362,7 @@ namespace PackbotExperiment
 				else
 					evolve.initializeEvolution(populationSize);
 
-
+                Console.WriteLine("About to evolve");
                 evolve.evolve(generations);
 				/*for (int i = 0; i < generations; i++)
                 {                    

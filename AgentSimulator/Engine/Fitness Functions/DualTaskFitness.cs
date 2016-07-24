@@ -40,7 +40,10 @@ namespace Engine
             double fitness = 0.0f;
             objectives = null;
 
-            if (environment.name.Equals("ENV_dual_task.xml")) //HACK navigation
+            // ENV_dual_task.xml is the hallway navigation environment of the dual task
+            // FourTasks-ENV2.xml is a direct copy of ENV_dual_task.xml, but the copy is
+            // required to satisfy the way that the simulator runs multiple environments.
+            if (environment.name.Equals("ENV_dual_task.xml") || environment.name.Equals("FourTasks-ENV2.xml")) //HACK navigation
             {
                 fitness = (1.0f - ip.robots[0].location.distance(new Point2D(environment.POIPosition[4].X, environment.POIPosition[4].Y)) / 650.0f);
  
