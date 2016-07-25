@@ -123,22 +123,29 @@ namespace Engine
             get { return "Four Tasks Fitness"; }
         }
 
+        public static double MAX_TEAM_PATROL = 65; // Observed in GECCO 2016 work
+        public static double MAX_LONE_PATROL = 6000; // Observed in GECCO 2016 work
+
         double IFitnessFunction.calculate(SimulatorExperiment engine, Environment environment, instance_pack ip, out double[] objectives)
         {
             if (environment.name.EndsWith("FourTasks-ENV.xml"))
             { // Team patrol
-                return teamPatrol.calculate(engine, environment, ip, out objectives);
+                // Must normalize score
+                return teamPatrol.calculate(engine, environment, ip, out objectives) / MAX_TEAM_PATROL;
             }
             else if (environment.name.EndsWith("FourTasks-ENV1.xml"))
             { // Lone patrol
-                return lonePatrol.calculate(engine, environment, ip, out objectives);
+                // Must normalize score
+                return lonePatrol.calculate(engine, environment, ip, out objectives) / MAX_LONE_PATROL;
             }
             else if (environment.name.EndsWith("FourTasks-ENV2.xml") || environment.name.EndsWith("FourTasks-ENV3.xml"))
             { // Dual task
+                // Both individual dual task fitnss scores are already normalized
                 return dualTask.calculate(engine, environment, ip, out objectives);
             }
             else if (environment.name.EndsWith("FourTasks-ENV4.xml"))
             { // Two rooms
+                // Score is already normalized to [0,1]
                 return twoRooms.calculate(engine, environment, ip, out objectives);
             }
             else
