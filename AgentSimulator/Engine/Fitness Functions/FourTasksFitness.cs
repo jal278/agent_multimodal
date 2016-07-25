@@ -66,10 +66,10 @@ namespace Engine
             { // Lone patrol
                 experiment.evaluationTime = 80;
                 experiment.timestep = 0.033;
-                
-                experiment.overrideTeamFormation = false;
-                experiment.group_orientation = 0;
-                experiment.robot_heading = 0;
+
+                experiment.overrideTeamFormation = true;
+                experiment.group_orientation = 90;
+                experiment.robot_heading = 270;
 
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = false;
@@ -80,10 +80,10 @@ namespace Engine
             { // Dual task
                 experiment.evaluationTime = 45;
                 experiment.timestep = 0.2;
-                
-                experiment.overrideTeamFormation = false;
+
+                experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 0;
-                experiment.robot_heading = 90;
+                experiment.robot_heading = 270;
 
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
@@ -95,9 +95,9 @@ namespace Engine
                 experiment.evaluationTime = 200;
                 experiment.timestep = 0.1; // Is this correct? See paper
 
-                experiment.overrideTeamFormation = false;
+                experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 0;
-                experiment.robot_heading = 270;
+                experiment.robot_heading = 90;
 
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
