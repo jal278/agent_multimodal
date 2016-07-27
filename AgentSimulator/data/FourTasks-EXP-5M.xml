@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <RoomClearingExperiment>
+    <gridCollision>false</gridCollision>
+    <substrateDescriptionFilename>FourTasks-substrate.xml</substrateDescriptionFilename>
+    <adaptableANN>false</adaptableANN>
+    <modulatoryANN>false</modulatoryANN>
+    <normalizeWeights>false</normalizeWeights>
+    <populationSize>500</populationSize>
+    <headingNoise>0</headingNoise>
+    <effectorNoise>0</effectorNoise>
+    <sensorNoise>0</sensorNoise>
+    <timesToRunEnvironments>1</timesToRunEnvironments>
+
+    <evaluationTime>45</evaluationTime>
+    <timestep>0.033</timestep>
+    <explanatoryText>All Four Tasks</explanatoryText>
+    <scriptFile />
+    <robotModelName>FourTaskRangeSliceSignal</robotModelName>
+    <fitnessFunctionName>FourTasksFitness</fitnessFunctionName>
+    <behaviorCharacterizationName>null</behaviorCharacterizationName>
+    <environmentName>FourTasks-ENV.xml</environmentName>
+    <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
+
+    <rangefinderSensorDensity>5</rangefinderSensorDensity>
+    <useScript>false</useScript>
+    <multipleEnvironments>true</multipleEnvironments>
+    <evolveSubstrate>false</evolveSubstrate>
+    <modulatory>false</modulatory>
+    <numberRobots>3</numberRobots>
+
+    <homogeneousTeam>false</homogeneousTeam>
+    <agentsVisible>true</agentsVisible>
+    <agentsCollide>true</agentsCollide>
+
+    <multibrain>true</multibrain>
+    <numBrains>5</numBrains>
+    <preferenceNeurons>true</preferenceNeurons>
+    <ungeometricBrains>true</ungeometricBrains>
+    <dedicatedPreferenceOutputInCPPN>true</dedicatedPreferenceOutputInCPPN>
+  </RoomClearingExperiment>
+</ExperimentWrapper>
