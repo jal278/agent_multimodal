@@ -133,7 +133,7 @@ namespace Engine
             get { return "Four Tasks Fitness"; }
         }
 
-        public static double MAX_TEAM_PATROL = 65; // Observed in GECCO 2016 work
+        public static double MAX_TEAM_PATROL = 70; // 65; // Observed in GECCO 2016 work
         public static double MAX_LONE_PATROL = 6000; // Observed in GECCO 2016 work
 
         double IFitnessFunction.calculate(SimulatorExperiment engine, Environment environment, instance_pack ip, out double[] objectives)
