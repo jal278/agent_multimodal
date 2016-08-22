@@ -163,8 +163,8 @@ namespace Engine
             DialogResult res = fileOpenDialog.ShowDialog(this);
             if (res == DialogResult.OK || res == DialogResult.Yes)
             {
-
                 string filename = fileOpenDialog.FileName;
+                Console.WriteLine("Load environment " + filename);
                 try
                 {
                     experiment.loadEnvironment(filename);
@@ -173,6 +173,8 @@ namespace Engine
                     // Copied code from Main.cs
                     if (experiment.fitnessFunction is FourTasksFitness)
                     {
+                        //Console.WriteLine("Visual: Special handling for FourTasks");
+
                         int environmentNumber = 0; // team patrol, default
                         if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
                         { // Team patrol
@@ -200,6 +202,7 @@ namespace Engine
                             System.Environment.Exit(1);
                         }
 
+                        //Console.WriteLine("Visual: environmentNumber = " + environmentNumber + ", experiment = " + experiment);
                         experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment, environmentNumber);
                     }
 

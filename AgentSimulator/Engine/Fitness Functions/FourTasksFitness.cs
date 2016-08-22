@@ -23,27 +23,31 @@ namespace Engine
 
         public IFitnessFunction copy()
         {
-            // There are 5 environments across the four tasks.
-            // Whenever the fitness function is copied (happens only in MultiAgentExperiment)
-            // it means the agent is moving on to being evaluated in the next task.
-            // When experiment is null, the environment should still be 0 because of the
-            // first copy() call that happens in MultiAgentExperiment.
-            return new FourTasksFitness(experiment, experiment == null ? 0 : currentEnvironment + 1 % 5);
+            // Maintain a reference to the experiment when copied, and set the experiment up properly
+            return new FourTasksFitness(experiment, currentEnvironment);
         }
 
         // Start in environment 0 by default
-        public FourTasksFitness() : this(null, 0) { }
+        public FourTasksFitness() { }
 
         public FourTasksFitness(MultiAgentExperiment exp, int environmentNum)
         {
+            setupFitness(exp, environmentNum);
+        }
+        
+        public void setupFitness(MultiAgentExperiment exp, int environmentNum)
+        {
+            //Console.WriteLine("setupFitness(" + exp + "," + environmentNum + ")");
             currentEnvironment = environmentNum;
             experiment = exp;
 
             // Special reconfiguring based on particular environment
             if (currentEnvironment == 0)
             { // Team patrol
+                //Console.WriteLine("Set to Team Patrol");
                 if (experiment != null) // null should only be possible with Team patrol
                 { // will be null on first use, but not afterwards
+                    //Console.WriteLine("Actually set values");
                     
                     // settings from the Team Patrol experiment files
                     // that differ from the other experiments
@@ -64,6 +68,8 @@ namespace Engine
             }
             else if (currentEnvironment == 1)
             { // Lone patrol
+                //Console.WriteLine("Set to Lone Patrol");
+
                 experiment.evaluationTime = 80;
                 experiment.timestep = 0.033;
 
@@ -78,6 +84,8 @@ namespace Engine
             }
             else if (currentEnvironment == 2 || currentEnvironment == 3)
             { // Dual task
+                //Console.WriteLine("Set to Dual Task: " + currentEnvironment);
+
                 experiment.evaluationTime = 45;
                 experiment.timestep = 0.2;
 
@@ -92,6 +100,8 @@ namespace Engine
             }
             else if (currentEnvironment == 4)
             { // Two rooms
+                //Console.WriteLine("Set to Two Rooms");
+
                 experiment.evaluationTime = 200;
                 experiment.timestep = 0.1; // Is this correct? See paper
 
@@ -131,21 +141,25 @@ namespace Engine
             if (environment.name.EndsWith("FourTasks-ENV.xml"))
             { // Team patrol
                 // Must normalize score
+                //Console.WriteLine("Team Patrol fitness");
                 return teamPatrol.calculate(engine, environment, ip, out objectives) / MAX_TEAM_PATROL;
             }
             else if (environment.name.EndsWith("FourTasks-ENV1.xml"))
             { // Lone patrol
                 // Must normalize score
+                //Console.WriteLine("Lone Patrol fitness");
                 return lonePatrol.calculate(engine, environment, ip, out objectives) / MAX_LONE_PATROL;
             }
             else if (environment.name.EndsWith("FourTasks-ENV2.xml") || environment.name.EndsWith("FourTasks-ENV3.xml"))
             { // Dual task
                 // Both individual dual task fitnss scores are already normalized
+                //Console.WriteLine("Dual Task fitness: " + environment.name);
                 return dualTask.calculate(engine, environment, ip, out objectives);
             }
             else if (environment.name.EndsWith("FourTasks-ENV4.xml"))
             { // Two rooms
                 // Score is already normalized to [0,1]
+                //Console.WriteLine("Two Rooms fitness");
                 return twoRooms.calculate(engine, environment, ip, out objectives);
             }
             else
@@ -157,11 +171,15 @@ namespace Engine
             }
         }
 
-        void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
+        void IFitnessFunction.update(SimulatorExperiment simExp, Environment environment, instance_pack ip)
         {
+            // Need to store the experiment reference in order to cycle through environments
+            experiment = (MultiAgentExperiment) simExp;
+
             if (environment.name.EndsWith("FourTasks-ENV.xml"))
             { // Team patrol
-                teamPatrol.update(Experiment, environment, ip);
+                //Console.WriteLine("update team patrol");
+                teamPatrol.update(simExp, environment, ip);
             } else {
                 // Make sure the signal sensor is only used in the Team Patrol task
                 foreach(Robot r in ip.robots) {
@@ -172,15 +190,18 @@ namespace Engine
 
                 if (environment.name.EndsWith("FourTasks-ENV1.xml"))
                 { // Lone patrol
-                    lonePatrol.update(Experiment, environment, ip);
+                    //Console.WriteLine("update lone patrol");
+                    lonePatrol.update(simExp, environment, ip);
                 }
                 else if (environment.name.EndsWith("FourTasks-ENV2.xml") || environment.name.EndsWith("FourTasks-ENV3.xml"))
                 { // Dual task
-                    dualTask.update(Experiment, environment, ip);
+                    //Console.WriteLine("update dual task: " + environment.name);
+                    dualTask.update(simExp, environment, ip);
                 }
                 else if (environment.name.EndsWith("FourTasks-ENV4.xml"))
                 { // Two rooms
-                    twoRooms.update(Experiment, environment, ip);
+                    //Console.WriteLine("update two rooms");
+                    twoRooms.update(simExp, environment, ip);
                 }
                 else
                 {
@@ -192,16 +213,10 @@ namespace Engine
 
         void IFitnessFunction.reset()
         {
-            //Console.WriteLine("Reset four tasks");
-            //Console.WriteLine("Reset team patrol");
             teamPatrol.reset();
-            //Console.WriteLine("Reset lone patrol");
             lonePatrol.reset();
-            //Console.WriteLine("Reset dual task");
             dualTask.reset();
-            //Console.WriteLine("Reset two rooms");
             twoRooms.reset();
-            //Console.WriteLine("Done resetting four tasks");
         }
 
         #endregion

@@ -394,6 +394,7 @@ namespace Engine
             //CollisionManager cm;
             instance_pack inst = new instance_pack();
             inst.timestep = timestep;
+            int envNum = 0;
             foreach (Environment env2 in environmentList)
             {
                 fit_copy = fitnessFunction.copy();
@@ -403,6 +404,14 @@ namespace Engine
                     inst.bc = bc_copy;
                 }
                 inst.ff = fit_copy;
+
+                // Schrum: Just add special handling for FourTasks to get settings right
+                if (inst.ff is FourTasksFitness)
+                {
+                    // FourTasks needs to know the current environment
+                    ((FourTasksFitness)inst.ff).setupFitness(this, envNum);
+                }
+                envNum++;
 
                 double tempFit = 0;
                 double[] fitnesses = new double[timesToRunEnvironments];
@@ -471,6 +480,8 @@ namespace Engine
 
 
                     double thisFit = inst.ff.calculate(this, env, inst, out behavior.objectives);
+                    // TODO: Remove this, but would be nice to have an option to print it on post evals
+                    Console.WriteLine("Fitness for one eval: " + thisFit);
                     fitnesses[evals] = thisFit;
                     tempFit += thisFit;
 

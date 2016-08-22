@@ -189,6 +189,7 @@ namespace PackbotExperiment
                         ((MultiAgentExperiment)experiment).homogeneousTeam = homogenous;
                 }
 
+                // Schrum: This code never actually seems to be used. Remove it?
                 if (environment_name != null)
                 {
                     experiment.environmentName = environment_name;
