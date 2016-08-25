@@ -43,7 +43,7 @@ namespace Engine
             // ENV_dual_task.xml is the hallway navigation environment of the dual task
             // FourTasks-ENV2.xml is a direct copy of ENV_dual_task.xml, but the copy is
             // required to satisfy the way that the simulator runs multiple environments.
-            if (environment.name.Equals("ENV_dual_task.xml") || environment.name.Equals("FourTasks-ENV2.xml")) //HACK navigation
+            if (environment.name.EndsWith("ENV_dual_task.xml") || environment.name.EndsWith("FourTasks-ENV2.xml")) //HACK navigation
             {
                 fitness = (1.0f - ip.robots[0].location.distance(new Point2D(environment.POIPosition[4].X, environment.POIPosition[4].Y)) / 650.0f);
  
@@ -72,7 +72,7 @@ namespace Engine
             // Schrum: Set which brain to use if the number is an experiment parameter
             if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains == 2)
             {
-                if (environment.name.Equals("ENV_dual_task.xml")) //HACK navigation
+                if (environment.name.EndsWith("ENV_dual_task.xml") || environment.name.EndsWith("FourTasks-ENV2.xml")) //HACK navigation
                 {
                     ip.agentBrain.switchBrains(0);
                 }
@@ -110,6 +110,7 @@ namespace Engine
 
             }
 
+            //Console.WriteLine("reachedGoal = " + reachedGoal + ", d = " + d + ", goal = " + environment.goal_point);
         }
 
         void IFitnessFunction.reset()
