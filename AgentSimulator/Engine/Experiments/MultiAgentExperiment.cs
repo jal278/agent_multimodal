@@ -481,7 +481,7 @@ namespace Engine
 
                     double thisFit = inst.ff.calculate(this, env, inst, out behavior.objectives);
                     // TODO: Remove this, but would be nice to have an option to print it on post evals
-                    Console.WriteLine("Fitness for one eval: " + thisFit);
+                    //Console.WriteLine("Fitness for one eval: " + thisFit);
                     fitnesses[evals] = thisFit;
                     tempFit += thisFit;
 
