@@ -395,6 +395,9 @@ namespace Engine
             instance_pack inst = new instance_pack();
             inst.timestep = timestep;
             int envNum = 0;
+            // Schrum: Separate fitness for each environment.
+            // Should this be put in accumObjectives instead? What is that for?
+            double[] environmentScores = new double[environmentList.Count];
             foreach (Environment env2 in environmentList)
             {
                 fit_copy = fitnessFunction.copy();
@@ -411,8 +414,7 @@ namespace Engine
                     // FourTasks needs to know the current environment
                     ((FourTasksFitness)inst.ff).setupFitness(this, envNum);
                 }
-                envNum++;
-
+                
                 double tempFit = 0;
                 double[] fitnesses = new double[timesToRunEnvironments];
                 SharpNeatLib.Maths.FastRandom evalRand = new SharpNeatLib.Maths.FastRandom(100);
@@ -501,9 +503,21 @@ namespace Engine
                     inst.ff.reset();
 
                 }
+                // Schrum: Save each fitness separately
+                environmentScores[envNum] = tempFit;
+                envNum++; // go to the next environment
+
                 fitness += tempFit / timesToRunEnvironments;
             }
-            behavior.objectives = accumObjectives;
+
+            if (fitnessFunction is FourTasksFitness)
+            { // Schrum: Special handling for FourTasksFitness ... could I just use accumObjectives?
+                behavior.objectives = environmentScores;
+            }
+            else // Original default
+            {
+                behavior.objectives = accumObjectives;
+            }
             return fitness / environmentList.Count;
 
         }
