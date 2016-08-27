@@ -93,8 +93,10 @@ namespace Engine
                 oFileInfo = new FileInfo(outputFolder + "bestGenome" + currentGeneration.ToString() + ".xml");
                 doc.Save(oFileInfo.FullName);
             }
-            Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " "  + ea.Population.GenomeList.Count + " " + (DateTime.Now.Subtract(dt)));
-			int gen_mult=200;
+            //Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " "  + ea.Population.GenomeList.Count + " " + (DateTime.Now.Subtract(dt)));
+            // Schrum: Changed this to include fitness values from each environment: Mainly for FourTasks
+            Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " " + ea.Population.GenomeList.Count + " (" + string.Join(",",ea.BestGenome.Behavior.objectives) + ") " + (DateTime.Now.Subtract(dt)));
+            int gen_mult = 200;
             if (logging)
             {
 				
@@ -118,8 +120,8 @@ namespace Engine
 					oFileInfo = new FileInfo(outputFolder + "population" + currentGeneration.ToString() + ".xml");
                     popout.Save(oFileInfo.FullName);
                 }
-
-                logOutput.WriteLine(ea.Generation.ToString() + " " + (maxFitness).ToString());
+                // Schrum: Added contents of objective array to log so individual environment scores can be seen in FourTasks domain
+                logOutput.WriteLine(ea.Generation.ToString() + " " + (maxFitness).ToString() + " " + string.Join(" ", ea.BestGenome.Behavior.objectives));
             }
         }
 
