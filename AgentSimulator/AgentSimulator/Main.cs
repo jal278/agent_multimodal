@@ -189,47 +189,12 @@ namespace PackbotExperiment
                         ((MultiAgentExperiment)experiment).homogeneousTeam = homogenous;
                 }
 
-                // Schrum: This code never actually seems to be used. Remove it?
                 if (environment_name != null)
                 {
                     experiment.environmentName = environment_name;
                     experiment.environmentList.Add(Engine.Environment.loadEnvironment(environment_name));
-
-                    // Schrum: FourTasks needs to make sure the fitness function is set up right
-                    // for each environment.
-                    if (experiment.fitnessFunction is FourTasksFitness)
-                    {
-                        int environmentNumber = 0; // team patrol, default
-                        if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
-                        { // Team patrol
-                            environmentNumber = 0;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV1.xml"))
-                        { // Lone patrol
-                            environmentNumber = 1;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV2.xml")) 
-                        { // dual task hallway
-                            environmentNumber = 2;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV3.xml"))
-                        { // Dual task foraging
-                            environmentNumber = 3;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV4.xml"))
-                        { // Two rooms
-                            environmentNumber = 4;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error! Unknown environment! " + experiment.environmentName);
-                            System.Environment.Exit(1);
-                        }
-
-                        experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment) experiment, environmentNumber);
-                    }
                 }
-				
+
                 //change sensor density if requested
                 if (overrideInputDensity)
                     experiment.rangefinderSensorDensity = input_density_override;

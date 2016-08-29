@@ -53,5 +53,4 @@ AgentSimulator/data/assess-prey-two-room
 AgentSimulator/data/condor-NO_SEED-prey-two-room-results 2015-07-11
 *.gz
 AgentSimulator/data/FourTasks-EXP-multi-1M-0/FourTasks-EXP-multi-1M-0population0.xml
-AgentSimulator/data/FourTasks-EXP-1M-0/FinalConsole.txt
-AgentSimulator/data/FourTasks-EXP-3M-0/FinalConsole.txt
+FinalConsole.txt
