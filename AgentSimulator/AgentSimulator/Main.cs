@@ -269,20 +269,27 @@ namespace PackbotExperiment
 					SharpNeatLib.BehaviorType behavior;
 					Console.WriteLine("Fitness score:" + x.EvaluateNetwork(experiment.genome.Decode(null),out behavior));
 					// schrum2: Prevent this from crashing in domains with no behavior measure defined
-                    if (behavior != null && behavior.behaviorList != null) {
+                    if (behavior.behaviorList != null) {
                         Console.Write("Behavior: ");
                         foreach (double d in behavior.behaviorList)
                         {
 	    					Console.Write(d+ " ");
 				    	}
         			    Console.WriteLine();
-					    Console.Write("MO: ");
-					    foreach (double d in behavior.objectives) {
-						    Console.Write(d+" ");	
-					    }
-                    } // schrum2
+                    }
+                    // Schrum: This will actually print out different objective scores.
+                    // In the case of FourTasks, there is an objective for each environment.
+                    if (behavior != null)
+                    {
+                        Console.Write("MO: ");
+                        foreach (double d in behavior.objectives)
+                        {
+                            Console.Write(d + " ");
+                        }
+                        Console.WriteLine();
+                    }// schrum2
                     return;
-					}
+				}
 
                 Console.WriteLine("Experiment initialize");
                 experiment.initialize();
