@@ -389,6 +389,13 @@ namespace Engine
             double[] accumObjectives = new double[6];
             for (int i = 0; i < 6; i++) accumObjectives[i] = 0.0;
 
+            // Schrum: Special handling for FourTasks domain again
+            if (fitnessFunction is FourTasksFitness)
+            {
+                // Without this command, the fitness function copy below will cause a null pointer exception
+                ((FourTasksFitness)fitnessFunction).setExperiment(this);
+            }
+
             IFitnessFunction fit_copy;
             IBehaviorCharacterization bc_copy;
             //CollisionManager cm;

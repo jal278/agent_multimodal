@@ -27,8 +27,14 @@ namespace Engine
             return new FourTasksFitness(experiment, currentEnvironment);
         }
 
-        // Start in environment 0 by default
+        // This is used by the factory that constructs the fitness function,
+        // but a reference to the experiment must immediately be provided.
         public FourTasksFitness() { }
+
+        public void setExperiment(MultiAgentExperiment exp)
+        {
+            experiment = exp; // This mem reference is required for the fitness function to work
+        }
 
         public FourTasksFitness(MultiAgentExperiment exp, int environmentNum)
         {
@@ -45,8 +51,6 @@ namespace Engine
             if (currentEnvironment == 0)
             { // Team patrol
                 //Console.WriteLine("Set to Team Patrol");
-                if (experiment != null) // null should only be possible with Team patrol
-                { // will be null on first use, but not afterwards
                     //Console.WriteLine("Actually set values");
                     
                     // settings from the Team Patrol experiment files
@@ -64,7 +68,7 @@ namespace Engine
 
                     // Robot sizes are different in the different experiments
                     FourTaskRangeSliceSignal.robotSize = 6.5f;
-                }
+                
             }
             else if (currentEnvironment == 1)
             { // Lone patrol
