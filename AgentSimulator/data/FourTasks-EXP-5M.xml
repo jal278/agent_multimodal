@@ -23,6 +23,10 @@
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
 
     <rangefinderSensorDensity>5</rangefinderSensorDensity>
+    <overrideTeamFormation>true</overrideTeamFormation>
+    <group_orientation>90</group_orientation>
+    <group_spacing>30</group_spacing>
+    <robot_heading>270</robot_heading>
     <useScript>false</useScript>
     <multipleEnvironments>true</multipleEnvironments>
     <evolveSubstrate>false</evolveSubstrate>
@@ -30,8 +34,8 @@
     <numberRobots>3</numberRobots>
 
     <homogeneousTeam>false</homogeneousTeam>
-    <agentsVisible>true</agentsVisible>
-    <agentsCollide>true</agentsCollide>
+    <agentsVisible>false</agentsVisible>
+    <agentsCollide>false</agentsCollide>
 
     <multibrain>true</multibrain>
     <numBrains>5</numBrains>

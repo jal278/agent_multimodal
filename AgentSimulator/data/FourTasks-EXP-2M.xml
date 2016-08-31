@@ -23,20 +23,24 @@
     <overrideDefaultSensorDensity>false</overrideDefaultSensorDensity>
 
     <rangefinderSensorDensity>5</rangefinderSensorDensity>
+    <overrideTeamFormation>true</overrideTeamFormation>
+    <group_orientation>90</group_orientation>
+    <group_spacing>30</group_spacing>
+    <robot_heading>270</robot_heading>
     <useScript>false</useScript>
     <multipleEnvironments>true</multipleEnvironments>
     <evolveSubstrate>false</evolveSubstrate>
     <modulatory>false</modulatory>
-    <numberRobots>2</numberRobots>
+    <numberRobots>3</numberRobots>
 
     <homogeneousTeam>false</homogeneousTeam>
-    <agentsVisible>true</agentsVisible>
-    <agentsCollide>true</agentsCollide>
+    <agentsVisible>false</agentsVisible>
+    <agentsCollide>false</agentsCollide>
 
-    <multibrain>false</multibrain>
-    <numBrains>1</numBrains>
-    <preferenceNeurons>false</preferenceNeurons>
+    <multibrain>true</multibrain>
+    <numBrains>2</numBrains>
+    <preferenceNeurons>true</preferenceNeurons>
     <ungeometricBrains>true</ungeometricBrains>
-    <dedicatedPreferenceOutputInCPPN>false</dedicatedPreferenceOutputInCPPN>
+    <dedicatedPreferenceOutputInCPPN>true</dedicatedPreferenceOutputInCPPN>
   </RoomClearingExperiment>
 </ExperimentWrapper>
