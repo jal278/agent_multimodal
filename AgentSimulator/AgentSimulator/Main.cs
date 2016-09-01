@@ -231,6 +231,10 @@ namespace PackbotExperiment
 						exp.benchmark=true;
 					}
 					Engine.NetworkEvaluator x = new Engine.NetworkEvaluator(experiment);
+
+                    // Schrum: Loop used for testing: See how consistent evals are
+                    // for (int i = 0; i < 3; i++) {
+
 					SharpNeatLib.BehaviorType behavior;
 					Console.WriteLine("Fitness score:" + x.EvaluateNetwork(experiment.genome.Decode(null),out behavior));
 					// schrum2: Prevent this from crashing in domains with no behavior measure defined
@@ -252,7 +256,9 @@ namespace PackbotExperiment
                             Console.Write(d + " ");
                         }
                         Console.WriteLine();
-                    }// schrum2
+                    }
+
+                    // }  // Schrum: End of test loop commented out above.
                     return;
 				}
 
