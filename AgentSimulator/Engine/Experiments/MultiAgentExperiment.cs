@@ -418,8 +418,8 @@ namespace Engine
                 // Schrum: Just add special handling for FourTasks to get settings right
                 if (inst.ff is FourTasksFitness)
                 {
-                    // FourTasks needs to know the current environment
-                    ((FourTasksFitness)inst.ff).setupFitness(this, envNum);
+                    // FourTasks needs to know the current environment. Experiment reference provided earlier.
+                    ((FourTasksFitness)inst.ff).setupFitness(envNum);
                 }
                 
                 double tempFit = 0;

@@ -203,7 +203,8 @@ namespace Engine
                         }
 
                         //Console.WriteLine("Visual: environmentNumber = " + environmentNumber + ", experiment = " + experiment);
-                        experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment, environmentNumber);
+                        experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment);
+                        ((FourTasksFitness)experiment.fitnessFunction).setupFitness(environmentNumber);
                     }
 
 
