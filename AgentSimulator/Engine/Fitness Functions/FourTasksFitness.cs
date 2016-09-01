@@ -152,29 +152,24 @@ namespace Engine
 
         double IFitnessFunction.calculate(SimulatorExperiment engine, Environment environment, instance_pack ip, out double[] objectives)
         {
-            if (environment.name.EndsWith("FourTasks-ENV.xml") && currentEnvironment == TASK_TEAM_PATROL)
+            if (currentEnvironment == TASK_TEAM_PATROL)
             { // Team patrol
                 // Must normalize score
-                //Console.WriteLine("Team Patrol fitness");
                 return teamPatrol.calculate(engine, environment, ip, out objectives) / MAX_TEAM_PATROL;
             }
-            else if (environment.name.EndsWith("FourTasks-ENV1.xml") && currentEnvironment == TASK_LONE_PATROL)
+            else if (currentEnvironment == TASK_LONE_PATROL)
             { // Lone patrol
                 // Must normalize score
-                //Console.WriteLine("Lone Patrol fitness");
                 return lonePatrol.calculate(engine, environment, ip, out objectives) / MAX_LONE_PATROL;
             }
-            else if ((environment.name.EndsWith("FourTasks-ENV2.xml") && currentEnvironment == TASK_DUAL_TASK_HALLWAY)
-                  || (environment.name.EndsWith("FourTasks-ENV3.xml") && currentEnvironment == TASK_DUAL_TASK_FORAGE))
+            else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
             { // Dual task
                 // Both individual dual task fitnss scores are already normalized
-                //Console.WriteLine("Dual Task fitness: " + environment.name);
                 return dualTask.calculate(engine, environment, ip, out objectives);
             }
-            else if (environment.name.EndsWith("FourTasks-ENV4.xml") && currentEnvironment == TASK_TWO_ROOMS)
+            else if (currentEnvironment == TASK_TWO_ROOMS)
             { // Two rooms
                 // Score is already normalized to [0,1]
-                //Console.WriteLine("Two Rooms fitness");
                 return twoRooms.calculate(engine, environment, ip, out objectives);
             }
             else
@@ -188,13 +183,8 @@ namespace Engine
 
         void IFitnessFunction.update(SimulatorExperiment simExp, Environment environment, instance_pack ip)
         {
-            // Need to store the experiment reference in order to cycle through environments.
-            // This shouldn't be needed because setExperiment is used above.
-            //experiment = (MultiAgentExperiment) simExp;
-
-            if (environment.name.EndsWith("FourTasks-ENV.xml") && currentEnvironment == TASK_TEAM_PATROL)
+            if (currentEnvironment == TASK_TEAM_PATROL)
             { // Team patrol
-                //Console.WriteLine("update team patrol");
                 teamPatrol.update(simExp, environment, ip);
             } else {
                 // Make sure the signal sensor is only used in the Team Patrol task
@@ -204,20 +194,16 @@ namespace Engine
                     s.setSignal(0.0);
                 }
 
-                if (environment.name.EndsWith("FourTasks-ENV1.xml") && currentEnvironment == TASK_LONE_PATROL)
+                if (currentEnvironment == TASK_LONE_PATROL)
                 { // Lone patrol
-                    //Console.WriteLine("update lone patrol");
                     lonePatrol.update(simExp, environment, ip);
                 }
-                else if ((environment.name.EndsWith("FourTasks-ENV2.xml") && currentEnvironment == TASK_DUAL_TASK_HALLWAY)
-                      || (environment.name.EndsWith("FourTasks-ENV3.xml") && currentEnvironment == TASK_DUAL_TASK_FORAGE))
+                else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
                 { // Dual task
-                    //Console.WriteLine("update dual task: " + environment.name);
                     dualTask.update(simExp, environment, ip);
                 }
-                else if (environment.name.EndsWith("FourTasks-ENV4.xml") && currentEnvironment == TASK_TWO_ROOMS)
+                else if (currentEnvironment == TASK_TWO_ROOMS)
                 { // Two rooms
-                    //Console.WriteLine("update two rooms");
                     twoRooms.update(simExp, environment, ip);
                 }
                 else
