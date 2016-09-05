@@ -377,12 +377,7 @@ namespace Engine
         // Schrum: Had to remove the internal from this too so that I could override it in AdversarialRoomClearingExperiment
         public override double evaluateNetwork(INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem)
         {
-
-
-            double fitness = 0;//SharpNeatLib.Utilities.random.NextDouble();
-            //NeatGenome tempGenome;
-            //INetwork controller;
-
+            double fitness = 0;
             behavior = new SharpNeatLib.BehaviorType();
 
             // Schrum: Why is there a magic number 6 here?
@@ -392,7 +387,7 @@ namespace Engine
             // Schrum: Special handling for FourTasks domain again
             if (fitnessFunction is FourTasksFitness)
             {
-                // Without this command, the fitness function copy below will cause a null pointer exception
+                // Pass the experiment into the fitness function once so its parameters can be changed for each environment
                 ((FourTasksFitness)fitnessFunction).setExperiment(this);
             }
 
@@ -400,7 +395,6 @@ namespace Engine
             IBehaviorCharacterization bc_copy;
             //CollisionManager cm;
             instance_pack inst = new instance_pack();
-            inst.timestep = timestep;
             int envNum = 0;
             // Schrum: Separate fitness for each environment.
             // Should this be put in accumObjectives instead? What is that for?
@@ -421,7 +415,10 @@ namespace Engine
                     // FourTasks needs to know the current environment. Experiment reference provided earlier.
                     ((FourTasksFitness)inst.ff).setupFitness(envNum);
                 }
-                
+
+                // Schrum: moved here from outside/before the loop. Most domains use the same timestep in each environment,
+                // but the FourTasks domain is an exception to this, so the setting needed to be moved after setupFitness
+                inst.timestep = timestep;
                 double tempFit = 0;
                 double[] fitnesses = new double[timesToRunEnvironments];
                 SharpNeatLib.Maths.FastRandom evalRand = new SharpNeatLib.Maths.FastRandom(100);
@@ -525,9 +522,11 @@ namespace Engine
             {
                 behavior.objectives = accumObjectives;
             }
+            //Console.WriteLine("Total: " + (fitness / environmentList.Count));
             return fitness / environmentList.Count;
 
         }
+
         private double variance(double[] x) //TODO this should be moved somewhere else
         {
             double sum = 0;
