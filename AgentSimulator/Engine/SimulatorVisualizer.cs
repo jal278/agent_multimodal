@@ -170,45 +170,14 @@ namespace Engine
                     experiment.loadEnvironment(filename);
 
                     // Schrum: FourTasks environments need to set up fitness function for each environment
-                    // Copied code from Main.cs
-                    if (experiment.fitnessFunction is FourTasksFitness)
-                    {
-                        //Console.WriteLine("Visual: Special handling for FourTasks");
-
-                        int environmentNumber = 0; // team patrol, default
-                        if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
-                        { // Team patrol
-                            environmentNumber = 0;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV1.xml"))
-                        { // Lone patrol
-                            environmentNumber = 1;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV2.xml"))
-                        { // dual task hallway
-                            environmentNumber = 2;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV3.xml"))
-                        { // Dual task foraging
-                            environmentNumber = 3;
-                        }
-                        else if (experiment.environmentName.EndsWith("FourTasks-ENV4.xml"))
-                        { // Two rooms
-                            environmentNumber = 4;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error! Unknown environment! " + experiment.environmentName);
-                            System.Environment.Exit(1);
-                        }
-
-                        //Console.WriteLine("Visual: environmentNumber = " + environmentNumber + ", experiment = " + experiment);
-                        experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment);
-                        ((FourTasksFitness)experiment.fitnessFunction).setupFitness(environmentNumber);
-                    }
-
+                    specialHandlingForFourTasks();
 
                     experiment.initialize();
+
+                    // Schrum: must repeat this after the initialize because it resets the fitness from a factory.
+                    // Also had to do it before as well to assure correct variable values during the initialize.
+                    specialHandlingForFourTasks();
+
 					frame.sync_from_environment(experiment.environment);
                     Invalidate();
                 }
@@ -222,6 +191,42 @@ namespace Engine
         }
 
         #endregion
+
+        private void specialHandlingForFourTasks()
+        {
+            if (experiment.fitnessFunction is FourTasksFitness)
+            {
+                int environmentNumber = 0; // team patrol, default
+                if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
+                { // Team patrol
+                    environmentNumber = 0;
+                }
+                else if (experiment.environmentName.EndsWith("FourTasks-ENV1.xml"))
+                { // Lone patrol
+                    environmentNumber = 1;
+                }
+                else if (experiment.environmentName.EndsWith("FourTasks-ENV2.xml"))
+                { // dual task hallway
+                    environmentNumber = 2;
+                }
+                else if (experiment.environmentName.EndsWith("FourTasks-ENV3.xml"))
+                { // Dual task foraging
+                    environmentNumber = 3;
+                }
+                else if (experiment.environmentName.EndsWith("FourTasks-ENV4.xml"))
+                { // Two rooms
+                    environmentNumber = 4;
+                }
+                else
+                {
+                    Console.WriteLine("Error! Unknown environment! " + experiment.environmentName);
+                    System.Environment.Exit(1);
+                }
+
+                experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment);
+                ((FourTasksFitness)experiment.fitnessFunction).setupFitness(environmentNumber);
+            }
+        }
 
         private void clocktick(object sender, EventArgs e)
         {
@@ -947,6 +952,9 @@ namespace Engine
                     experiment.loadGenome(filename);
                     evolveGenome = experiment.bestGenomeSoFar;
                     experiment.initialize();
+                    // Schrum: fitness function was reset from factory, which is a problem for the FourTasks fitness.
+                    // The special handling fixes the problem.
+                    specialHandlingForFourTasks();
                     showCPPNWindow();
 
                     // Schrum: Two lines added by me in an attempt to get loaded multibrains to behave correctly
