@@ -97,7 +97,9 @@ namespace Engine
         {
 
             robots = new List<Robot>();
-            substrateDescription = new SubstrateDescription(substrateDescriptionFilename);
+            // Schrum: more special handling: Don't want to overwrite substrate in visual mode
+            if(!(fitnessFunction is FourTasksFitness))
+                substrateDescription = new SubstrateDescription(substrateDescriptionFilename);
 
             agentBrain = new AgentBrain(homogeneousTeam, numberRobots, substrateDescription, genome != null ? genome.Decode(null) : null, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
 
@@ -112,7 +114,14 @@ namespace Engine
             //Substrate sensor density
             initializeRobots(agentBrain, environment, headingNoise, sensorNoise, effectorNoise, null);
 
-            setFitnessFunction(fitnessFunctionName);
+            // Schrum: more special handling: Don't want to overwrite fitness function in visual mode
+            if (!(fitnessFunction is FourTasksFitness))
+                setFitnessFunction(fitnessFunctionName);
+            else // sufficient if FourTasks is already loaded
+            {
+                fitnessFunction.reset();
+                ((FourTasksFitness)fitnessFunction).setupFitness(FourTasksFitness.environmentID(environmentName));
+            }
             setBehavioralCharacterization(behaviorCharacterizationName);
 
 
@@ -487,7 +496,7 @@ namespace Engine
 
                     double thisFit = inst.ff.calculate(this, env, inst, out behavior.objectives);
                     
-                    //Console.WriteLine("Fitness for one eval: " + thisFit);
+                    //Console.WriteLine(env.name + ": Fitness for one eval: " + thisFit);
                     fitnesses[evals] = thisFit;
                     tempFit += thisFit;
 

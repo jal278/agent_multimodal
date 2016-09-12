@@ -196,35 +196,8 @@ namespace Engine
         {
             if (experiment.fitnessFunction is FourTasksFitness)
             {
-                int environmentNumber = 0; // team patrol, default
-                if (experiment.environmentName.EndsWith("FourTasks-ENV.xml"))
-                { // Team patrol
-                    environmentNumber = 0;
-                }
-                else if (experiment.environmentName.EndsWith("FourTasks-ENV1.xml"))
-                { // Lone patrol
-                    environmentNumber = 1;
-                }
-                else if (experiment.environmentName.EndsWith("FourTasks-ENV2.xml"))
-                { // dual task hallway
-                    environmentNumber = 2;
-                }
-                else if (experiment.environmentName.EndsWith("FourTasks-ENV3.xml"))
-                { // Dual task foraging
-                    environmentNumber = 3;
-                }
-                else if (experiment.environmentName.EndsWith("FourTasks-ENV4.xml"))
-                { // Two rooms
-                    environmentNumber = 4;
-                }
-                else
-                {
-                    Console.WriteLine("Error! Unknown environment! " + experiment.environmentName);
-                    System.Environment.Exit(1);
-                }
-
-                experiment.fitnessFunction = new FourTasksFitness((MultiAgentExperiment)experiment);
-                ((FourTasksFitness)experiment.fitnessFunction).setupFitness(environmentNumber);
+                ((FourTasksFitness)experiment.fitnessFunction).setExperiment((MultiAgentExperiment)experiment);
+                ((FourTasksFitness)experiment.fitnessFunction).setupFitness(FourTasksFitness.environmentID(experiment.environmentName));
             }
         }
 

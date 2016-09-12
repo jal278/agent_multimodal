@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using SharpNeatLib.CPPNs;
 
 /**
  *  This fitness function uses four other fitness functions.
@@ -18,6 +19,12 @@ namespace Engine
         public const int TASK_DUAL_TASK_HALLWAY = 2;
         public const int TASK_DUAL_TASK_FORAGE = 3;
         public const int TASK_TWO_ROOMS = 4;
+
+        // Load these from file once and change as the environment changes
+        public static SubstrateDescription SUBSTRATE_TEAM_PATROL = new SubstrateDescription("substrate_PatrolSignalPreference.xml");
+        public static SubstrateDescription SUBSTRATE_LONE_PATROL = new SubstrateDescription("substrate_PatrolPreference.xml");
+        public static SubstrateDescription SUBSTRATE_DUAL_TASK = new SubstrateDescription("hardmaze_substrate-preference.xml");
+        public static SubstrateDescription SUBSTRATE_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate-preference.xml"); // redundant
 
         IFitnessFunction teamPatrol = new POIFIT_MO();
         IFitnessFunction lonePatrol = new VisitThreeFitness();
@@ -70,9 +77,14 @@ namespace Engine
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
 
+                experiment.normalizeWeights = true;
+
                 // Robot sizes are different in the different experiments
                 FourTaskRangeSliceSignal.robotSize = 6.5f;
-                
+
+                experiment.substrateDescription = SUBSTRATE_TEAM_PATROL;
+                experiment.robotModelName = "Khepera3RobotModelComeHome";
+                experiment.rangefinderSensorDensity = 6;
             }
             else if (currentEnvironment == TASK_LONE_PATROL)
             { // Lone patrol
@@ -88,7 +100,12 @@ namespace Engine
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
+                experiment.normalizeWeights = true;
                 FourTaskRangeSliceSignal.robotSize = 6.5f;
+                experiment.substrateDescription = SUBSTRATE_LONE_PATROL;
+                experiment.robotModelName = "Khepera3RobotModel";
+                experiment.rangefinderSensorDensity = 6;
+
             }
             else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
             { // Dual task
@@ -104,7 +121,12 @@ namespace Engine
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
+                experiment.normalizeWeights = false;
                 FourTaskRangeSliceSignal.robotSize = 10.5f;
+                experiment.substrateDescription = SUBSTRATE_DUAL_TASK;
+                experiment.robotModelName = "MazeRobotPieSlice";
+                experiment.rangefinderSensorDensity = 5;
+
             }
             else if (currentEnvironment == TASK_TWO_ROOMS)
             { // Two rooms
@@ -120,7 +142,11 @@ namespace Engine
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
+                experiment.normalizeWeights = false;
                 FourTaskRangeSliceSignal.robotSize = 10.5f;
+                experiment.substrateDescription = SUBSTRATE_TWO_ROOMS;
+                experiment.robotModelName = "MazeRobotPieSlice";
+                experiment.rangefinderSensorDensity = 5;
             }
             else
             {
@@ -147,7 +173,7 @@ namespace Engine
             get { return "Four Tasks Fitness"; }
         }
 
-        public static double MAX_TEAM_PATROL = 70; // 65; // Observed in GECCO 2016 work
+        public static double MAX_TEAM_PATROL = 65; // Observed in GECCO 2016 work
         public static double MAX_LONE_PATROL = 6000; // Observed in GECCO 2016 work
 
         double IFitnessFunction.calculate(SimulatorExperiment engine, Environment environment, instance_pack ip, out double[] objectives)
@@ -188,11 +214,15 @@ namespace Engine
                 teamPatrol.update(simExp, environment, ip);
             } else {
                 // Make sure the signal sensor is only used in the Team Patrol task
+                // Schrum: Code no longer needed since I switch the robot model for each environment
+                // instead of forcing them each to use the same one with (sometimes) unused sensors
+                /**
                 foreach(Robot r in ip.robots) {
                     // Signal sensor is last input of the FourTasks substrate
                     SignalSensor s = (SignalSensor)r.sensors[r.sensors.Count - 1];
                     s.setSignal(0.0);
                 }
+                 */
 
                 if (currentEnvironment == TASK_LONE_PATROL)
                 { // Lone patrol
@@ -227,5 +257,36 @@ namespace Engine
         }
 
         #endregion
+
+        public static int environmentID(String environmentName)
+        {
+                int environmentNumber = 0; // team patrol, default
+                if (environmentName.EndsWith("FourTasks-ENV.xml"))
+                { // Team patrol
+                    environmentNumber = TASK_TEAM_PATROL;
+                }
+                else if (environmentName.EndsWith("FourTasks-ENV1.xml"))
+                { // Lone patrol
+                    environmentNumber = TASK_LONE_PATROL;
+                }
+                else if (environmentName.EndsWith("FourTasks-ENV2.xml"))
+                { // dual task hallway
+                    environmentNumber = TASK_DUAL_TASK_HALLWAY;
+                }
+                else if (environmentName.EndsWith("FourTasks-ENV3.xml"))
+                { // Dual task foraging
+                    environmentNumber = TASK_DUAL_TASK_FORAGE;
+                }
+                else if (environmentName.EndsWith("FourTasks-ENV4.xml"))
+                { // Two rooms
+                    environmentNumber = TASK_TWO_ROOMS;
+                }
+                else
+                {
+                    Console.WriteLine("Error! Unknown environment! " + environmentName);
+                    System.Environment.Exit(1);
+                }
+                return environmentNumber;
+        }
     }
 }
