@@ -4,6 +4,12 @@ using System.Text;
 using simulator.Sensor_Models;
 
 /**
+ *  DELETE PENDING
+ * 
+ *  Schrum: Decided not to use this after all.
+ *  Instead, switch the robot model with each environment
+ *  of FourTasks domain. 
+ * 
  *  This code duplicates the MazeRobotPieSlice,
  *  but adds a signal sensor to the robot so it will
  *  also work in the team patrol task. Not great
