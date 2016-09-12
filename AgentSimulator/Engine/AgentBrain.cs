@@ -200,7 +200,7 @@ namespace Engine
             {
                 if (brains != null && brains[0] != null && brains[0].InputNeuronCount != substrateDescription.InputCount)
                 {
-                    Console.WriteLine("Recreating ANNs");
+                    //Console.WriteLine("Recreating ANNs");
                     createBrains();
                 }
             }
@@ -208,7 +208,7 @@ namespace Engine
             {
                 if (brain != null && (brain.InputNeuronCount / numRobots) != substrateDescription.InputCount)
                 {
-                    Console.WriteLine("Recreating ANNs");
+                    //Console.WriteLine("Recreating ANNs");
                     createBrains();
                 }
 
