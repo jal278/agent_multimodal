@@ -56,73 +56,50 @@ namespace Engine
         
         public void setupFitness(int environmentNum)
         {
-            //Console.WriteLine("setupFitness(" + exp + "," + environmentNum + ")");
             currentEnvironment = environmentNum;
 
             // Special reconfiguring based on particular environment
             if (currentEnvironment == TASK_TEAM_PATROL)
             { // Team patrol
-                //Console.WriteLine("Set to Team Patrol");
-                    
-                // settings from the Team Patrol experiment files
-                // that differ from the other experiments
                 experiment.evaluationTime = 45;
                 experiment.timestep = 0.033;
-                    
                 experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 90;
                 experiment.robot_heading = 270;
-
                 experiment.numberRobots = 3;
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
-
                 experiment.normalizeWeights = true;
-
-                // Robot sizes are different in the different experiments
-                FourTaskRangeSliceSignal.robotSize = 6.5f;
-
                 experiment.substrateDescription = SUBSTRATE_TEAM_PATROL;
                 experiment.robotModelName = "Khepera3RobotModelComeHome";
                 experiment.rangefinderSensorDensity = 6;
             }
             else if (currentEnvironment == TASK_LONE_PATROL)
             { // Lone patrol
-                //Console.WriteLine("Set to Lone Patrol");
-
                 experiment.evaluationTime = 80;
                 experiment.timestep = 0.033;
-
                 experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 90;
                 experiment.robot_heading = 270;
-
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
                 experiment.normalizeWeights = true;
-                FourTaskRangeSliceSignal.robotSize = 6.5f;
                 experiment.substrateDescription = SUBSTRATE_LONE_PATROL;
                 experiment.robotModelName = "Khepera3RobotModel";
                 experiment.rangefinderSensorDensity = 6;
-
             }
             else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
             { // Dual task
-                //Console.WriteLine("Set to Dual Task: " + currentEnvironment);
-
                 experiment.evaluationTime = 45;
                 experiment.timestep = 0.2;
-
                 experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 0;
                 experiment.robot_heading = 270;
-
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                FourTaskRangeSliceSignal.robotSize = 10.5f;
                 experiment.substrateDescription = SUBSTRATE_DUAL_TASK;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
@@ -130,20 +107,15 @@ namespace Engine
             }
             else if (currentEnvironment == TASK_TWO_ROOMS)
             { // Two rooms
-                //Console.WriteLine("Set to Two Rooms");
-
                 experiment.evaluationTime = 200;
                 experiment.timestep = 0.1; // Is this correct? See paper
-
                 experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 0;
                 experiment.robot_heading = 90;
-
                 experiment.numberRobots = 1;
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                FourTaskRangeSliceSignal.robotSize = 10.5f;
                 experiment.substrateDescription = SUBSTRATE_TWO_ROOMS;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
