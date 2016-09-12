@@ -33,7 +33,7 @@ namespace Engine
 			}
 		
 			public Point to_display(Point x) {
-				float ox,oy;
+				//float ox,oy;
 				return to_display(x.X,x.Y);
 			}
 		

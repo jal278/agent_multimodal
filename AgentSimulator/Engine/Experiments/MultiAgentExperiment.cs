@@ -490,7 +490,6 @@ namespace Engine
                         Console.WriteLine(e.Message);
                         Console.WriteLine(e.StackTrace);
                         throw (e);
-                        return 0.0001;
                     }
 
 

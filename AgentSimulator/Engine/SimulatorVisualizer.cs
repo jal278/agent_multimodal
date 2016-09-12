@@ -19,7 +19,6 @@ using SharpNeatLib.CPPNs;
 using System.Text;
 using System.Net.Sockets;
 using Engine.Forms;
-using Engine.Forms;
 using simulator.Forms;
 
 namespace Engine
