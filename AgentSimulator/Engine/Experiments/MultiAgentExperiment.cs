@@ -283,8 +283,9 @@ namespace Engine
 
             //Console.WriteLine("Range finder count : " + count);
             //By convention the rangefinders are in layer zero so scale that layer
-            // Schrum: HOWEVER, if there are no rangefinders, then we do not want to do this
-            if (count != 0)
+            // Schrum: HOWEVER, if there are no rangefinders, then we do not want to do this.
+            // Schrum: Also disabled this when in the FourTasks domain, since it seems to cause problems.
+            if (count != 0 && !(this.fitnessFunction is FourTasksFitness))
             { // don't rescale rangefinders if there are none.
                 substrateDescription.setNeuronDensity(0, count, 1);
             }
@@ -407,13 +408,16 @@ namespace Engine
             IFitnessFunction fit_copy;
             IBehaviorCharacterization bc_copy;
             //CollisionManager cm;
-            instance_pack inst = new instance_pack();
             int envNum = 0;
             // Schrum: Separate fitness for each environment.
             // Should this be put in accumObjectives instead? What is that for?
             double[] environmentScores = new double[environmentList.Count];
             foreach (Environment env2 in environmentList)
             {
+                //Console.WriteLine("====================Environment loop " + envNum);
+                // Schrum: moved this here to deal with consistency issues
+                instance_pack inst = new instance_pack();
+
                 fit_copy = fitnessFunction.copy();
                 if (behaviorCharacterization != null)
                 {

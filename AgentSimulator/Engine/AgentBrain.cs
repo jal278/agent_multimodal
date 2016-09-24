@@ -209,7 +209,6 @@ namespace Engine
                 if (brain != null && (brain.InputNeuronCount / numRobots) != substrateDescription.InputCount)
                 {
                     //Console.WriteLine("Recreating ANNs");
-                    // Schrum 9/12/16: Uncertain why there is inconsistency in evaluation again, but this seems like a good place to look
                     createBrains();
                 }
 
