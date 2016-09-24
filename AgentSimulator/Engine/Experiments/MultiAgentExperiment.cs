@@ -95,7 +95,7 @@ namespace Engine
 
         protected void setupVariables()
         {
-
+            Console.WriteLine("setupVariables");
             robots = new List<Robot>();
             // Schrum: more special handling: Don't want to overwrite substrate in visual mode
             if(!(fitnessFunction is FourTasksFitness))
@@ -119,6 +119,7 @@ namespace Engine
                 setFitnessFunction(fitnessFunctionName);
             else // sufficient if FourTasks is already loaded
             {
+                Console.WriteLine("setupVariables: environmentName = " + environmentName);
                 fitnessFunction.reset();
                 ((FourTasksFitness)fitnessFunction).setupFitness(FourTasksFitness.environmentID(environmentName));
             }
@@ -362,7 +363,10 @@ namespace Engine
                 rbts[x].doAction();
                 //else
                 //	ab.clearANNSignals(rbts[x].zstack);
+
+                //Console.Write(rbts[x].location.x + "\t" + rbts[x].location.y + "\t");
             }
+            //Console.WriteLine();
 
             ab.execute(sem);
 
@@ -439,7 +443,7 @@ namespace Engine
 
                     Environment env = env2.copy();
 
-                    double evalTime = evaluationTime;
+                    double evalTime = this.evaluationTime;
 
                     inst.eval = evals;
                     env.seed = evals;
@@ -453,7 +457,7 @@ namespace Engine
 
 
                     inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
-                    initializeRobots(agentBrain, env, headingNoise, new_sn, new_ef, inst);
+                    initializeRobots(inst.agentBrain, env, headingNoise, new_sn, new_ef, inst);
 
                     inst.elapsed = 0;
                     inst.timestep = this.timestep;
@@ -466,7 +470,7 @@ namespace Engine
                     try
                     {
 
-
+                        //Console.WriteLine("Environment " + environmentName + " " + envNum);
                         while (inst.elapsed < evalTime)
                         {
                             // Schrum2: Only called for non-visual evaluations

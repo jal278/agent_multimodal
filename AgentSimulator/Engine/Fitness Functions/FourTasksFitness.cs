@@ -23,8 +23,7 @@ namespace Engine
         // Load these from file once and change as the environment changes
         public static SubstrateDescription SUBSTRATE_TEAM_PATROL = new SubstrateDescription("substrate_PatrolSignalPreference.xml");
         public static SubstrateDescription SUBSTRATE_LONE_PATROL = new SubstrateDescription("substrate_PatrolPreference.xml");
-        public static SubstrateDescription SUBSTRATE_DUAL_TASK = new SubstrateDescription("hardmaze_substrate-preference.xml");
-        public static SubstrateDescription SUBSTRATE_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate-preference.xml"); // redundant
+        public static SubstrateDescription SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate-preference.xml");
 
         IFitnessFunction teamPatrol = new POIFIT_MO();
         IFitnessFunction lonePatrol = new VisitThreeFitness();
@@ -73,6 +72,8 @@ namespace Engine
                 experiment.substrateDescription = SUBSTRATE_TEAM_PATROL;
                 experiment.robotModelName = "Khepera3RobotModelComeHome";
                 experiment.rangefinderSensorDensity = 6;
+
+                teamPatrol = new POIFIT_MO();
             }
             else if (currentEnvironment == TASK_LONE_PATROL)
             { // Lone patrol
@@ -88,6 +89,8 @@ namespace Engine
                 experiment.substrateDescription = SUBSTRATE_LONE_PATROL;
                 experiment.robotModelName = "Khepera3RobotModel";
                 experiment.rangefinderSensorDensity = 6;
+
+                lonePatrol = new VisitThreeFitness();
             }
             else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
             { // Dual task
@@ -100,10 +103,11 @@ namespace Engine
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                experiment.substrateDescription = SUBSTRATE_DUAL_TASK;
+                experiment.substrateDescription = SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
 
+                dualTask = new DualTaskFitness();
             }
             else if (currentEnvironment == TASK_TWO_ROOMS)
             { // Two rooms
@@ -116,9 +120,11 @@ namespace Engine
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                experiment.substrateDescription = SUBSTRATE_TWO_ROOMS;
+                experiment.substrateDescription = SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
+
+                twoRooms = new TwoRoomFitness();
             }
             else
             {
