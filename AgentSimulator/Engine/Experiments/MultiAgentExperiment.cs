@@ -95,7 +95,7 @@ namespace Engine
 
         protected void setupVariables()
         {
-            Console.WriteLine("setupVariables");
+            //Console.WriteLine("setupVariables");
             robots = new List<Robot>();
             // Schrum: more special handling: Don't want to overwrite substrate in visual mode
             if(!(fitnessFunction is FourTasksFitness))
@@ -119,7 +119,8 @@ namespace Engine
                 setFitnessFunction(fitnessFunctionName);
             else // sufficient if FourTasks is already loaded
             {
-                Console.WriteLine("setupVariables: environmentName = " + environmentName);
+                //Console.WriteLine("setupVariables: environmentName = " + environmentName);
+                ((FourTasksFitness)fitnessFunction).setExperiment(this);
                 fitnessFunction.reset();
                 ((FourTasksFitness)fitnessFunction).setupFitness(FourTasksFitness.environmentID(environmentName));
             }
