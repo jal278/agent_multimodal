@@ -9,6 +9,6 @@ Notify_user = schrum2@cs.utexas.edu
 Error  = logs/FourTasks_MMR.err.$(Process)
 Output = logs/FourTasks_MMR.out.$(Process)
 
-arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-MMR.xml -generations 3000 -rng_seed $(Process) -folder results/FourTasks-EXP-MMR-$(Process)-
+arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-MMR.xml -generations 5000 -rng_seed $(Process) -folder results/FourTasks-EXP-MMR-$(Process)-
 queue 30
 

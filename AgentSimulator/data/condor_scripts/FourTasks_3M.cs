@@ -9,6 +9,6 @@ Notify_user = schrum2@cs.utexas.edu
 Error  = logs/FourTasks_3M.err.$(Process)
 Output = logs/FourTasks_3M.out.$(Process)
 
-arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-3M.xml -generations 3000 -rng_seed $(Process) -folder results/FourTasks-EXP-3M-$(Process)-
+arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-3M.xml -generations 5000 -rng_seed $(Process) -folder results/FourTasks-EXP-3M-$(Process)-
 queue 30
 

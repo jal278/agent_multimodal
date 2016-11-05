@@ -9,6 +9,6 @@ Notify_user = schrum2@cs.utexas.edu
 Error  = logs/FourTasks_MultiMMD.err.$(Process)
 Output = logs/FourTasks_MultiMMD.out.$(Process)
 
-arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-multi-MMD.xml -generations 3000 -rng_seed $(Process) -folder results/FourTasks-EXP-multi-MMD-$(Process)-
+arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-multi-MMD.xml -generations 5000 -rng_seed $(Process) -folder results/FourTasks-EXP-multi-MMD-$(Process)-
 queue 30
 
