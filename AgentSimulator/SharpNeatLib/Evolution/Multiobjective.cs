@@ -247,8 +247,9 @@ namespace SharpNeatLib.Multiobjective
 			
 			population.Sort();
 			generation++;
-			if(generation%250==0)
-			this.printDistribution();
+            // Schrum: not really using this. Output overlaps when multiple runs happen, which is annoying
+			//if(generation%250==0)
+			//this.printDistribution();
 		}
 		
 		
