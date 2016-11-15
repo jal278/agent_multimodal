@@ -392,7 +392,7 @@ namespace Engine
         // Schrum: Had to remove the internal from this too so that I could override it in AdversarialRoomClearingExperiment
         public override double evaluateNetwork(INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem)
         {
-            double fitness = 0;
+            double fitness = multiplicativeFitness ? 1 : 0;
             behavior = new SharpNeatLib.BehaviorType();
 
             // Schrum: Why is there a magic number 6 here?
@@ -528,7 +528,15 @@ namespace Engine
                 environmentScores[envNum] = tempFit;
                 envNum++; // go to the next environment
 
-                fitness += tempFit / timesToRunEnvironments;
+                // Schrum: Product fitness might encourage better performance in all environments
+                if (multiplicativeFitness)
+                {
+                    fitness *= tempFit / timesToRunEnvironments;
+                }
+                else // default is sum/average
+                {
+                    fitness += tempFit / timesToRunEnvironments;
+                }
             }
 
             if (fitnessFunction is FourTasksFitness)
@@ -540,7 +548,8 @@ namespace Engine
                 behavior.objectives = accumObjectives;
             }
             //Console.WriteLine("Total: " + (fitness / environmentList.Count));
-            return fitness / environmentList.Count;
+            // Schrum: Averaging helps normalize range when adding fitness values, but not when multiplying fitness values
+            return multiplicativeFitness ? fitness : fitness / environmentList.Count;
 
         }
 
