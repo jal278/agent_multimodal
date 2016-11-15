@@ -37,6 +37,5 @@
 
     <multibrain>true</multibrain>
     <numBrains>5</numBrains>
-    <ungeometricBrains>true</ungeometricBrains>
   </RoomClearingExperiment>
 </ExperimentWrapper>
