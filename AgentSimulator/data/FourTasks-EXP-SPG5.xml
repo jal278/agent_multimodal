@@ -34,7 +34,8 @@
     <homogeneousTeam>false</homogeneousTeam>
     <agentsVisible>false</agentsVisible>
     <agentsCollide>false</agentsCollide>
-
+    
+    <forcedSituationalPolicyGeometry>true</forcedSituationalPolicyGeometry>
     <multibrain>true</multibrain>
     <numBrains>5</numBrains>
   </RoomClearingExperiment>
