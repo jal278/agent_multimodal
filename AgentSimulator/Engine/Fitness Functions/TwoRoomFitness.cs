@@ -61,6 +61,7 @@ namespace Engine
         void IFitnessFunction.update(SimulatorExperiment Experiment, Environment environment, instance_pack ip)
         {
             // Schrum: brain-switching policy
+            // Schrum: Restricting numBrains == 2 assures that this switch won't occur in the FourTasks experiments with 5 brains
             if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains == 2)
             {
                 // Schrum: These magic numbers directly correspond to the Two Rooms environment.

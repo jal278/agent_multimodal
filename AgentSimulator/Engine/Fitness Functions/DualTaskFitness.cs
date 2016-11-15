@@ -70,6 +70,7 @@ namespace Engine
         {
             //Console.WriteLine(Experiment.multibrain + " && " + !Experiment.preferenceNeurons + " && " + (Experiment.numBrains == 2));
             // Schrum: Set which brain to use if the number is an experiment parameter
+            // Schrum: Because the explicit brain switching only occurs when numBrains == 2, it will not register in FourTasks experiments using 5 brains
             if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains == 2)
             {
                 if (environment.name.EndsWith("ENV_dual_task.xml") || environment.name.EndsWith("FourTasks-ENV2.xml")) //HACK navigation

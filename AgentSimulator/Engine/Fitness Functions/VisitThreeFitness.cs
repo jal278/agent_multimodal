@@ -94,7 +94,8 @@ namespace Engine
                 {
                     reachedPOI[i] = true;
                     // Schrum: Only manually change brains if preference neurons are not used
-                    if (Experiment.multibrain && !Experiment.preferenceNeurons)
+                    // Schrum: Don't switch brains here if there are 5 brains, since this corresponds to the FourTasks experiments.
+                    if (Experiment.multibrain && !Experiment.preferenceNeurons && Experiment.numBrains != 5)
                     {
                         if (ip.agentBrain.numBrains == 3) // Schrum: Playing with special cases. Still need something more general.
                         {
@@ -102,7 +103,7 @@ namespace Engine
                             ip.agentBrain.switchBrains(mapping[i]);
                         }
                         else
-                        {
+                        {   // Schrum: I'm not sure this option is actually used anywhere
                             ip.agentBrain.switchBrains(i + 1); // Schrum: Switch to next brain (one for each step of task)
                         }
                     }

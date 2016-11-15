@@ -174,7 +174,8 @@ namespace Engine
                 allCorrected = true;
                 bool[] close = new bool[3];
                 // Schrum: Brains don't get switched with preference neurons ... all need to be evaluated
-                if (!ip.agentBrain.preferenceNeurons) ip.agentBrain.switchBrains();
+                // Schrum: Checking that numBrains == 2 assures that this mode of switching does not occur in FourTask experiments with 5 brains
+                if (!ip.agentBrain.preferenceNeurons && engine.numBrains == 2) ip.agentBrain.switchBrains();
                 foreach (Robot r in ip.robots)
                 {
                     //Schrum: Debugging

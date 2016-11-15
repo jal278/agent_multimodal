@@ -20,10 +20,14 @@ namespace Engine
         public const int TASK_DUAL_TASK_FORAGE = 3;
         public const int TASK_TWO_ROOMS = 4;
 
-        // Load these from file once and change as the environment changes
-        public static SubstrateDescription SUBSTRATE_TEAM_PATROL = new SubstrateDescription("substrate_PatrolSignalPreference.xml");
-        public static SubstrateDescription SUBSTRATE_LONE_PATROL = new SubstrateDescription("substrate_PatrolPreference.xml");
-        public static SubstrateDescription SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate-preference.xml");
+        // Load these from file once and change as the environment changes: For preference neuron approaches
+        public static SubstrateDescription PREFERENCE_SUBSTRATE_TEAM_PATROL = new SubstrateDescription("substrate_PatrolSignalPreference.xml");
+        public static SubstrateDescription PREFERENCE_SUBSTRATE_LONE_PATROL = new SubstrateDescription("substrate_PatrolPreference.xml");
+        public static SubstrateDescription PREFERENCE_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate-preference.xml");
+        // For Multitask and Situational Policy Geometry
+        public static SubstrateDescription MULTITASK_SUBSTRATE_TEAM_PATROL = new SubstrateDescription("substrate_PatrolSignal.xml");
+        public static SubstrateDescription MULTITASK_SUBSTRATE_LONE_PATROL = new SubstrateDescription("substrate_PatrolSwitch.xml");
+        public static SubstrateDescription MULTITASK_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS = new SubstrateDescription("hardmaze_substrate.xml");
 
         IFitnessFunction teamPatrol = new POIFIT_MO();
         IFitnessFunction lonePatrol = new VisitThreeFitness();
@@ -69,7 +73,7 @@ namespace Engine
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
                 experiment.normalizeWeights = true;
-                experiment.substrateDescription = SUBSTRATE_TEAM_PATROL;
+                experiment.substrateDescription = experiment.preferenceNeurons ? PREFERENCE_SUBSTRATE_TEAM_PATROL : MULTITASK_SUBSTRATE_TEAM_PATROL;
                 experiment.robotModelName = "Khepera3RobotModelComeHome";
                 experiment.rangefinderSensorDensity = 6;
 
@@ -86,7 +90,7 @@ namespace Engine
                 experiment.agentsVisible = false;
                 experiment.agentsCollide = false;
                 experiment.normalizeWeights = true;
-                experiment.substrateDescription = SUBSTRATE_LONE_PATROL;
+                experiment.substrateDescription = experiment.preferenceNeurons ? PREFERENCE_SUBSTRATE_LONE_PATROL : MULTITASK_SUBSTRATE_LONE_PATROL;
                 experiment.robotModelName = "Khepera3RobotModel";
                 experiment.rangefinderSensorDensity = 6;
 
@@ -103,7 +107,7 @@ namespace Engine
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                experiment.substrateDescription = SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
+                experiment.substrateDescription = experiment.preferenceNeurons ? PREFERENCE_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS : MULTITASK_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
 
@@ -120,7 +124,7 @@ namespace Engine
                 experiment.agentsVisible = true; // does this even matter?
                 experiment.agentsCollide = true; // does this even matter?
                 experiment.normalizeWeights = false;
-                experiment.substrateDescription = SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
+                experiment.substrateDescription = experiment.preferenceNeurons ? PREFERENCE_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS : MULTITASK_SUBSTRATE_DUAL_TASK_AND_TWO_ROOMS;
                 experiment.robotModelName = "MazeRobotPieSlice";
                 experiment.rangefinderSensorDensity = 5;
 
@@ -187,38 +191,35 @@ namespace Engine
 
         void IFitnessFunction.update(SimulatorExperiment simExp, Environment environment, instance_pack ip)
         {
+            // For brain switching by multitask.
+            // Schrum: If not using preference neurons, and the current brain does not match the environment
+            if (simExp.multibrain && !simExp.preferenceNeurons && ip.agentBrain.getBrainCounter() != currentEnvironment)
+            {
+                // Schrum: get the appropriate brain for this environment
+                ip.agentBrain.switchBrains(currentEnvironment); 
+            }
+
+
             if (currentEnvironment == TASK_TEAM_PATROL)
             { // Team patrol
                 teamPatrol.update(simExp, environment, ip);
-            } else {
-                // Make sure the signal sensor is only used in the Team Patrol task
-                // Schrum: Code no longer needed since I switch the robot model for each environment
-                // instead of forcing them each to use the same one with (sometimes) unused sensors
-                /**
-                foreach(Robot r in ip.robots) {
-                    // Signal sensor is last input of the FourTasks substrate
-                    SignalSensor s = (SignalSensor)r.sensors[r.sensors.Count - 1];
-                    s.setSignal(0.0);
-                }
-                 */
-
-                if (currentEnvironment == TASK_LONE_PATROL)
-                { // Lone patrol
-                    lonePatrol.update(simExp, environment, ip);
-                }
-                else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
-                { // Dual task
-                    dualTask.update(simExp, environment, ip);
-                }
-                else if (currentEnvironment == TASK_TWO_ROOMS)
-                { // Two rooms
-                    twoRooms.update(simExp, environment, ip);
-                }
-                else
-                {
-                    Console.WriteLine("Error! Unknown environment! " + environment.name + ":" + currentEnvironment);
-                    System.Environment.Exit(1);
-                }
+            } 
+            else if (currentEnvironment == TASK_LONE_PATROL)
+            { // Lone patrol
+                lonePatrol.update(simExp, environment, ip);
+            }
+            else if (currentEnvironment == TASK_DUAL_TASK_HALLWAY || currentEnvironment == TASK_DUAL_TASK_FORAGE)
+            { // Dual task
+                dualTask.update(simExp, environment, ip);
+            }
+            else if (currentEnvironment == TASK_TWO_ROOMS)
+            { // Two rooms
+                twoRooms.update(simExp, environment, ip);
+            }
+            else
+            {
+                Console.WriteLine("Error! Unknown environment! " + environment.name + ":" + currentEnvironment);
+                System.Environment.Exit(1);
             }
         }
 
