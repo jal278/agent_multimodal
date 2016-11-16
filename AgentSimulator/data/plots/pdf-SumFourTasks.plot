@@ -14,7 +14,7 @@ t=2.045 # df=29, p=0.05, two-tailed
 set ylabel "Fitness"
 set xlabel "Generation"
 
-set xrange [0:3001]
+set xrange [0:4001]
 set yrange [0:1]
 
 
