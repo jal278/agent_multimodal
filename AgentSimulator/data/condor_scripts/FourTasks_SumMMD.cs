@@ -6,9 +6,9 @@ executable = /usr/bin/mono
 Initialdir = /scratch/cluster/schrum2/HyperNEATFourTasks
 Notification = always
 Notify_user = schrum2@cs.utexas.edu
-Error  = logs/FourTasks_5M.err.$(Process)
-Output = logs/FourTasks_5M.out.$(Process)
+Error  = logs/FourTasks_MMD.err.$(Process)
+Output = logs/FourTasks_MMD.out.$(Process)
 
-arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-5M.xml -generations 5000 -rng_seed $(Process) -folder results/FourTasks-EXP-5M-$(Process)-
+arguments = ./AgentSimulator.exe evolve -experiment FourTasks-EXP-MMD.xml -generations 4000 -rng_seed $(Process) -folder results/FourTasks-EXP-MMD-$(Process)-
 queue 30
 
