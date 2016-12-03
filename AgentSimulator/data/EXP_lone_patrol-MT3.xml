@@ -2,7 +2,7 @@
 <ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <RoomClearingExperiment>
     <gridCollision>false</gridCollision>
-    <substrateDescriptionFilename>substrate_PatrolPreference.xml</substrateDescriptionFilename>
+    <substrateDescriptionFilename>substrate_PatrolSwitch.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
     <normalizeWeights>true</normalizeWeights>
@@ -35,9 +35,7 @@
     <agentsVisible>false</agentsVisible>
     <agentsCollide>false</agentsCollide>
     <multibrain>true</multibrain>
-    <numBrains>1</numBrains>
-    <mmpRate>0.01</mmpRate>
+    <numBrains>3</numBrains>
     <ungeometricBrains>true</ungeometricBrains>
-    <preferenceNeurons>true</preferenceNeurons>
   </RoomClearingExperiment>
 </ExperimentWrapper>

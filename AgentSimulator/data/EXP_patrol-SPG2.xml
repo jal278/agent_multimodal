@@ -2,7 +2,7 @@
 <ExperimentWrapper xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <RoomClearingExperiment>
     <gridCollision>false</gridCollision>
-    <substrateDescriptionFilename>substrate_PatrolSignalPreference.xml</substrateDescriptionFilename>
+    <substrateDescriptionFilename>substrate_PatrolSwitch.xml</substrateDescriptionFilename>
     <adaptableANN>false</adaptableANN>
     <modulatoryANN>false</modulatoryANN>
     <normalizeWeights>true</normalizeWeights>
@@ -15,7 +15,7 @@
     <timestep>0.033</timestep>
     <explanatoryText>Multi-Agent Experiment</explanatoryText>
     <scriptFile />
-    <robotModelName>Khepera3RobotModelComeHome</robotModelName>
+    <robotModelName>Khepera3RobotModel</robotModelName>
     <fitnessFunctionName>POIFIT_MO</fitnessFunctionName>
     <behaviorCharacterizationName>SplitReturnBC</behaviorCharacterizationName>
     <environmentName>revisedMediumPlus.xml</environmentName>
@@ -35,9 +35,6 @@
     <agentsVisible>false</agentsVisible>
     <agentsCollide>false</agentsCollide>
     <multibrain>true</multibrain>
-    <numBrains>1</numBrains>
-    <mmpRate>0.01</mmpRate>
-    <preferenceNeurons>true</preferenceNeurons>
-    <ungeometricBrains>true</ungeometricBrains>
+    <numBrains>2</numBrains>
   </RoomClearingExperiment>
 </ExperimentWrapper>
