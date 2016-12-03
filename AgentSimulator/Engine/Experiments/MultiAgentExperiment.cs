@@ -539,7 +539,12 @@ namespace Engine
                 }
             }
 
-            if (fitnessFunction is FourTasksFitness)
+            // Punish CPPN modules: Must use with multiobjective option
+            if(cppnModuleCost)
+            {
+                behavior.objectives = new double[] { fitness / environmentList.Count, -network.NumOutputModules };
+            }
+            else if (fitnessFunction is FourTasksFitness)
             { // Schrum: Special handling for FourTasksFitness ... could I just use accumObjectives?
                 behavior.objectives = environmentScores;
             }

@@ -54,3 +54,5 @@ AgentSimulator/data/condor-NO_SEED-prey-two-room-results 2015-07-11
 *.gz
 AgentSimulator/data/FourTasks-EXP-multi-1M-0/FourTasks-EXP-multi-1M-0population0.xml
 FinalConsole.txt
+
+*population*.xml
