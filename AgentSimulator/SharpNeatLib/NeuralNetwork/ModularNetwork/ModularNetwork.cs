@@ -412,6 +412,15 @@ namespace SharpNeatLib.NeuralNetwork
             }
         }
 
+        // Schrum: Added
+        public int NumLinks
+        {
+            get
+            {
+                return connections.Length;
+            }
+        }
+
         // Schrum: Added for deciding which output module to use if there are multiple
         public int CurrentOutputModule
         {

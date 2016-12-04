@@ -316,6 +316,15 @@ namespace SharpNeatLib.NeuralNetwork
             }
         }
 
-		#endregion
-	}
+        // Schrum: Added
+        public int NumLinks
+        {
+            get
+            {
+                return connectionArray.Length;
+            }
+        }
+
+        #endregion
+    }
 }

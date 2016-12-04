@@ -392,6 +392,9 @@ namespace Engine
         // Schrum: Had to remove the internal from this too so that I could override it in AdversarialRoomClearingExperiment
         public override double evaluateNetwork(INetwork network, out SharpNeatLib.BehaviorType behavior, System.Threading.Semaphore sem)
         {
+            // Schrum: Used when punishing links in substrate networks.
+            int linksInSubstrate = 0;
+
             double fitness = multiplicativeFitness ? 1 : 0;
             behavior = new SharpNeatLib.BehaviorType();
 
@@ -462,6 +465,11 @@ namespace Engine
 
 
                     inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
+                    // Add up the links in each substrate brain
+                    // Schrum: Problem: will add up for each evaluation.
+                    foreach (INetwork b in inst.agentBrain.brains) { 
+                        linksInSubstrate += b.NumLinks;
+                    }
                     initializeRobots(inst.agentBrain, env, headingNoise, new_sn, new_ef, inst);
 
                     inst.elapsed = 0;
@@ -543,6 +551,16 @@ namespace Engine
             if(cppnModuleCost)
             {
                 behavior.objectives = new double[] { fitness / environmentList.Count, -network.NumOutputModules };
+            }
+            // Punish CPPN links: Must use with multiobjective option
+            else if (cppnLinkCost)
+            {
+                behavior.objectives = new double[] { fitness / environmentList.Count, -network.NumLinks };
+            }
+            // Punish substrate links: Must use with multiobjective option
+            else if (substrateLinkCost)
+            {
+                behavior.objectives = new double[] { fitness / environmentList.Count, -linksInSubstrate };
             }
             else if (fitnessFunction is FourTasksFitness)
             { // Schrum: Special handling for FourTasksFitness ... could I just use accumObjectives?

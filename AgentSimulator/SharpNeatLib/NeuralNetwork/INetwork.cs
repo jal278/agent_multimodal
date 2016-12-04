@@ -79,6 +79,9 @@ namespace SharpNeatLib.NeuralNetwork
         // Schrum: Added
         int NumOutputModules { get; }
 
+        // Schrum: Added to allow for a Connection Cost Penalty
+        int NumLinks { get; }
+
 		#endregion
 	}
 }

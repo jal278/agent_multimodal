@@ -97,11 +97,25 @@ namespace SharpNeatLib.NeuralNetwork
 			}
 		}
 
-		#endregion
+        // Schrum: Added
+        public int NumLinks {
+            get
+            {
+                // Check each neuron and count the connections leaving it
+                int total = 0;
+                foreach (Neuron n in masterNeuronList)
+                {
+                    total += n.ConnectionList.Count;
+                }
+                return total;
+            }
+        }
 
-		#region INetwork [Implemented]
+        #endregion
 
-		public void SetInputSignal(int index, float signalValue)
+        #region INetwork [Implemented]
+
+        public void SetInputSignal(int index, float signalValue)
 		{
 			inputNeuronList[index].OutputValue = signalValue;
 		}

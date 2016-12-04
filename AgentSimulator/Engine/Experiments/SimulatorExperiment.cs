@@ -57,8 +57,13 @@ namespace Engine
        // Schrum: Applies to domains with multiple environments. Default is the average.
         public bool multiplicativeFitness = false;
 
-        // Schrum: punish CPPN modules when using Module Mutation; must use with multiobjective = true
-        public bool cppnModuleCost = true;
+        // Schrum: Only use one of the following three at a time
+        // punish CPPN modules when using Module Mutation; must use with multiobjective = true
+        public bool cppnModuleCost = false;
+        // punish CPPN links: must use with multiobjective = true
+        public bool cppnLinkCost = false;
+        // punish substrate links: must use with multiobjective = true
+        public bool substrateLinkCost = false;
 
        // Schrum: Added by me: Default number of brains is 1
         public int numBrains = 1;

@@ -257,7 +257,16 @@ namespace SharpNeatLib.NeuralNetwork
 			}
 		}
 
-		public int OutputNeuronCount
+        // Schrum: Added
+        public int NumLinks
+        {
+            get
+            {
+                return connectionArray.Length;
+            }
+        }
+
+        public int OutputNeuronCount
 		{
 			get
 			{
