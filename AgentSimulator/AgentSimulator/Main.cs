@@ -350,7 +350,7 @@ namespace PackbotExperiment
             }
             else
             {
-                experimentName = "FourTasks-EXP-1M.xml"; //"adversary_two_room_EXP.xml"; //"EXP_dual_task.xml";//"hardmaze_exp.xml";//EXP_dual_task.xml";      //Default experiment 
+                experimentName = "EXP_FourTasks-avg-1M.xml"; //"adversary_two_room_EXP.xml"; //"EXP_dual_task.xml";//"hardmaze_exp.xml";//EXP_dual_task.xml";      //Default experiment 
                 //"hardmaze_exp.xml";//
 
                 for (int j = 0; j < args.Length; j++)
