@@ -116,7 +116,7 @@ namespace Engine
             else if (currentEnvironment == TASK_TWO_ROOMS)
             { // Two rooms
                 experiment.evaluationTime = 200;
-                experiment.timestep = 0.1; // Is this correct? See paper
+                experiment.timestep = 0.1;
                 experiment.overrideTeamFormation = true;
                 experiment.group_orientation = 0;
                 experiment.robot_heading = 90;
