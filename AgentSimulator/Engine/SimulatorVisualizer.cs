@@ -359,8 +359,16 @@ namespace Engine
                                 bool checkZ = experiment.robots.Count > 1;
                                 if (brain == null) return; //TODO maybe show dialog
                                 netForm = new NetworkVisualizerForm(selected_robot, (ModularNetwork)brain, brainCounter, checkZ); // Schrum: Know which brain is being used
-                                netForm.genomeVisualizerForm = genomeVisualizerForm; 
+                                netForm.genomeVisualizerForm = genomeVisualizerForm;                               
                                 netForm.Show();
+
+                                // Schrum: Make layout/organization of multiple brains better
+                                // These are custom layouts for different numbers of brains.
+                                netForm.Width = 200;
+                                netForm.Height = 200;
+                                int hspacing = -25;
+                                int vspacing = +40;
+                                netForm.SetDesktopLocation(i * (netForm.Width + hspacing), selected_robot.id * (netForm.Height + vspacing));
                             }
                             return; // Schrum: need to break normal execution flow to avoid netForm being shown again
                         }
@@ -401,6 +409,9 @@ namespace Engine
                     INetwork brain = experiment.agentBrain.getBrain(selected_robot.id);
                     ModuleUsageVisualizerForm usageForm = new ModuleUsageVisualizerForm(selected_robot, (ModularNetwork)brain, experiment.evaluationTime);
                     usageForm.Show();
+
+                    // Schrum: Custom displays for certain number of brains
+                    usageForm.Width = experiment.agentBrain.numBrains * (200 - 25);
                 }
             }
 
