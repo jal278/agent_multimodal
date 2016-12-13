@@ -364,11 +364,34 @@ namespace Engine
 
                                 // Schrum: Make layout/organization of multiple brains better
                                 // These are custom layouts for different numbers of brains.
-                                netForm.Width = 200;
-                                netForm.Height = 200;
-                                int hspacing = -25;
-                                int vspacing = +40;
-                                netForm.SetDesktopLocation(i * (netForm.Width + hspacing), selected_robot.id * (netForm.Height + vspacing));
+                                int hspacing;
+                                int vspacing;
+
+                                if (experiment.mmdRate > 0 || experiment.mmpRate > 0 || experiment.mmrRate > 0)
+                                {
+                                    if (experiment.agentBrain.numBrains > 10)
+                                    {
+                                        netForm.Width = 130;
+                                        netForm.Height = 130;
+                                        hspacing = -20;
+                                        vspacing = +170;
+                                    }
+                                    else
+                                    {
+                                        netForm.Width = 170;
+                                        netForm.Height = 170;
+                                        hspacing = -20;
+                                        vspacing = +40;
+                                    }
+                                }
+                                else
+                                { // Schrum: these settings work well for up to about 5 brains
+                                    netForm.Width = 200;
+                                    netForm.Height = 200;
+                                    hspacing = -25;
+                                    vspacing = +40;
+                                }
+                                netForm.SetDesktopLocation((i%10) * (netForm.Width + hspacing), selected_robot.id * (netForm.Height + vspacing) + (i > 10 ? 120 : 0));
                             }
                             return; // Schrum: need to break normal execution flow to avoid netForm being shown again
                         }
