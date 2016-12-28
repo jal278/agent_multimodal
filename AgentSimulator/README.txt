@@ -16,70 +16,62 @@ The documentation for MultiAgent-HyperSharpNEAT Simulator appears further below:
 Usage details for Multi-Brain HyperNEAT are essentially the same as for
 MultiAgent-HyperSharpNEAT. However, you will find several xml experiment
 files in the data subdirectory that evolve agents with multiple brains.
-Four domains relevant to Multi-Brain HyperNEAT are
+Five domains relevant to Multi-Brain HyperNEAT are
 
 Team Patrol
-	patrol-compare.plot	
-	patrol_signal.xml	
-	patrol_signalUngeomDistinctPref.xml	
-	patrol_signalUngeomDistinctPref3M.xml	
-	patrol_signalUngeomMMD.xml	
-	patrol_signalUngeomMMDdistinct.xml	
-	patrol_signalUngeomMMP.xml	
-	patrol_signalUngeomMMPdistinct.xml	
-	patrol_signalUngeomMMR.xml	
-	patrol_signalUngeomMMRdistinct.xml	
-	patrol_signalUngeomPref.xml	
-	patrol_switch.xml	
-	patrol_switchUngeom.xml	
-	patrol_switchUngeomDistinctPref.xml	
-	patrol_switchUngeomPref.xml	
+	EXP_patrol_signal-1M.xml
+	EXP_patrol_signal-2M.xml
+	EXP_patrol_signal-3M.xml
+	EXP_patrol_signal-MMD.xml
+	EXP_patrol_signal-MMP.xml
+	EXP_patrol_signal-MMR.xml
+	EXP_patrol-MT2.xml
+	EXP_patrol-SPG2.xml
 
 Lone Patrol
-	lone_patrol_single.xml	
-	lone_patrol_switch3.xml	
-	lone_patrol_switchUngeom2DistinctPref.xml	
-	lone_patrol_switchUngeom2Pref.xml	
-	lone_patrol_switchUngeom3.xml	
-	lone_patrol_switchUngeom3DistinctPref.xml	
-	lone_patrol_switchUngeom3Pref.xml	
-	lone_patrol_switchUngeomMMD.xml	
-	lone_patrol_switchUngeomMMDdistinct.xml	
-	lone_patrol_switchUngeomMMP.xml	
-	lone_patrol_switchUngeomMMPdistinct.xml	
-	lone_patrol_switchUngeomMMR.xml	
-	lone_patrol_switchUngeomMMRdistinct.xml	
+	EXP_lone_patrol-1M.xml
+	EXP_lone_patrol-2M.xml
+	EXP_lone_patrol-3M.xml
+	EXP_lone_patrol-MMD.xml
+	EXP_lone_patrol-MMP.xml
+	EXP_lone_patrol-MMR.xml
+	EXP_lone_patrol-MT3.xml
+	EXP_lone_patrol-SPG3.xml
 
 Dual Task
-	EXP_dual_task-MMD.xml	
-	EXP_dual_task-MMDdistinct.xml	
-	EXP_dual_task-MMP.xml	
-	EXP_dual_task-MMPdistinct.xml	
-	EXP_dual_task-MMR.xml	
-	EXP_dual_task-MMRdistinct.xml	
-	EXP_dual_task-threeBrainDistinctPref.xml	
-	EXP_dual_task-twoBrainDistinctPref.xml	
-	EXP_dual_task-twoBrainPref.xml	
-	EXP_dual_task-twoBrainSituationalPolicyGeometry.xml	
-	EXP_dual_task-twoBrainSwitch.xml	
-	EXP_dual_task.xml
+	EXP_dual_task-1M.xml
+	EXP_dual_task-2M.xml
+	EXP_dual_task-3M.xml
+	EXP_dual_task-MMD.xml
+	EXP_dual_task-MMP.xml
+	EXP_dual_task-MMR.xml
+	EXP_dual_task-MT2.xml
+	EXP_dual_task-SPG2.xml
 
 Two Rooms
-	two_room_EXP-threeBrainPref2-distinct.xml	
-	two_room_EXP-twoBrainDistinctPref.xml	
-	two_room_EXP-twoBrainMultitask.xml	
-	two_room_EXP-twoBrainPref.xml	
-	two_room_EXP-twoBrainPref2-distinct.xml	
-	two_room_EXP-twoBrainPref2.xml	
-	two_room_EXP-twoBrainPref2MMD-distinct.xml	
-	two_room_EXP-twoBrainPref2MMD.xml	
-	two_room_EXP-twoBrainPref2MMP-distinct.xml	
-	two_room_EXP-twoBrainPref2MMP.xml	
-	two_room_EXP-twoBrainPref2MMR-distinct.xml	
-	two_room_EXP-twoBrainPref2MMR.xml	
-	two_room_EXP-twoBrainSituationalPolicyGeometry.xml	
-	two_room_EXP.xml	
-	two_room_EXP2.xml
+	EXP_two_room-1M.xml
+	EXP_two_room-2M.xml
+	EXP_two_room-3M.xml
+	EXP_two_room-MMD.xml
+	EXP_two_room-MMP.xml
+	EXP_two_room-MMR.xml
+	EXP_two_room-MT2.xml
+	EXP_two_room-SPG2.xml
+
+Four Tasks (a.k.a. Five Environments)
+	EXP_FourTasks-avg-1M.xml
+	EXP_FourTasks-avg-2M.xml
+	EXP_FourTasks-avg-3M.xml
+	EXP_FourTasks-avg-4M.xml
+	EXP_FourTasks-avg-5M.xml
+	EXP_FourTasks-avg-MMD.xml
+	EXP_FourTasks-avg-MMP.xml
+	EXP_FourTasks-avg-MMR.xml
+	EXP_FourTasks-avg-MT5.xml
+	EXP_FourTasks-avg-SPG5.xml
+
+See https://arxiv.org/abs/1604.07806 for details regarding experiments in
+these domains.
 
 Details about MultiAgent-HyperSharpNEAT follow.
 
@@ -218,7 +210,7 @@ EVOLVABLE-SUBSTRATE NAVIGATION EXPERIMENT
 The maze navigation experiment (“hardmaze_exp.xml”) is presented in the 2011 GECCO paper on ES-HyperNEAT (see above). The goal of the agent is to navigate from a starting to an end location. The main ES-HyperNEAT code can be found in the SharpNeatLib\CPPNs\EvolvableSubstrate.cs class. The main method in that class is “generateConnections”, which generates a list of ANN connections and hidden nodes based on the information in the underlying CPPN. This function is called from the SubstrateDescription.cs class. The parameters for ES-HyperNEAT can be changed in the params.txt file (see below). Note that this is a single-agent experiment that does not support increasing the number of agents. For questions on ES-HyperNEAT email sebastian.risi@gmail.com
 --------------------------
 PATROL AND RETURN
-The patrol and return experiment with situational policy geometry (“patrol_switch.xml”) is presented in the 2011 IROS paper above.  The goal is for the team of agents to spread out among an environment, and then return to their starting place. For comparison purposes, the same experiment, but without situational policy geometry (“patrol_signal.xml”) is also included.
+The patrol and return experiment with situational policy geometry is presented in the 2011 IROS paper above. Files from this experiment were renamed in this distribution. This experiment is known as Team Patrol in this distribution. See the list of experiment files above for more information.
 
 PARAMETER FILE
 --------------------------
@@ -320,10 +312,6 @@ roomclear_exp_hetero.xml - MultiAgent HyperNEAT experiment file where robots can
 roomclear_exp_homo.xml - Homogeneous HyperNEAT experiment file where robots cannot see each other
 
 hardmaze_exp.xml - Navigation Domain from the ES-HyperNEAT GECCO 2011 paper
-
-patrol_switch.xml - Patrol and Return domain from the IROS 2011 paper where the team exploits situational policy geometry.
-
-patrol_signal.xml - Patrol and Return domain from the IROS 2011 paper where the team does not exploit situational policy geometry.
 
 The Mode menu allows you to change the current mode. The mode determines how mouse interaction will affect the environment.
 Select mode: Agents and walls can be selected and moved to different locations by clicking and dragging with the left mouse button. This can be used as an experiment is running for interactive exploration of the evolved behaviors of the agents. Agents and walls can also be rotated by clicking and dragging with the right mouse button. 
