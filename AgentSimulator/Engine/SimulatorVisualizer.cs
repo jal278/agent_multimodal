@@ -391,7 +391,7 @@ namespace Engine
                                     hspacing = -25;
                                     vspacing = +40;
                                 }
-                                netForm.SetDesktopLocation((i%10) * (netForm.Width + hspacing), selected_robot.id * (netForm.Height + vspacing) + (i > 10 ? 120 : 0));
+                                netForm.SetDesktopLocation((i%10) * (netForm.Width + hspacing), selected_robot.id * (netForm.Height + vspacing) + (i >= 10 ? 120 : 0));
                             }
                             return; // Schrum: need to break normal execution flow to avoid netForm being shown again
                         }
