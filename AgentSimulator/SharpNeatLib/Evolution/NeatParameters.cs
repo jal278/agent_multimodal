@@ -97,12 +97,13 @@ namespace SharpNeatLib.Evolution
         public double pMMP;
         public double pMMR;
         public double pMMD;
+        public double pModuleDeletion;
 
-		/// <summary>
-		/// A list of ConnectionMutationParameterGroup objects to drive the types of connection mutation
-		/// that occur.
-		/// </summary>
-		public ConnectionMutationParameterGroupList ConnectionMutationParameterGroupList;
+        /// <summary>
+        /// A list of ConnectionMutationParameterGroup objects to drive the types of connection mutation
+        /// that occur.
+        /// </summary>
+        public ConnectionMutationParameterGroupList ConnectionMutationParameterGroupList;
 
 	//-----
 		public double compatibilityThreshold;

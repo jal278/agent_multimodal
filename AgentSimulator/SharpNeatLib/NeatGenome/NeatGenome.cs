@@ -1056,8 +1056,9 @@ namespace SharpNeatLib.NeatGenome
 				ea.NeatParameters.pMutateConnectionWeights,
                 moduleMutationAllowed ? ea.NeatParameters.pMMP : 0, // Schrum: MM(Previous)
                 moduleMutationAllowed ? ea.NeatParameters.pMMR : 0, // Schrum: MM(Random)
-                moduleMutationAllowed ? ea.NeatParameters.pMMD : 0  // Schrum: MM(Duplicate)
-			};
+                moduleMutationAllowed ? ea.NeatParameters.pMMD : 0,  // Schrum: MM(Duplicate)
+                ea.NeatParameters.pModuleDeletion   // Schrum: Module Deletion
+            };
 
 			int outcome = RouletteWheel.SingleThrow(probabilities);
 
@@ -1090,8 +1091,62 @@ namespace SharpNeatLib.NeatGenome
                 case 8: // Schrum: MM(D)
                     Module_Mutation_Duplicate(ea);
                     break;
-			}
-		}
+                case 9: // Schrum: Module Deletion
+                    Module_Deletion(ea);
+                    break;
+            }
+        }
+
+        // Schrum: Module Deletion
+        private void Module_Deletion(EvolutionAlgorithm ea)
+        {
+            EnsureNeuronConnectionLookupTable(); // Needed by DeleteNeuron
+
+            // Push all output neurons together
+            this.neuronGeneList.SortByNeuronOrder();
+            int numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
+            if (numModules > 1) // Only delete if there are more than 1
+            {
+                int randomModule = Utilities.Next(numModules); // to delete
+                // Location of neuron to delete
+                int neuronIndex = 1 + inputNeuronCount + (randomModule * outputsPerPolicy);
+                // Each neuron to delete will shift back into the same position
+
+                // Delete each neuron
+                for (int i = 0; i < outputsPerPolicy; i++)
+                {
+                    //neuronGeneList.RemoveAt(neuronIndex); // remove neuron and shift down
+                    uint id = neuronGeneList[neuronIndex].InnovationId;
+                    DeleteNeuron(id, ea);
+                    this.outputNeuronCount--; // Decrease number of outputs
+                }
+            }
+        }
+
+        // Schrum: My neuron deletion method used by ModuleDeletion.
+        // May disconnect neurons.
+        private void DeleteNeuron(uint neuronId, EvolutionAlgorithm ea)
+        {
+            NeuronConnectionLookup lookup = (NeuronConnectionLookup)neuronConnectionLookupTable[neuronId];
+            // Schrum: I don't understand why this is sometimes null
+            if (lookup != null) { 
+                // Delete the old connections.
+                foreach (ConnectionGene incomingConnection in lookup.incomingList)
+                    connectionGeneList.Remove(incomingConnection);
+
+                foreach (ConnectionGene outgoingConnection in lookup.outgoingList)
+                {
+                    // Filter out recurrent connections - they will have already been 
+                    // deleted in the loop through 'lookup.incomingList'.
+                    if (outgoingConnection.TargetNeuronId != neuronId)
+                        connectionGeneList.Remove(outgoingConnection);
+                }
+            }
+
+            // Delete the simple neuron - it no longer has any connections to or from it.
+            neuronGeneList.Remove(neuronId);
+        }
+
 
         // Schrum: Simple form of Module Mutation, MM(P)
         private void Module_Mutation_Previous(EvolutionAlgorithm ea)

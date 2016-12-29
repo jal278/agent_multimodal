@@ -76,7 +76,8 @@ namespace Engine
                     np.pMMP = simExp.mmpRate;
                     np.pMMR = simExp.mmrRate;
                     np.pMMD = simExp.mmdRate;
-                    
+                    np.pModuleDeletion = simExp.moduleDeletionRate;
+
                     np.connectionWeightRange = 3;
                     np.pMutateAddConnection = .03;
                     np.pMutateAddNode = .01;
