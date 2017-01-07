@@ -1110,8 +1110,35 @@ namespace SharpNeatLib.NeatGenome
                 int randomModule = Utilities.Next(numModules); // to delete
                 // Location of neuron to delete
                 int neuronIndex = 1 + inputNeuronCount + (randomModule * outputsPerPolicy);
-                // Each neuron to delete will shift back into the same position
 
+                // Deleting neurons seems to undo the SortByNeuronOrder above, so find all
+                // innovation numbers to delete first.
+                uint[] idsToDelete = new uint[outputsPerPolicy];
+                for (int i = 0; i < outputsPerPolicy; i++)
+                {
+                    uint id = neuronGeneList[neuronIndex + i].InnovationId;
+                    idsToDelete[i] = id;
+                }
+
+                // Now delete them
+                for (int i = 0; i < outputsPerPolicy; i++)
+                {
+                    DeleteNeuron(idsToDelete[i], ea);
+                    this.outputNeuronCount--; // Decrease number of outputs
+
+                }
+
+
+                // Original attempt
+                /*
+                String original = "";
+                foreach (NeuronGene ng in neuronGeneList)
+                {
+                    original += (ng.InnovationId + ":" + ng.NeuronType + ",");
+                }
+
+
+                String error = "";
                 // Delete each neuron
                 for (int i = 0; i < outputsPerPolicy; i++)
                 {
@@ -1119,11 +1146,16 @@ namespace SharpNeatLib.NeatGenome
                     uint id = neuronGeneList[neuronIndex].InnovationId;
                     if(neuronGeneList[neuronIndex].NeuronType != NeuronType.Output)
                     {
-                        throw new Exception("Should only delete output neurons: " + neuronGeneList[neuronIndex].NeuronType + ":" + id + ":" + neuronGeneList[neuronIndex]);
+                        foreach(NeuronGene ng in neuronGeneList) {
+                            Console.WriteLine(ng.InnovationId + ":" + ng.NeuronType);
+                        }
+                        throw new Exception("Should only delete output neurons: " + error + ":" + original + ":" + neuronIndex + ":" + neuronGeneList[neuronIndex].NeuronType + ":" + id + ":" + neuronGeneList[neuronIndex]);
                     }
                     DeleteNeuron(id, ea);
+                    error += id + ":";
                     this.outputNeuronCount--; // Decrease number of outputs
                 }
+                */
             }
 
             // recheck
