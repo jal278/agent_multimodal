@@ -1117,9 +1117,20 @@ namespace SharpNeatLib.NeatGenome
                 {
                     //neuronGeneList.RemoveAt(neuronIndex); // remove neuron and shift down
                     uint id = neuronGeneList[neuronIndex].InnovationId;
+                    if(neuronGeneList[neuronIndex].NeuronType != NeuronType.Output)
+                    {
+                        throw new Exception("Should only delete output neurons: " + neuronGeneList[neuronIndex].NeuronType + ":" + id + ":" + neuronGeneList[neuronIndex]);
+                    }
                     DeleteNeuron(id, ea);
                     this.outputNeuronCount--; // Decrease number of outputs
                 }
+            }
+
+            // recheck
+            numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
+            if (this.outputNeuronCount == 0 || numModules == 0)
+            {
+                throw new Exception("Should be output neurons left: " + this.outputNeuronCount + ":" + this.outputsPerPolicy + ":" + numModules);
             }
         }
 
