@@ -1100,13 +1100,13 @@ namespace SharpNeatLib.NeatGenome
         // Schrum: Module Deletion
         private void Module_Deletion(EvolutionAlgorithm ea)
         {
-            EnsureNeuronConnectionLookupTable(); // Needed by DeleteNeuron
-
-            // Push all output neurons together
-            this.neuronGeneList.SortByNeuronOrder();
             int numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
             if (numModules > 1) // Only delete if there are more than 1
             {
+                EnsureNeuronConnectionLookupTable(); // Needed by DeleteNeuron
+                                                     // Push all output neurons together
+                this.neuronGeneList.SortByNeuronOrder();
+
                 int randomModule = Utilities.Next(numModules); // to delete
                 // Location of neuron to delete
                 int neuronIndex = 1 + inputNeuronCount + (randomModule * outputsPerPolicy);
