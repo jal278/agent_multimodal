@@ -141,13 +141,13 @@ namespace Engine
                     {
                         //Schrum: debugging
                         //Console.WriteLine("multipleBrains");
-
                         // Schrum: The original code hard codes "2" as the nubmer of brains for any multi brain scenario TODO
                         //List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, 2, out zcoordinates);
                         List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, numBrains, out zcoordinates, forcedSituationalPolicyGeometry);
 
 
                         // Schrum: Debugging module deletion
+                        /**
                         if(genes.Count == 0)
                         {
                             Console.WriteLine("InputNeuronCount :" + genome.InputNeuronCount);
@@ -157,9 +157,9 @@ namespace Engine
                             Console.WriteLine("OutputsPerPolicy :" + genome.OutputsPerPolicy);
                             Console.WriteLine("TotalNeuronCount :" + genome.TotalNeuronCount);
                             
-                            throw new Exception("How is this 0!");
+                            throw new Exception("How is genes.Count 0!");
                         }
-
+                        **/
                         for (int j = 0; j < genes.Count; j++)
                         {
                             multiBrains.Add(genes[j].Decode(null));
