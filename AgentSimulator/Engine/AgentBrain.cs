@@ -146,6 +146,20 @@ namespace Engine
                         //List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, 2, out zcoordinates);
                         List<NeatGenome> genes = substrateDescription.generateGenomeStackSituationalPolicy(genome, Convert.ToUInt32(numRobots), normalizeANNWeights, adaptableANN, modulatoryANN, numBrains, out zcoordinates, forcedSituationalPolicyGeometry);
 
+
+                        // Schrum: Debugging module deletion
+                        if(genes.Count == 0)
+                        {
+                            Console.WriteLine("InputNeuronCount :" + genome.InputNeuronCount);
+                            Console.WriteLine("NumLinks         :" + genome.NumLinks);
+                            Console.WriteLine("NumOutputModules :" + genome.NumOutputModules);
+                            Console.WriteLine("OutputNeuronCount:" + genome.OutputNeuronCount);
+                            Console.WriteLine("OutputsPerPolicy :" + genome.OutputsPerPolicy);
+                            Console.WriteLine("TotalNeuronCount :" + genome.TotalNeuronCount);
+                            
+                            throw new Exception("How is this 0!");
+                        }
+
                         for (int j = 0; j < genes.Count; j++)
                         {
                             multiBrains.Add(genes[j].Decode(null));

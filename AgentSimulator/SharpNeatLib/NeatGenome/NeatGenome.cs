@@ -1103,8 +1103,6 @@ namespace SharpNeatLib.NeatGenome
             int numModules = this.outputNeuronCount / this.outputsPerPolicy; // Should evenly divide
             if (numModules > 1) // Only delete if there are more than 1
             {
-                EnsureNeuronConnectionLookupTable(); // Needed by DeleteNeuron
-                                                     // Push all output neurons together
                 this.neuronGeneList.SortByNeuronOrder();
 
                 int randomModule = Utilities.Next(numModules); // to delete
@@ -1117,6 +1115,14 @@ namespace SharpNeatLib.NeatGenome
                 for (int i = 0; i < outputsPerPolicy; i++)
                 {
                     uint id = neuronGeneList[neuronIndex + i].InnovationId;
+                    if (neuronGeneList[neuronIndex + i].NeuronType != NeuronType.Output)
+                    {
+                        foreach (NeuronGene ng in neuronGeneList)
+                        {
+                            Console.WriteLine(ng.InnovationId + ":" + ng.NeuronType);
+                        }
+                        throw new Exception("Should only delete output neurons: "+ neuronIndex + ":" + neuronGeneList[neuronIndex].NeuronType + ":" + id + ":" + neuronGeneList[neuronIndex]);
+                    }
                     idsToDelete[i] = id;
                 }
 
@@ -1127,35 +1133,6 @@ namespace SharpNeatLib.NeatGenome
                     this.outputNeuronCount--; // Decrease number of outputs
 
                 }
-
-
-                // Original attempt
-                /*
-                String original = "";
-                foreach (NeuronGene ng in neuronGeneList)
-                {
-                    original += (ng.InnovationId + ":" + ng.NeuronType + ",");
-                }
-
-
-                String error = "";
-                // Delete each neuron
-                for (int i = 0; i < outputsPerPolicy; i++)
-                {
-                    //neuronGeneList.RemoveAt(neuronIndex); // remove neuron and shift down
-                    uint id = neuronGeneList[neuronIndex].InnovationId;
-                    if(neuronGeneList[neuronIndex].NeuronType != NeuronType.Output)
-                    {
-                        foreach(NeuronGene ng in neuronGeneList) {
-                            Console.WriteLine(ng.InnovationId + ":" + ng.NeuronType);
-                        }
-                        throw new Exception("Should only delete output neurons: " + error + ":" + original + ":" + neuronIndex + ":" + neuronGeneList[neuronIndex].NeuronType + ":" + id + ":" + neuronGeneList[neuronIndex]);
-                    }
-                    DeleteNeuron(id, ea);
-                    error += id + ":";
-                    this.outputNeuronCount--; // Decrease number of outputs
-                }
-                */
             }
 
             // recheck
@@ -1170,9 +1147,16 @@ namespace SharpNeatLib.NeatGenome
         // May disconnect neurons.
         private void DeleteNeuron(uint neuronId, EvolutionAlgorithm ea)
         {
+            EnsureNeuronConnectionLookupTable(); 
             NeuronConnectionLookup lookup = (NeuronConnectionLookup)neuronConnectionLookupTable[neuronId];
             // Schrum: I don't understand why this is sometimes null
             if (lookup != null) { 
+
+                if(lookup.neuronGene.NeuronType != NeuronType.Output)
+                {
+                    throw new Exception("Only delete output neurons with Module Deletion: " + lookup + ":" + lookup.neuronGene.InnovationId);
+                }
+
                 // Delete the old connections.
                 foreach (ConnectionGene incomingConnection in lookup.incomingList)
                     connectionGeneList.Remove(incomingConnection);
