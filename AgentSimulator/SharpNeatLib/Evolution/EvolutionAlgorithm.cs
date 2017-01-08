@@ -883,6 +883,13 @@ namespace SharpNeatLib.Evolution
 						if(twoMembers)
 						{
 							offspring = species.Members[0].CreateOffspring_Sexual(this, species.Members[1]);
+                            // Schrum: deals with case when deleting modules causes complete lack of output neurons after crossover
+                            if (offspring == null)
+                            { // Skip and try again
+                                i--;
+                                continue;
+                            }
+
 							offspring.ParentSpeciesId1 = species.SpeciesId;
 							offspring.ParentSpeciesId2 = species.SpeciesId;
 							offspringList.Add(offspring);
@@ -908,7 +915,14 @@ namespace SharpNeatLib.Evolution
 					if(parent1 != parent2)
 					{
 						offspring = parent1.CreateOffspring_Sexual(this, parent2);
-						offspring.ParentSpeciesId1 = parent1.SpeciesId;
+                        // Schrum: deals with case when deleting modules causes complete lack of output neurons after crossover
+                        if (offspring == null)
+                        { // Skip and try again
+                            i--;
+                            continue;
+                        }
+
+                        offspring.ParentSpeciesId1 = parent1.SpeciesId;
 						offspring.ParentSpeciesId2 = parent2.SpeciesId;
 						offspringList.Add(offspring);
 					}

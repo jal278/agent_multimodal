@@ -463,10 +463,11 @@ namespace SharpNeatLib.NeatGenome
                             newNeuronGeneTable.Add(otherParent.neuronGeneList[i].InnovationId, null);
                         }
                     }
-                    else
-                    {   // No more bias, input or output nodes. break the loop.
-                        break;
-                    }
+                    // Schrum: exiting early?
+                    //else
+                    //{   // No more bias, input or output nodes. break the loop.
+                    //    break;
+                    //}
                 }
             }
 
@@ -566,6 +567,10 @@ namespace SharpNeatLib.NeatGenome
             // CorrelateConnectionGeneLists() - which is always in order.
 
             Debug.Assert(revisedOutputCount > 0, "Zero output neurons are left after crossover.");
+            if(revisedOutputCount == 0)
+            {
+                return null; // this case needs to be handled above
+            }
 
             // Schrum: Modified to add outputsPerPolicy as a parameter, and use revisedOutputCount
 			return new NeatGenome(ea.NextGenomeId, newNeuronGeneList, newModuleGeneList, newConnectionGeneList, inputNeuronCount, revisedOutputCount, outputsPerPolicy);
