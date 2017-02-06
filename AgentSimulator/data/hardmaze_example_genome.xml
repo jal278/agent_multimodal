@@ -1,4 +1,4 @@
-<genome id="16449" species-id="2186" age="1" fitness="10.00" realfitness="10.00" adaptable="False" modulated="False">
+<genome id="16449" species-id="2186" age="1" fitness="10.00" realfitness="10.00" adaptable="False" modulated="False" outputsperpolicy="2">
   <neurons>
     <neuron id="0" type="bias" activationFunction="NullFn" bias="0" layer="0" />
     <neuron id="1" type="in" activationFunction="NullFn" bias="0" layer="0" />
