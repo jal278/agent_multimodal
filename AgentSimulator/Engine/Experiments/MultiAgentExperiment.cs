@@ -470,6 +470,8 @@ namespace Engine
                     if (substrateLinkCost) { 
                         foreach (INetwork b in inst.agentBrain.multiBrains)
                         {
+                            // Problem: I think this value is being calculated wrong, but not because of multiple
+                            //          evaluations (though that also needs to be fixed)
                             linksInSubstrate += b.NumLinks;
                         }
                     }
