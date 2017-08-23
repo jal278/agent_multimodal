@@ -134,6 +134,9 @@ namespace Engine
 		public string behaviorCharacterizationName;
 
         [XmlIgnore]
+        public bool eval = false; // If post-evaluating instead of evolving
+
+        [XmlIgnore]
         public IFitnessFunction fitnessFunction;
 
         [XmlIgnore]

@@ -466,7 +466,8 @@ namespace Engine
 
                     inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
                     // Add up the links in each substrate brain
-                    // Schrum: Problem: will add up for each evaluation.
+                    // Recalculates each evaluation, but resets to 0 each time.
+                    linksInSubstrate = 0;
                     if (substrateLinkCost) { 
                         foreach (INetwork b in inst.agentBrain.multiBrains)
                         {
@@ -475,6 +476,7 @@ namespace Engine
                             linksInSubstrate += b.NumLinks;
                         }
                     }
+                    if (eval) Console.WriteLine("Links In Substrate: " + linksInSubstrate);
                     initializeRobots(inst.agentBrain, env, headingNoise, new_sn, new_ef, inst);
 
                     inst.elapsed = 0;

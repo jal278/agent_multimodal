@@ -222,6 +222,7 @@ namespace PackbotExperiment
 				
 				if (eval)
 				{
+                    experiment.eval = true;
                     Console.WriteLine("Time to evaluate");
 					experiment.loadGenome(to_eval);
 					experiment.initialize();
@@ -236,7 +237,11 @@ namespace PackbotExperiment
                     // for (int i = 0; i < 3; i++) {
 
 					SharpNeatLib.BehaviorType behavior;
-					Console.WriteLine("Fitness score:" + x.EvaluateNetwork(experiment.genome.Decode(null),out behavior));
+                    SharpNeatLib.NeuralNetwork.INetwork network = experiment.genome.Decode(null);
+
+                    Console.WriteLine("Links: " + network.NumLinks);
+                    Console.WriteLine("Output Modules: " + network.NumOutputModules);
+                    Console.WriteLine("Fitness score:" + x.EvaluateNetwork(network, out behavior));
 					// schrum2: Prevent this from crashing in domains with no behavior measure defined
                     if (behavior.behaviorList != null) {
                         Console.Write("Behavior: ");
