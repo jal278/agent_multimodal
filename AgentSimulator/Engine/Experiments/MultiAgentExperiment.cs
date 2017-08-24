@@ -466,13 +466,11 @@ namespace Engine
 
                     inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
                     // Add up the links in each substrate brain
-                    // Recalculates each evaluation, but resets to 0 each time.
+                    // Recalculates each evaluation (wasteful), but resets to 0 each time (correct).
                     linksInSubstrate = 0;
                     if (substrateLinkCost) { 
                         foreach (INetwork b in inst.agentBrain.multiBrains)
                         {
-                            // Problem: I think this value is being calculated wrong, but not because of multiple
-                            //          evaluations (though that also needs to be fixed)
                             linksInSubstrate += b.NumLinks;
                         }
                     }

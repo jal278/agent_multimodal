@@ -74,15 +74,26 @@ namespace SharpNeatLib.Multiobjective
 		//objectives, and better at at least one
 		public bool dominates(NeatGenome.NeatGenome x, NeatGenome.NeatGenome y) {
 			bool better=false;
-			double[] objx = x.objectives, objy = y.objectives;
-			int sz = objx.Length;
+			double[] objx = x.objectives, objy = y.objectives;            
+            int sz = objx.Length;
+
+            /**
+             * Schrum: This code was for troubleshooting
+             * 
+            Console.WriteLine("size:" + sz);
+            for (int i = 0; i < objx.Length; i++)
+            {
+                Console.WriteLine(i + ":" + objx[i]);
+            }
+             **/
+            
 			//if x is ever worse than y, it cannot dominate y
 			//also check if x is better on at least one
-			for(int i=0;i<sz-1;i++) {
-				if(objx[i]<objy[i]) return false;
+			for(int i=0;i<sz;i++) {
+                //Console.WriteLine("Compare:" + i + ":" + objx[i]);
+                if (objx[i] < objy[i]) return false;
 				if(objx[i]>objy[i]) better=true;
 			}
-			
 			//genomic novelty check, disabled for now
 			double thresh=0.1;
 			if((objx[sz-1]+thresh)<(objy[sz-1])) return false;
