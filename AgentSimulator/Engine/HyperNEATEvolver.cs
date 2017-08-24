@@ -121,7 +121,8 @@ namespace Engine
                     popout.Save(oFileInfo.FullName);
                 }
                 // Schrum: Added contents of objective array to log so individual environment scores can be seen in FourTasks domain
-                logOutput.WriteLine(ea.Generation.ToString() + " " + (maxFitness).ToString() + " " + string.Join(" ", ea.BestGenome.Behavior.objectives));
+                // Also always print modules, cppn links, and substrate links
+                logOutput.WriteLine(ea.Generation.ToString() + " " + (maxFitness).ToString() + " " + string.Join(" ", ea.BestGenome.Behavior.objectives) + " " + ea.BestGenome.Behavior.modules + " " + ea.BestGenome.Behavior.cppnLinks + " " + ea.BestGenome.Behavior.substrateLinks);
             }
         }
 
