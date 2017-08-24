@@ -575,6 +575,10 @@ namespace Engine
             {
                 behavior.objectives = accumObjectives;
             }
+            behavior.modules = network.NumOutputModules;
+            behavior.cppnLinks = network.NumLinks;
+            behavior.substrateLinks = linksInSubstrate;
+
             //Console.WriteLine("Total: " + (fitness / environmentList.Count));
             // Schrum: Averaging helps normalize range when adding fitness values, but not when multiplying fitness values
             return multiplicativeFitness ? fitness : fitness / environmentList.Count;
