@@ -468,11 +468,9 @@ namespace Engine
                     // Add up the links in each substrate brain
                     // Recalculates each evaluation (wasteful), but resets to 0 each time (correct).
                     linksInSubstrate = 0;
-                    if (substrateLinkCost) { 
-                        foreach (INetwork b in inst.agentBrain.multiBrains)
-                        {
-                            linksInSubstrate += b.NumLinks;
-                        }
+                    foreach (INetwork b in inst.agentBrain.multiBrains)
+                    {
+                        linksInSubstrate += b.NumLinks;
                     }
                     if (eval) Console.WriteLine("Links In Substrate: " + linksInSubstrate);
                     initializeRobots(inst.agentBrain, env, headingNoise, new_sn, new_ef, inst);
