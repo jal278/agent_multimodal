@@ -229,7 +229,7 @@ namespace SharpNeatLib.Multiobjective
 				}
 				
 				int front_size = front.Count;
-				Console.WriteLine("Front " + current_rank + " size: " + front_size);
+				//Console.WriteLine("Front " + current_rank + " size: " + front_size);
 				
 				//now take all the non-dominated individuals, see who they dominated, and decrease
 				//those genomes' domination counts, because we are removing this front from consideration
