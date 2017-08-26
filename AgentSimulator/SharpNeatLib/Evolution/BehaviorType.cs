@@ -13,11 +13,12 @@ namespace SharpNeatLib
         public List<double> behaviorList;
 		public double[] objectives;
 
-        // Schrum: These three fields are not related to "behavior" but
+        // Schrum: These four fields are not related to "behavior" but
         // this class is the most convenient place to store this information
         public int modules;
         public int cppnLinks;
         public int substrateLinks;
+        public bool multiobjective;
         
         public BehaviorType()
         {
