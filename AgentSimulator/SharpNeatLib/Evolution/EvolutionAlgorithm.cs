@@ -1040,7 +1040,15 @@ namespace SharpNeatLib.Evolution
 
 				// Keep track of the population's best genome and max fitness.
 				NeatGenome.NeatGenome fittestgenome = (NeatGenome.NeatGenome)(species.Members[0]);
-				if(fittestgenome.RealFitness > bestFitness)
+				if(fittestgenome.RealFitness > bestFitness ||
+                    // Fitness is the same, but multiple (really just 2) objectives
+                    // are being used, and this new genome performs better in that second objective.
+                   (fittestgenome.RealFitness == bestFitness &&
+                    fittestgenome.Behavior.multiobjective &&
+                    fittestgenome.Behavior.objectives != null &&
+                    bestGenome.Behavior != null &&
+                    bestGenome.Behavior.objectives != null &&
+                    fittestgenome.Behavior.objectives[1] > bestGenome.Behavior.objectives[1]))
 				{
                     /**
                     Console.WriteLine(fittestgenome);
