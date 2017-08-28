@@ -393,11 +393,6 @@ namespace SharpNeatLib.Evolution
 				multiobjective.rankGenomes();
                 // This is the command that removes excess members of the population, like in NSGA-II
                 pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count),this);
-
-
-                // TODO: Does this fix the best genome problem, or cause massive other problems selecting the
-                //       best agents? Need to focus/work more.
-
                 // Schrum: Change Fitness back to actual Fitness (rather than rank) before updating stats
                 for (int i = 0; i < pop.GenomeList.Count; i++)
                 {
@@ -414,14 +409,8 @@ namespace SharpNeatLib.Evolution
             {
 			CreateOffSpring();
 			pop.TrimAllSpeciesBackToElite();
-
-
-
-
-
-
-
-
+            // Schrum: for degugging
+                /**
                 if (generation >= 9)
                 {
                     Console.WriteLine("Population contents at generation " + generation);
@@ -433,15 +422,7 @@ namespace SharpNeatLib.Evolution
                         i++;
                     }
                 }
-
-
-
-
-
-
-
-
-
+                **/
                 // Add offspring to the population.
                 int genomeBound = offspringList.Count;
 			for(int genomeIdx=0; genomeIdx<genomeBound; genomeIdx++)
@@ -1106,7 +1087,8 @@ namespace SharpNeatLib.Evolution
                             bestGenome = fittestgenome;
                             bestGenome.objectives = (double[])fittestgenome.Behavior.objectives.Clone();
                             bestGenome.Behavior.objectives = (double[])fittestgenome.Behavior.objectives.Clone();
-
+                            // Schrum: for bebugging
+                            /**
                             if (bestGenome.Behavior.objectives != null && bestGenome.Behavior.objectives[1] == -16)
                             {
                                 Console.WriteLine("Species");
@@ -1115,6 +1097,7 @@ namespace SharpNeatLib.Evolution
                                     Console.WriteLine("\t" + (check.Behavior.objectives == null ? check.RealFitness + ",null" : string.Join(",", check.Behavior.objectives)));
                                 }
                             }
+                            **/
                         }
                     }
                 }
