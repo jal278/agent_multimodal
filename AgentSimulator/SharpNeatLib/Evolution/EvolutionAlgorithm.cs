@@ -391,8 +391,39 @@ namespace SharpNeatLib.Evolution
             if (neatParameters.multiobjective) {
 				multiobjective.addPopulation(pop);
 				multiobjective.rankGenomes();
+
+                // Schrum: for degugging
+                /**
+                Console.WriteLine("Population contents at generation " + generation);
+                int k = 0;
+                foreach (NeatGenome.NeatGenome g in pop.GenomeList)
+                {
+                    Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
+                    k++;
+                }
+                **/
+
+
+
+
+
+
+
+
+
+
+                // Schrum: A command after this point, either truncate or reset pop, is eliminating the most fit individual from the population.
+
+
+
+
+
+
+
+
+
                 // This is the command that removes excess members of the population, like in NSGA-II
-                pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count),this);
+                pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count), this);
                 // Schrum: Change Fitness back to actual Fitness (rather than rank) before updating stats
                 for (int i = 0; i < pop.GenomeList.Count; i++)
                 {
@@ -407,30 +438,16 @@ namespace SharpNeatLib.Evolution
 
             if (!regenerate)
             {
-			CreateOffSpring();
-			pop.TrimAllSpeciesBackToElite();
-            // Schrum: for degugging
-                /**
-                if (generation >= 9)
-                {
-                    Console.WriteLine("Population contents at generation " + generation);
-                    int i = 0;
-                    foreach (NeatGenome.NeatGenome g in pop.GenomeList)
-                    {
-                        if (g.Behavior != null && g.Behavior.objectives != null && g.Behavior.objectives[1] == -15) Console.Write("** ");
-                        Console.WriteLine(i + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                        i++;
-                    }
-                }
-                **/
+                CreateOffSpring();
+                pop.TrimAllSpeciesBackToElite();
                 // Add offspring to the population.
                 int genomeBound = offspringList.Count;
-			for(int genomeIdx=0; genomeIdx<genomeBound; genomeIdx++)
-				pop.AddGenomeToPopulation(this, offspringList[genomeIdx]);
+                for (int genomeIdx = 0; genomeIdx < genomeBound; genomeIdx++)
+                    pop.AddGenomeToPopulation(this, offspringList[genomeIdx]);
 
             }
-            
-			// Adjust the speciation threshold to try and keep the number of species within defined limits.
+
+            // Adjust the speciation threshold to try and keep the number of species within defined limits.
 			if(!neatParameters.multiobjective)
 			AdjustSpeciationThreshold();
 
