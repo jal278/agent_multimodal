@@ -95,10 +95,15 @@ namespace SharpNeatLib.Multiobjective
 				if(objx[i]>objy[i]) better=true;
 			}
 			//genomic novelty check, disabled for now
+            /**
+             * Schrum: I removed this. This seems to have been some special case handling for
+             * novelty search and/or behavioral diversity, but it doesn't make sense when doing
+             * plain multiobjective optimization. This also explains why the change in the loop
+             * above from sz-1 to sz had to happen.
 			double thresh=0.1;
 			if((objx[sz-1]+thresh)<(objy[sz-1])) return false;
 			if((objx[sz-1]>(objy[sz-1]+thresh))) better=true;
-			
+			**/
 			return better;
 		}
 		
@@ -271,9 +276,19 @@ namespace SharpNeatLib.Multiobjective
 			int to_remove=population.Count - size;
 			Console.WriteLine("population size before: " + population.Count);
 			Console.WriteLine("removing " + to_remove);
+
+            // Schrum: print members to be removed
+            /*
+            for(int k = size; k < population.Count; k++)
+            {
+                Console.WriteLine("REMOVE:" + population[k].RealFitness + "," + population[k].Behavior.objectives[1]);
+            }
+            */
+
 			if(to_remove>0)
 	  			population.RemoveRange(size,to_remove);
-						Console.WriteLine("population size after: " + population.Count);
+
+            Console.WriteLine("population size after: " + population.Count);
 
 			return population;
 		}
