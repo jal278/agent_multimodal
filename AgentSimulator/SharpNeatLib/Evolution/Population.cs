@@ -365,16 +365,8 @@ namespace SharpNeatLib.Evolution
 			// away as we would be modifying the structrue we are looping through.
 			foreach(Species species in speciesTable.Values)
 			{
-                if (species.TargetSize == 0)
-                {
-                    speciesToRemove.Add(species.SpeciesId);
-
-                    Console.WriteLine("REMOVE SPECIES: " + species.SpeciesId);
-                    foreach(NeatGenome.NeatGenome genome in species.Members)
-                    {
-                        Console.WriteLine("\t"+ genome.RealFitness + "," + (genome.Behavior == null || genome.Behavior.objectives == null ? "null" : ""+ genome.Behavior.objectives[1]));
-                    }
-                }
+				if(species.TargetSize==0)
+					speciesToRemove.Add(species.SpeciesId);
 			}
 
 			// Remove the poor species.

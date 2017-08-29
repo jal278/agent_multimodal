@@ -49,12 +49,6 @@ namespace SharpNeatLib.Evolution
                     return 1;
             }
 
-            // Schrum: Trust genomes that have experienced an evaluation over others
-            if (x.Behavior.objectives == null && y.Behavior.objectives != null)
-                return 1; // y is "better" since it has been evaluated, but x has not
-            else if (x.Behavior.objectives != null && y.Behavior.objectives == null)
-                return -1; // x is "better" since it has been evaluated, but y has not
-
             // Schrum: Not sure if comparing based on age is really a good idea.
             //         Wonder why this is here.
             long ageDelta = x.GenomeAge - y.GenomeAge;
