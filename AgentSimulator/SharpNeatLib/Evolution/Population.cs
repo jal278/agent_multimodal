@@ -411,6 +411,7 @@ namespace SharpNeatLib.Evolution
                 speciesToRemove.Add(species.SpeciesId);
             }
 
+            // Schrum: Figure out what is being removed here and why
             int speciesBound = speciesToRemove.Count;
             for (int speciesIdx = 0; speciesIdx < speciesBound; speciesIdx++)
                 speciesTable.Remove(speciesToRemove[speciesIdx]);
