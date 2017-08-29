@@ -1040,25 +1040,9 @@ namespace SharpNeatLib.Evolution
 
 				// Keep track of the population's best genome and max fitness.
 				NeatGenome.NeatGenome fittestgenome = (NeatGenome.NeatGenome)(species.Members[0]);
-				if(fittestgenome.RealFitness > bestFitness)
+				if(fittestgenome.Fitness > bestFitness)
 				{
-                    /**
-                    Console.WriteLine(fittestgenome);
-                    Console.WriteLine(fittestgenome.Behavior);
-                    Console.WriteLine(fittestgenome.Behavior.objectives);
-                    Console.WriteLine(fittestgenome.Behavior.objectives[0]);
-                    Console.WriteLine(fittestgenome.Behavior.objectives[1]);
-                    Console.WriteLine(bestGenome);
-                    Console.WriteLine(bestGenome.Behavior);
-                    Console.WriteLine(bestGenome.Behavior.objectives);
-                    Console.WriteLine(bestGenome.Behavior.objectives[0]);
-                    Console.WriteLine(bestGenome.Behavior.objectives[1]);
-                    **/
-                    //Console.WriteLine(fittestgenome.RealFitness + " > " + bestFitness);
-                    //Console.WriteLine("REPLACE BEST: " + (fittestgenome.Behavior == null || fittestgenome.Behavior.objectives == null ? fittestgenome.RealFitness + ",null " : fittestgenome.Behavior.objectives[0] + "," + fittestgenome.Behavior.objectives[1])
-                    //    + " is better than " + (bestGenome == null || bestGenome.Behavior == null || bestGenome.Behavior.objectives == null ? bestFitness + ",null " : bestGenome.Behavior.objectives[0] + "," + bestGenome.Behavior.objectives[1]));
-
-                    bestFitness = fittestgenome.RealFitness;
+				    bestFitness = fittestgenome.Fitness;
 				    bestGenome = fittestgenome;
 				}
 				

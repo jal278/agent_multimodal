@@ -26,14 +26,8 @@ namespace SharpNeatLib.Evolution
             // objective is the same, since we assume the first objective is the only
             // "real" objective. Second objective could be negative CPPN link count or
             // negative substrate link count.
-            if (x.Behavior.multiobjective && x.Fitness != 0 && x.Behavior.objectives != null && y.Behavior.objectives != null)
+            if (x.Behavior.multiobjective && x.Behavior.objectives != null && y.Behavior.objectives != null)
             {
-                // Schrum:
-                // Apparently, genomes with fitness 0 get "sorted" after creation, but before evaluation.
-                // In this case, 0 is the worst possible fitness, but not Behavior or objectives will be defined.
-                // However, at this point in the code, if one fitness is 0, then both must be, meaning we can skip
-                // this code and rely on age, as below.
-
                 // Second objective in index 1
                 double secondObjectiveDelta = y.Behavior.objectives[1] - x.Behavior.objectives[1];
                 if (secondObjectiveDelta < 0.0D)
