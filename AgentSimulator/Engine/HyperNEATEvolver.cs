@@ -95,7 +95,7 @@ namespace Engine
             }
             //Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " "  + ea.Population.GenomeList.Count + " " + (DateTime.Now.Subtract(dt)));
             // Schrum: Changed this to include fitness values from each environment: Mainly for FourTasks
-            Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " " + ea.Population.GenomeList.Count + " (" + string.Join(",", ea.BestGenome.Behavior.objectives) + ") " + (DateTime.Now.Subtract(dt)) + " " + ea.BestGenome.Behavior.modules + " " + ea.BestGenome.Behavior.cppnLinks + " " + ea.BestGenome.Behavior.substrateLinks);
+            Console.WriteLine(ea.Generation.ToString() + " " + ea.BestGenome.RealFitness + " " + ea.Population.GenomeList.Count + " (" + string.Join(",", ea.BestGenome.Behavior.objectives) + ") " + (DateTime.Now.Subtract(dt)) + " ID:" + ea.BestGenome.GenomeId + " " + ea.BestGenome.Behavior.modules + " " + ea.BestGenome.Behavior.cppnLinks + " " + ea.BestGenome.Behavior.substrateLinks);
             int gen_mult = 200;
             if (logging)
             {

@@ -393,15 +393,16 @@ namespace SharpNeatLib.Evolution
 				multiobjective.rankGenomes();
 
                 // Schrum: for degugging
-                /**
+                /*
                 Console.WriteLine("Population contents at generation " + generation);
                 int k = 0;
                 foreach (NeatGenome.NeatGenome g in pop.GenomeList)
                 {
-                    Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
+                    Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
                     k++;
                 }
-                **/
+                */
+        
                 // This is the command that removes excess members of the population, like in NSGA-II
                 pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count), this);
                 // Schrum: Change Fitness back to actual Fitness (rather than rank) before updating stats

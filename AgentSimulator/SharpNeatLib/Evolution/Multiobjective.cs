@@ -173,106 +173,168 @@ namespace SharpNeatLib.Multiobjective
 		
 		//add an existing population from hypersharpNEAT to the multiobjective population maintained in
 		//this class, step taken before evaluating multiobjective population through the rank function
-		public void addPopulation(Population p) {
-			for(int i=0;i<p.GenomeList.Count;i++)
-		    {
-		        bool blacklist=false;
-				for(int j=0;j<population.Count;j++)
-				{
-				 if(distance(p.GenomeList[i].Behavior.objectives,population[j].objectives) < 0.01)
-						blacklist=true;  //reject a genome if it is very similar to existing genomes in pop
-				}
-				if(!blacklist) { //add genome if it is unique
-				//we might not need to make copies
-				NeatGenome.NeatGenome copy=new NeatGenome.NeatGenome((NeatGenome.NeatGenome)p.GenomeList[i],0);
-				copy.objectives = (double[])p.GenomeList[i].Behavior.objectives.Clone();
-				population.Add(copy);    
-				}	
-				
-			}
-		}
+        public void addPopulation(Population p)
+        {
+            for (int i = 0; i < p.GenomeList.Count; i++)
+            {
+                // Schrum: debugging
+                /*
+                if (p.GenomeList[i].GenomeId == 3689)
+                {
+                    Console.WriteLine("Considering adding 3689");
+                }
+                 */
+
+                bool blacklist = false;
+                for (int j = 0; j < population.Count; j++)
+                {
+                    double dist = distance(p.GenomeList[i].Behavior.objectives, population[j].objectives);
+                    /* 
+                    if (p.GenomeList[i].GenomeId == 3689)
+                    {
+                        Console.WriteLine("\tcompare" + p.GenomeList[i].GenomeId + ":" + p.GenomeList[i].RealFitness + "," + p.GenomeList[i].Behavior.objectives[1] + ":::" + string.Join(",", p.GenomeList[i].Behavior.objectives) + " compared to " + string.Join(",", population[j].objectives) + " result dist " + dist);
+                    }
+                    */
+                    if (dist < 0.01)
+                    {
+                        //if (p.GenomeList[i].GenomeId == 3689)
+                        //    Console.WriteLine("Blacklisting 3689!");
+    
+                        blacklist = true;  //reject a genome if it is very similar to existing genomes in pop
+                    }
+                }
+                if (!blacklist)
+                {
+                    //add genome if it is unique
+                    //we might not need to make copies
+                    NeatGenome.NeatGenome copy = new NeatGenome.NeatGenome((NeatGenome.NeatGenome)p.GenomeList[i], 0);
+                    copy.objectives = (double[])p.GenomeList[i].Behavior.objectives.Clone();
+                    population.Add(copy);
+
+                    /*
+                    if (p.GenomeList[i].GenomeId == 3689)
+                    {
+                        Console.WriteLine("Adding 3689 at " + population.Count + ":" + copy.RealFitness + ":" + copy.Fitness + ":" + string.Join(",", copy.objectives));
+                    }
+                    **/
+                }
+
+            }
+
+            // Schrum: debugging: after adding ... is it not here?
+            /*
+            int k = 0;
+            foreach (NeatGenome.NeatGenome g in population)
+            {
+                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
+                k++;
+            }
+            */
+        }
 
 		public void rankGenomes() {
-		  int size = population.Count;
-			
-			calculateGenomicNovelty();
-		 if(doNovelty) {
-			measure_novelty();
-			}
-			
-		  //reset rank information
-		  for(int i=0;i<size;i++) {
-		    if(ranks.Count<i+1)
-				ranks.Add(new RankInformation());
-			else
-				ranks[i].reset();
-		  }
-			//calculate domination by testing each genome against every other genome
-			for(int i=0;i<size;i++) {
-				for(int j=0;j<size;j++) {
-					update_domination((NeatGenome.NeatGenome)population[i],(NeatGenome.NeatGenome)population[j],ranks[i],ranks[j]);
-				}
-			}
-			
-			//successively peel off non-dominated fronts (e.g. those genomes no longer dominated by any in
-			//the remaining population)
-			List<int> front = new List<int>();
-			int ranked_count=0;
-			int current_rank=1;
-			while(ranked_count < size) {
-				//search for non-dominated front
-				for(int i=0;i<size;i++)
-				{
-					//continue if already ranked
-					if(ranks[i].ranked) continue;
-					//if not dominated, add to front
-					if(ranks[i].domination_count==0) {
-						front.Add(i);
-						ranks[i].ranked=true;
-						ranks[i].rank=current_rank;
-					}
-				}
-				
-				int front_size = front.Count;
-				//Console.WriteLine("Front " + current_rank + " size: " + front_size);
-				
-				//now take all the non-dominated individuals, see who they dominated, and decrease
-				//those genomes' domination counts, because we are removing this front from consideration
-				//to find the next front of individuals non-dominated by the remaining individuals in
-				//the population
-				for(int i=0;i<front_size;i++) {
-					RankInformation r = ranks[front[i]];
-					foreach (RankInformation dominated in r.dominates) {
-						dominated.domination_count--;
-					}
-				}
-				
-				ranked_count+=front_size;
-				front.Clear();
-				current_rank++;
-			}
-			
-			//we save the last objective for potential use as genomic novelty objective
-			int last_obj=population[0].objectives.Length-1;
-			
-			//fitness = popsize-rank (better way might be maxranks+1-rank), but doesn't matter
-			//because speciation is not used and tournament selection is employed
-			for(int i=0;i<size;i++) {
-				population[i].Fitness = (size+1)-ranks[i].rank;//+population[i].objectives[last_obj]/100000.0;
-			}
-			
-			population.Sort();
-			generation++;
+            // Schrum: debugging
+
+            Console.WriteLine("pop before ranking");
+            int k = 0;
+            foreach (NeatGenome.NeatGenome g in population)
+            {
+                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
+                k++;
+            }
+
+            int size = population.Count;
+
+            // Schrum: Originally, calculateGenomicNovelty was outside of this "if" but it was clearly causing problems
+            // with my multiobjective experiments. I feel like this might break some results from Joel's older papers though.
+            if (doNovelty)
+            {
+                calculateGenomicNovelty();
+                measure_novelty();
+            }
+
+            //reset rank information
+            for (int i = 0; i < size; i++)
+            {
+                if (ranks.Count < i + 1)
+                    ranks.Add(new RankInformation());
+                else
+                    ranks[i].reset();
+            }
+            //calculate domination by testing each genome against every other genome
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    update_domination((NeatGenome.NeatGenome)population[i], (NeatGenome.NeatGenome)population[j], ranks[i], ranks[j]);
+                }
+            }
+
+            //successively peel off non-dominated fronts (e.g. those genomes no longer dominated by any in
+            //the remaining population)
+            List<int> front = new List<int>();
+            int ranked_count = 0;
+            int current_rank = 1;
+            while (ranked_count < size)
+            {
+                //search for non-dominated front
+                for (int i = 0; i < size; i++)
+                {
+                    //continue if already ranked
+                    if (ranks[i].ranked) continue;
+                    //if not dominated, add to front
+                    if (ranks[i].domination_count == 0)
+                    {
+                        front.Add(i);
+                        ranks[i].ranked = true;
+                        ranks[i].rank = current_rank;
+                    }
+                }
+
+                int front_size = front.Count;
+                //Console.WriteLine("Front " + current_rank + " size: " + front_size);
+
+                //now take all the non-dominated individuals, see who they dominated, and decrease
+                //those genomes' domination counts, because we are removing this front from consideration
+                //to find the next front of individuals non-dominated by the remaining individuals in
+                //the population
+                for (int i = 0; i < front_size; i++)
+                {
+                    RankInformation r = ranks[front[i]];
+                    foreach (RankInformation dominated in r.dominates)
+                    {
+                        dominated.domination_count--;
+                    }
+                }
+
+                ranked_count += front_size;
+                front.Clear();
+                current_rank++;
+            }
+
+            //we save the last objective for potential use as genomic novelty objective
+            int last_obj = population[0].objectives.Length - 1;
+
+            //fitness = popsize-rank (better way might be maxranks+1-rank), but doesn't matter
+            //because speciation is not used and tournament selection is employed
+            for (int i = 0; i < size; i++)
+            {
+                population[i].Fitness = (size + 1) - ranks[i].rank;//+population[i].objectives[last_obj]/100000.0;
+            }
+
+            population.Sort();
+            generation++;
             // Schrum: not really using this. Output overlaps when multiple runs happen, which is annoying
-			//if(generation%250==0)
-			//this.printDistribution();
-		}
+            //if(generation%250==0)
+            //this.printDistribution();
+        }
 		
 		
 		//when we merge populations together, often the population will overflow, and we need to cut
 		//it down. to do so, we just remove the last x individuals, which will be in the less significant
 		//pareto fronts
 		public GenomeList truncatePopulation(int size) {
+            
 			int to_remove=population.Count - size;
 			Console.WriteLine("population size before: " + population.Count);
 			Console.WriteLine("removing " + to_remove);
@@ -290,6 +352,15 @@ namespace SharpNeatLib.Multiobjective
 
             Console.WriteLine("population size after: " + population.Count);
 
+            // Schrum: for debugging
+            /*
+            int k = 0;
+            foreach (NeatGenome.NeatGenome g in population)
+            {
+                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
+                k++;
+            }
+            */
 			return population;
 		}
 		

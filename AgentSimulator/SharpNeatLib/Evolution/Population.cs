@@ -404,21 +404,34 @@ namespace SharpNeatLib.Evolution
 
         public void ResetPopulation(GenomeList l, EvolutionAlgorithm ea)
         {
+            // Schrum: debugging
+            /** 
+            Console.WriteLine("GenomeList l");
+            int k = 0;
+            foreach (NeatGenome.NeatGenome g in l)
+            {
+                Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
+                k++;
+            }
+            */
+
             speciesToRemove.Clear();
 
+            // Remove all species (genomes still in population)
             foreach (Species species in speciesTable.Values)
             {
                 speciesToRemove.Add(species.SpeciesId);
             }
 
-            // Schrum: Figure out what is being removed here and why
             int speciesBound = speciesToRemove.Count;
             for (int speciesIdx = 0; speciesIdx < speciesBound; speciesIdx++)
                 speciesTable.Remove(speciesToRemove[speciesIdx]);
 
-            for (int i = 0; i < l.Count; i++)
+            // Add new genomes to population and to species table
+            for (int i = 0; i < l.Count; i++) {
+                //Console.WriteLine("AddGenomeToPopulation:" + l[i].GenomeId + ":" + l[i].RealFitness + "," + l[i].Fitness + "," + l[i].objectives[0] + "," + l[i].objectives[1]);
                 this.AddGenomeToPopulation(ea, l[i]);
-
+            }
             // Schrum: debugging
             /**
             Console.WriteLine("Population contents");
@@ -430,19 +443,21 @@ namespace SharpNeatLib.Evolution
             }
             
             Console.WriteLine("Species contents");
-            k = 0;
+            int k = 0;
             int specNum = 0;
             foreach (Species s in speciesTable.Values)
             { 
                 foreach (NeatGenome.NeatGenome g in s.Members)
                 {
-                    Console.WriteLine(specNum + ":" + k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
+                    Console.WriteLine(specNum + ":" + k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
                     k++;
                 }
                 specNum++;
             }
             **/
 
+            // Destroys the genome list and rebuilds is from the species table.
+            // Basically, only genomes from input parameter l will still be present.
             this.RebuildGenomeList();
         }
         
