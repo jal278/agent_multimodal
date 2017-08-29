@@ -234,7 +234,7 @@ namespace SharpNeatLib.Multiobjective
 
 		public void rankGenomes() {
             // Schrum: debugging
-
+            /*
             Console.WriteLine("pop before ranking");
             int k = 0;
             foreach (NeatGenome.NeatGenome g in population)
@@ -242,7 +242,7 @@ namespace SharpNeatLib.Multiobjective
                 Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
                 k++;
             }
-
+            */
             int size = population.Count;
 
             // Schrum: Originally, calculateGenomicNovelty was outside of this "if" but it was clearly causing problems
