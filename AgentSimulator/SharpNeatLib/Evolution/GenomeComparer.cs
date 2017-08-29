@@ -26,14 +26,7 @@ namespace SharpNeatLib.Evolution
             // objective is the same, since we assume the first objective is the only
             // "real" objective. Second objective could be negative CPPN link count or
             // negative substrate link count.
-
-            // ALSO: The Fitness has different values during multiobjective population sorting
-            // (for example, "rank") so I also make sure that the Fitness equals the value of the
-            // first objective before using the second objective as a tie-breaker.
-            if (x.Behavior.multiobjective && // multiobjective evolution (only makes sense for 2 objectives where the second is a meta-objective)
-                x.Fitness != 0 && // 0 fitness means the genome was just initialized, and hasn't been evaluated yet
-                x.Behavior.objectives != null && y.Behavior.objectives != null && // Make sure objectives have been provided
-                x.Fitness == x.Behavior.objectives[0]) // Make sure Fitness hasn't been swapped with rank during Pareto layer sorting
+            if (x.Behavior.multiobjective && x.Fitness != 0 && x.Behavior.objectives != null && y.Behavior.objectives != null)
             {
                 // Schrum:
                 // Apparently, genomes with fitness 0 get "sorted" after creation, but before evaluation.
