@@ -279,12 +279,12 @@ namespace SharpNeatLib.Multiobjective
 
             // Schrum: print members to be removed
             /*
-            for(int k = size; k < to_remove; k++)
+            for(int k = size; k < population.Count; k++)
             {
                 Console.WriteLine("REMOVE:" + population[k].RealFitness + "," + population[k].Behavior.objectives[1]);
             }
             */
-            
+
 			if(to_remove>0)
 	  			population.RemoveRange(size,to_remove);
 

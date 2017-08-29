@@ -402,46 +402,22 @@ namespace SharpNeatLib.Evolution
 		}
 
 
-        public void ResetPopulation(GenomeList l, EvolutionAlgorithm ea)
+		public void ResetPopulation(GenomeList l, EvolutionAlgorithm ea)
         {
-            speciesToRemove.Clear();
+			speciesToRemove.Clear();
 
-            foreach (Species species in speciesTable.Values)
+            foreach(Species species in speciesTable.Values)
             {
-                speciesToRemove.Add(species.SpeciesId);
+            	speciesToRemove.Add(species.SpeciesId);		
             }
 
-            int speciesBound = speciesToRemove.Count;
-            for (int speciesIdx = 0; speciesIdx < speciesBound; speciesIdx++)
-                speciesTable.Remove(speciesToRemove[speciesIdx]);
-
-            for (int i = 0; i < l.Count; i++)
-                this.AddGenomeToPopulation(ea, l[i]);
-
-            // Schrum: debugging
-            /**
-            Console.WriteLine("Population contents");
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in GenomeList)
-            {
-                Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                k++;
-            }
+			int speciesBound=speciesToRemove.Count;
+			for(int speciesIdx=0; speciesIdx<speciesBound; speciesIdx++)
+				speciesTable.Remove(speciesToRemove[speciesIdx]);
             
-            Console.WriteLine("Species contents");
-            k = 0;
-            int specNum = 0;
-            foreach (Species s in speciesTable.Values)
-            { 
-                foreach (NeatGenome.NeatGenome g in s.Members)
-                {
-                    Console.WriteLine(specNum + ":" + k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                    k++;
-                }
-                specNum++;
-            }
-            **/
-
+            for(int i=0;i<l.Count;i++)
+                this.AddGenomeToPopulation(ea,l[i]);
+                
             this.RebuildGenomeList();
         }
         

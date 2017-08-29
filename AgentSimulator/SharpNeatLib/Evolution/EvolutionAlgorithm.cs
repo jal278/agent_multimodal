@@ -402,12 +402,31 @@ namespace SharpNeatLib.Evolution
                     k++;
                 }
                 **/
+
+
+
+
+
+
+
+
+
+
+                // Schrum: A command after this point, either truncate or reset pop, is eliminating the most fit individual from the population.
+
+
+
+
+
+
+
+
+
                 // This is the command that removes excess members of the population, like in NSGA-II
                 pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count), this);
                 // Schrum: Change Fitness back to actual Fitness (rather than rank) before updating stats
                 for (int i = 0; i < pop.GenomeList.Count; i++)
                 {
-                    //Console.WriteLine(i + ": " + pop.GenomeList[i].RealFitness + "," + (pop.GenomeList[i].Behavior == null || pop.GenomeList[i].Behavior.objectives == null ? "null" : "" + pop.GenomeList[i].Behavior.objectives[1]));
                     // Not allowed to set Fitness to 0, so set it to MinValue if RealFitness is 0 (only true if agent is unevaluated so far)
                     double realFitness = pop.GenomeList[i].RealFitness == 0.0 ? EvolutionAlgorithm.MIN_GENOME_FITNESS : pop.GenomeList[i].RealFitness;
                     pop.GenomeList[i].Fitness = realFitness;
