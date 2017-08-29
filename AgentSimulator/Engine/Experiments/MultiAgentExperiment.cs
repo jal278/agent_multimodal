@@ -550,7 +550,6 @@ namespace Engine
                 }
             }
 
-            behavior.multiobjective = multiobjective;
             // Punish CPPN modules: Must use with multiobjective option
             if(cppnModuleCost)
             {
