@@ -466,7 +466,7 @@ namespace Engine
 
                     inst.agentBrain = new AgentBrain(homogeneousTeam, inst.num_rbts, substrateDescription, network, normalizeWeights, adaptableANN, modulatoryANN, multibrain, numBrains, evolveSubstrate, preferenceNeurons, forcedSituationalPolicyGeometry);
                     // Add up the links in each substrate brain
-                    // Recalculates each evaluation (wasteful), but resets to 0 each time (correct).
+                    // Recalculates each evaluation, but resets to 0 each time.
                     linksInSubstrate = 0;
                     foreach (INetwork b in inst.agentBrain.multiBrains)
                     {

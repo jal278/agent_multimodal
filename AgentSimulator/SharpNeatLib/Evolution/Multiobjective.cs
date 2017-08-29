@@ -74,31 +74,22 @@ namespace SharpNeatLib.Multiobjective
 		//objectives, and better at at least one
 		public bool dominates(NeatGenome.NeatGenome x, NeatGenome.NeatGenome y) {
 			bool better=false;
-			double[] objx = x.objectives, objy = y.objectives;            
-            int sz = objx.Length;
+			double[] objx = x.objectives, objy = y.objectives;
 
-            /**
-             * Schrum: This code was for troubleshooting
-             * 
-            Console.WriteLine("size:" + sz);
-            for (int i = 0; i < objx.Length; i++)
-            {
-                Console.WriteLine(i + ":" + objx[i]);
-            }
-             **/
-            
+			int sz = objx.Length;
 			//if x is ever worse than y, it cannot dominate y
 			//also check if x is better on at least one
 			for(int i=0;i<sz;i++) {
-                //Console.WriteLine("Compare:" + i + ":" + objx[i]);
-                if (objx[i] < objy[i]) return false;
+				if(objx[i]<objy[i]) return false;
 				if(objx[i]>objy[i]) better=true;
 			}
+			
 			//genomic novelty check, disabled for now
-			double thresh=0.1;
+            /**
+            double thresh=0.1;
 			if((objx[sz-1]+thresh)<(objy[sz-1])) return false;
 			if((objx[sz-1]>(objy[sz-1]+thresh))) better=true;
-			
+			**/
 			return better;
 		}
 		
@@ -187,81 +178,92 @@ namespace SharpNeatLib.Multiobjective
 			}
 		}
 
-		public void rankGenomes() {
-		  int size = population.Count;
-			
-			calculateGenomicNovelty();
-		 if(doNovelty) {
-			measure_novelty();
-			}
-			
-		  //reset rank information
-		  for(int i=0;i<size;i++) {
-		    if(ranks.Count<i+1)
-				ranks.Add(new RankInformation());
-			else
-				ranks[i].reset();
-		  }
-			//calculate domination by testing each genome against every other genome
-			for(int i=0;i<size;i++) {
-				for(int j=0;j<size;j++) {
-					update_domination((NeatGenome.NeatGenome)population[i],(NeatGenome.NeatGenome)population[j],ranks[i],ranks[j]);
-				}
-			}
-			
-			//successively peel off non-dominated fronts (e.g. those genomes no longer dominated by any in
-			//the remaining population)
-			List<int> front = new List<int>();
-			int ranked_count=0;
-			int current_rank=1;
-			while(ranked_count < size) {
-				//search for non-dominated front
-				for(int i=0;i<size;i++)
-				{
-					//continue if already ranked
-					if(ranks[i].ranked) continue;
-					//if not dominated, add to front
-					if(ranks[i].domination_count==0) {
-						front.Add(i);
-						ranks[i].ranked=true;
-						ranks[i].rank=current_rank;
-					}
-				}
-				
-				int front_size = front.Count;
-				//Console.WriteLine("Front " + current_rank + " size: " + front_size);
-				
-				//now take all the non-dominated individuals, see who they dominated, and decrease
-				//those genomes' domination counts, because we are removing this front from consideration
-				//to find the next front of individuals non-dominated by the remaining individuals in
-				//the population
-				for(int i=0;i<front_size;i++) {
-					RankInformation r = ranks[front[i]];
-					foreach (RankInformation dominated in r.dominates) {
-						dominated.domination_count--;
-					}
-				}
-				
-				ranked_count+=front_size;
-				front.Clear();
-				current_rank++;
-			}
-			
-			//we save the last objective for potential use as genomic novelty objective
-			int last_obj=population[0].objectives.Length-1;
-			
-			//fitness = popsize-rank (better way might be maxranks+1-rank), but doesn't matter
-			//because speciation is not used and tournament selection is employed
-			for(int i=0;i<size;i++) {
-				population[i].Fitness = (size+1)-ranks[i].rank;//+population[i].objectives[last_obj]/100000.0;
-			}
-			
-			population.Sort();
-			generation++;
+        public void rankGenomes()
+        {
+            int size = population.Count;
+
+            // Schrum: Moved calculateGenomicNovelty inside the "if" because it replaced my last objective score
+            if (doNovelty)
+            {
+                calculateGenomicNovelty();
+                measure_novelty();
+            }
+
+            //reset rank information
+            for (int i = 0; i < size; i++)
+            {
+                if (ranks.Count < i + 1)
+                    ranks.Add(new RankInformation());
+                else
+                    ranks[i].reset();
+            }
+            //calculate domination by testing each genome against every other genome
+            for (int i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size; j++)
+                {
+                    update_domination((NeatGenome.NeatGenome)population[i], (NeatGenome.NeatGenome)population[j], ranks[i], ranks[j]);
+                }
+            }
+
+            //successively peel off non-dominated fronts (e.g. those genomes no longer dominated by any in
+            //the remaining population)
+            List<int> front = new List<int>();
+            int ranked_count = 0;
+            int current_rank = 1;
+            while (ranked_count < size)
+            {
+                //search for non-dominated front
+                for (int i = 0; i < size; i++)
+                {
+                    //continue if already ranked
+                    if (ranks[i].ranked) continue;
+                    //if not dominated, add to front
+                    if (ranks[i].domination_count == 0)
+                    {
+                        front.Add(i);
+                        ranks[i].ranked = true;
+                        ranks[i].rank = current_rank;
+                    }
+                }
+
+                int front_size = front.Count;
+                //Console.WriteLine("Front " + current_rank + " size: " + front_size);
+
+                //now take all the non-dominated individuals, see who they dominated, and decrease
+                //those genomes' domination counts, because we are removing this front from consideration
+                //to find the next front of individuals non-dominated by the remaining individuals in
+                //the population
+                for (int i = 0; i < front_size; i++)
+                {
+                    RankInformation r = ranks[front[i]];
+                    foreach (RankInformation dominated in r.dominates)
+                    {
+                        dominated.domination_count--;
+                    }
+                }
+
+                ranked_count += front_size;
+                front.Clear();
+                current_rank++;
+            }
+
+            //we save the last objective for potential use as genomic novelty objective
+            int last_obj = population[0].objectives.Length - 1;
+
+            //fitness = popsize-rank (better way might be maxranks+1-rank), but doesn't matter
+            //because speciation is not used and tournament selection is employed
+            for (int i = 0; i < size; i++)
+            {
+                population[i].Fitness = (size + 1) - ranks[i].rank;//+population[i].objectives[last_obj]/100000.0;
+            }
+
+            population.Sort();
+            generation++;
             // Schrum: not really using this. Output overlaps when multiple runs happen, which is annoying
-			//if(generation%250==0)
-			//this.printDistribution();
-		}
+            //if(generation%250==0)
+            //this.printDistribution();
+        }
 		
 		
 		//when we merge populations together, often the population will overflow, and we need to cut
