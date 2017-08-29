@@ -1089,14 +1089,15 @@ namespace SharpNeatLib.Evolution
                 // to find the best agent.
                 if (neatParameters.multiobjective)
                 {
-                    //Console.WriteLine("MULTIOBJECTIVE!");
                     foreach (NeatGenome.NeatGenome g in species.Members)
                     {
-                        if (fittestgenome.RealFitness > bestFitness 
+                        if ((fittestgenome.RealFitness > bestFitness &&
+                             (bestGenome == null || // unless no best genome exists yet 
+                              bestGenome.Behavior == null || bestGenome.Behavior.objectives == null)) // Or not evaluated 
                              || // better fitness is not enough with multiobjective 
                                 // Fitness is the same, but multiple (really just 2) objectives
                                 // are being used, and this new genome performs better in that second objective.
-                            (fittestgenome.RealFitness == bestFitness &&
+                            (fittestgenome.RealFitness >= bestFitness &&
                              fittestgenome.Behavior.objectives != null &&
                              bestGenome.Behavior != null &&
                              bestGenome.Behavior.objectives != null &&
