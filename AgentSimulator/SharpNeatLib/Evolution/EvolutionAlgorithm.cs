@@ -393,7 +393,7 @@ namespace SharpNeatLib.Evolution
 				multiobjective.rankGenomes();
 				pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count),this);
 				pop.RedetermineSpeciation(this);
-				UpdateFitnessStats();
+				UpdateFitnessStats(true); // indicate that "rank" is the current fitness
 				DetermineSpeciesTargetSize();
 			}
 			
@@ -1015,7 +1015,11 @@ namespace SharpNeatLib.Evolution
 			return null;
 		}
 
-		private void UpdateFitnessStats()
+        private void UpdateFitnessStats()
+        {
+            UpdateFitnessStats(false);
+        }
+		private void UpdateFitnessStats(bool multiobjectiveRanking)
 		{
 			/// Indicates if the Candidate CullFlag has been set on any of the species in the first loop.
 			bool bCandidateCullFlag=false;
@@ -1040,13 +1044,29 @@ namespace SharpNeatLib.Evolution
 
 				// Keep track of the population's best genome and max fitness.
 				NeatGenome.NeatGenome fittestgenome = (NeatGenome.NeatGenome)(species.Members[0]);
-				if(fittestgenome.RealFitness > bestFitness ||
-                    (fittestgenome.RealFitness == bestFitness && // At least as good in first
-                     fittestgenome.objectives[1] > bestGenome.objectives[1])) // better in second (assumes only two objectives: one real, and other secondary)
+                // Schrum: do not update bestGenome when doing a multiobjective evolution (happens below).
+                if (fittestgenome.RealFitness > bestFitness && !neatParameters.multiobjective)
 				{
-				    bestFitness = fittestgenome.Fitness;
+                    bestFitness = fittestgenome.RealFitness;
 				    bestGenome = fittestgenome;
 				}
+
+                // Schrum: with multiobjective evolution (specifically, two objectives where the first is "real" and there is a secondary objective)
+                //         we need to check the whole population and see if any member has an equal RealFitness, but superior secondary fitness.
+                //         However, do not update bestGenome when doing a multiobjective rank based sorting.
+                if (neatParameters.multiobjective && !multiobjectiveRanking)
+                {
+                    foreach (NeatGenome.NeatGenome candidate in species.Members)
+                    {
+                        // At least as good in first objective, and strictly better in second objective.
+                        // Use candidate.Behavior.objectives instead of candidate.objectives because they may not have been moved over yet
+                        if (bestGenome == null || (candidate.Behavior.objectives[0] >= bestGenome.Behavior.objectives[0] && candidate.Behavior.objectives[1] > bestGenome.Behavior.objectives[1]))
+                        {
+                            bestFitness = candidate.RealFitness;
+                            bestGenome = candidate;
+                        }
+                    }
+                }
 				
 				if(this.neatParameters.noveltySearch)
 				{
