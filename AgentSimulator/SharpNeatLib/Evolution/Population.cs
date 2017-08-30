@@ -365,16 +365,8 @@ namespace SharpNeatLib.Evolution
 			// away as we would be modifying the structrue we are looping through.
 			foreach(Species species in speciesTable.Values)
 			{
-                if (species.TargetSize == 0)
-                {
-                    speciesToRemove.Add(species.SpeciesId);
-
-                    Console.WriteLine("REMOVE SPECIES: " + species.SpeciesId);
-                    foreach(NeatGenome.NeatGenome genome in species.Members)
-                    {
-                        Console.WriteLine("\t"+ genome.RealFitness + "," + (genome.Behavior == null || genome.Behavior.objectives == null ? "null" : ""+ genome.Behavior.objectives[1]));
-                    }
-                }
+				if(species.TargetSize==0)
+					speciesToRemove.Add(species.SpeciesId);
 			}
 
 			// Remove the poor species.
@@ -402,62 +394,22 @@ namespace SharpNeatLib.Evolution
 		}
 
 
-        public void ResetPopulation(GenomeList l, EvolutionAlgorithm ea)
+		public void ResetPopulation(GenomeList l, EvolutionAlgorithm ea)
         {
-            // Schrum: debugging
-            /** 
-            Console.WriteLine("GenomeList l");
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in l)
+			speciesToRemove.Clear();
+
+            foreach(Species species in speciesTable.Values)
             {
-                Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                k++;
-            }
-            */
-
-            speciesToRemove.Clear();
-
-            // Remove all species (genomes still in population)
-            foreach (Species species in speciesTable.Values)
-            {
-                speciesToRemove.Add(species.SpeciesId);
+            	speciesToRemove.Add(species.SpeciesId);		
             }
 
-            int speciesBound = speciesToRemove.Count;
-            for (int speciesIdx = 0; speciesIdx < speciesBound; speciesIdx++)
-                speciesTable.Remove(speciesToRemove[speciesIdx]);
-
-            // Add new genomes to population and to species table
-            for (int i = 0; i < l.Count; i++) {
-                //Console.WriteLine("AddGenomeToPopulation:" + l[i].GenomeId + ":" + l[i].RealFitness + "," + l[i].Fitness + "," + l[i].objectives[0] + "," + l[i].objectives[1]);
-                this.AddGenomeToPopulation(ea, l[i]);
-            }
-            // Schrum: debugging
-            /**
-            Console.WriteLine("Population contents");
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in GenomeList)
-            {
-                Console.WriteLine(k + ": " + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                k++;
-            }
+			int speciesBound=speciesToRemove.Count;
+			for(int speciesIdx=0; speciesIdx<speciesBound; speciesIdx++)
+				speciesTable.Remove(speciesToRemove[speciesIdx]);
             
-            Console.WriteLine("Species contents");
-            int k = 0;
-            int specNum = 0;
-            foreach (Species s in speciesTable.Values)
-            { 
-                foreach (NeatGenome.NeatGenome g in s.Members)
-                {
-                    Console.WriteLine(specNum + ":" + k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
-                    k++;
-                }
-                specNum++;
-            }
-            **/
-
-            // Destroys the genome list and rebuilds is from the species table.
-            // Basically, only genomes from input parameter l will still be present.
+            for(int i=0;i<l.Count;i++)
+                this.AddGenomeToPopulation(ea,l[i]);
+                
             this.RebuildGenomeList();
         }
         

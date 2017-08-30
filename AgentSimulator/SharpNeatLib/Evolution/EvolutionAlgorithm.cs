@@ -387,49 +387,29 @@ namespace SharpNeatLib.Evolution
                     regenerate=true;
                 }
             }
-
-            if (neatParameters.multiobjective) {
+            
+			if(neatParameters.multiobjective) {
 				multiobjective.addPopulation(pop);
 				multiobjective.rankGenomes();
-
-                // Schrum: for degugging
-                /*
-                Console.WriteLine("Population contents at generation " + generation);
-                int k = 0;
-                foreach (NeatGenome.NeatGenome g in pop.GenomeList)
-                {
-                    Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + (g.Behavior == null || g.Behavior.objectives == null ? "null" : "" + g.Behavior.objectives[1]));
-                    k++;
-                }
-                */
-        
-                // This is the command that removes excess members of the population, like in NSGA-II
-                pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count), this);
-                // Schrum: Change Fitness back to actual Fitness (rather than rank) before updating stats
-                for (int i = 0; i < pop.GenomeList.Count; i++)
-                {
-                    //Console.WriteLine(i + ": " + pop.GenomeList[i].RealFitness + "," + (pop.GenomeList[i].Behavior == null || pop.GenomeList[i].Behavior.objectives == null ? "null" : "" + pop.GenomeList[i].Behavior.objectives[1]));
-                    // Not allowed to set Fitness to 0, so set it to MinValue if RealFitness is 0 (only true if agent is unevaluated so far)
-                    double realFitness = pop.GenomeList[i].RealFitness == 0.0 ? EvolutionAlgorithm.MIN_GENOME_FITNESS : pop.GenomeList[i].RealFitness;
-                    pop.GenomeList[i].Fitness = realFitness;
-                }
-                pop.RedetermineSpeciation(this);
-                UpdateFitnessStats();
-                DetermineSpeciesTargetSize();
-            }
-
-            if (!regenerate)
+				pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count),this);
+				pop.RedetermineSpeciation(this);
+				UpdateFitnessStats(true); // indicate that "rank" is the current fitness
+				DetermineSpeciesTargetSize();
+			}
+			
+            if(!regenerate)
             {
-                CreateOffSpring();
-                pop.TrimAllSpeciesBackToElite();
-                // Add offspring to the population.
-                int genomeBound = offspringList.Count;
-                for (int genomeIdx = 0; genomeIdx < genomeBound; genomeIdx++)
-                    pop.AddGenomeToPopulation(this, offspringList[genomeIdx]);
+			CreateOffSpring();
+			pop.TrimAllSpeciesBackToElite();
+
+			// Add offspring to the population.
+			int genomeBound = offspringList.Count;
+			for(int genomeIdx=0; genomeIdx<genomeBound; genomeIdx++)
+				pop.AddGenomeToPopulation(this, offspringList[genomeIdx]);
 
             }
-
-            // Adjust the speciation threshold to try and keep the number of species within defined limits.
+            
+			// Adjust the speciation threshold to try and keep the number of species within defined limits.
 			if(!neatParameters.multiobjective)
 			AdjustSpeciationThreshold();
 
@@ -441,7 +421,8 @@ namespace SharpNeatLib.Evolution
 			pop.IncrementGenomeAges();
 			pop.IncrementSpeciesAges();
 			generation++;
-            			
+
+			
             if(neatParameters.noveltySearch)
             {
                 Console.WriteLine("Archive size: " + this.noveltyFixed.archive.Count.ToString());
@@ -1034,7 +1015,11 @@ namespace SharpNeatLib.Evolution
 			return null;
 		}
 
-		private void UpdateFitnessStats()
+        private void UpdateFitnessStats()
+        {
+            UpdateFitnessStats(false);
+        }
+		private void UpdateFitnessStats(bool multiobjectiveRanking)
 		{
 			/// Indicates if the Candidate CullFlag has been set on any of the species in the first loop.
 			bool bCandidateCullFlag=false;
@@ -1059,49 +1044,31 @@ namespace SharpNeatLib.Evolution
 
 				// Keep track of the population's best genome and max fitness.
 				NeatGenome.NeatGenome fittestgenome = (NeatGenome.NeatGenome)(species.Members[0]);
-                // With single objective evolution, the best agent really will be at index 0
-                if (fittestgenome.RealFitness > bestFitness && !fittestgenome.Behavior.multiobjective) {
+                // Schrum: do not update bestGenome when doing a multiobjective evolution (happens below).
+                if (fittestgenome.RealFitness > bestFitness && !neatParameters.multiobjective)
+				{
                     bestFitness = fittestgenome.RealFitness;
 				    bestGenome = fittestgenome;
 				}
-                // With multiobjective evolution, populations get re-sorted in many different ways,
-                // not only on fitness (sorted on rank) so the whole population (species) needs to be searched
-                // to find the best agent.
-                if (neatParameters.multiobjective)
+
+                // Schrum: with multiobjective evolution (specifically, two objectives where the first is "real" and there is a secondary objective)
+                //         we need to check the whole population and see if any member has an equal RealFitness, but superior secondary fitness.
+                //         However, do not update bestGenome when doing a multiobjective rank based sorting.
+                if (neatParameters.multiobjective && !multiobjectiveRanking)
                 {
-                    //Console.WriteLine("MULTIOBJECTIVE!");
-                    foreach (NeatGenome.NeatGenome g in species.Members)
+                    foreach (NeatGenome.NeatGenome candidate in species.Members)
                     {
-                        if (fittestgenome.RealFitness > bestFitness 
-                             || // better fitness is not enough with multiobjective 
-                                // Fitness is the same, but multiple (really just 2) objectives
-                                // are being used, and this new genome performs better in that second objective.
-                            (fittestgenome.RealFitness == bestFitness &&
-                             fittestgenome.Behavior.objectives != null &&
-                             bestGenome.Behavior != null &&
-                             bestGenome.Behavior.objectives != null &&
-                             fittestgenome.Behavior.objectives[1] > bestGenome.Behavior.objectives[1]))
+                        // At least as good in first objective, and strictly better in second objective.
+                        // Use candidate.Behavior.objectives instead of candidate.objectives because they may not have been moved over yet
+                        if (bestGenome == null || (candidate.Behavior.objectives[0] >= bestGenome.Behavior.objectives[0] && candidate.Behavior.objectives[1] > bestGenome.Behavior.objectives[1]))
                         {
-                            bestFitness = fittestgenome.RealFitness;
-                            bestGenome = fittestgenome;
-                            bestGenome.objectives = (double[])fittestgenome.Behavior.objectives.Clone();
-                            bestGenome.Behavior.objectives = (double[])fittestgenome.Behavior.objectives.Clone();
-                            // Schrum: for bebugging
-                            /**
-                            if (bestGenome.Behavior.objectives != null && bestGenome.Behavior.objectives[1] == -16)
-                            {
-                                Console.WriteLine("Species");
-                                foreach (NeatGenome.NeatGenome check in species.Members)
-                                {
-                                    Console.WriteLine("\t" + (check.Behavior.objectives == null ? check.RealFitness + ",null" : string.Join(",", check.Behavior.objectives)));
-                                }
-                            }
-                            **/
+                            bestFitness = candidate.RealFitness;
+                            bestGenome = candidate;
                         }
                     }
                 }
-
-                if (this.neatParameters.noveltySearch)
+				
+				if(this.neatParameters.noveltySearch)
 				{
 				  for(int x=1;x<species.Members.Count;x++)
 				    {

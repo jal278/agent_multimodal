@@ -74,33 +74,19 @@ namespace SharpNeatLib.Multiobjective
 		//objectives, and better at at least one
 		public bool dominates(NeatGenome.NeatGenome x, NeatGenome.NeatGenome y) {
 			bool better=false;
-			double[] objx = x.objectives, objy = y.objectives;            
-            int sz = objx.Length;
+			double[] objx = x.objectives, objy = y.objectives;
 
-            /**
-             * Schrum: This code was for troubleshooting
-             * 
-            Console.WriteLine("size:" + sz);
-            for (int i = 0; i < objx.Length; i++)
-            {
-                Console.WriteLine(i + ":" + objx[i]);
-            }
-             **/
-            
+			int sz = objx.Length;
 			//if x is ever worse than y, it cannot dominate y
 			//also check if x is better on at least one
 			for(int i=0;i<sz;i++) {
-                //Console.WriteLine("Compare:" + i + ":" + objx[i]);
-                if (objx[i] < objy[i]) return false;
+				if(objx[i]<objy[i]) return false;
 				if(objx[i]>objy[i]) better=true;
 			}
+			
 			//genomic novelty check, disabled for now
             /**
-             * Schrum: I removed this. This seems to have been some special case handling for
-             * novelty search and/or behavioral diversity, but it doesn't make sense when doing
-             * plain multiobjective optimization. This also explains why the change in the loop
-             * above from sz-1 to sz had to happen.
-			double thresh=0.1;
+            double thresh=0.1;
 			if((objx[sz-1]+thresh)<(objy[sz-1])) return false;
 			if((objx[sz-1]>(objy[sz-1]+thresh))) better=true;
 			**/
@@ -173,80 +159,30 @@ namespace SharpNeatLib.Multiobjective
 		
 		//add an existing population from hypersharpNEAT to the multiobjective population maintained in
 		//this class, step taken before evaluating multiobjective population through the rank function
-        public void addPopulation(Population p)
+		public void addPopulation(Population p) {
+			for(int i=0;i<p.GenomeList.Count;i++)
+		    {
+		        bool blacklist=false;
+				for(int j=0;j<population.Count;j++)
+				{
+				 if(distance(p.GenomeList[i].Behavior.objectives,population[j].objectives) < 0.01)
+						blacklist=true;  //reject a genome if it is very similar to existing genomes in pop
+				}
+				if(!blacklist) { //add genome if it is unique
+				//we might not need to make copies
+				NeatGenome.NeatGenome copy=new NeatGenome.NeatGenome((NeatGenome.NeatGenome)p.GenomeList[i],0);
+				copy.objectives = (double[])p.GenomeList[i].Behavior.objectives.Clone();
+				population.Add(copy);    
+				}	
+				
+			}
+		}
+
+        public void rankGenomes()
         {
-            for (int i = 0; i < p.GenomeList.Count; i++)
-            {
-                // Schrum: debugging
-                /*
-                if (p.GenomeList[i].GenomeId == 3689)
-                {
-                    Console.WriteLine("Considering adding 3689");
-                }
-                 */
-
-                bool blacklist = false;
-                for (int j = 0; j < population.Count; j++)
-                {
-                    double dist = distance(p.GenomeList[i].Behavior.objectives, population[j].objectives);
-                    /* 
-                    if (p.GenomeList[i].GenomeId == 3689)
-                    {
-                        Console.WriteLine("\tcompare" + p.GenomeList[i].GenomeId + ":" + p.GenomeList[i].RealFitness + "," + p.GenomeList[i].Behavior.objectives[1] + ":::" + string.Join(",", p.GenomeList[i].Behavior.objectives) + " compared to " + string.Join(",", population[j].objectives) + " result dist " + dist);
-                    }
-                    */
-                    if (dist < 0.01)
-                    {
-                        //if (p.GenomeList[i].GenomeId == 3689)
-                        //    Console.WriteLine("Blacklisting 3689!");
-    
-                        blacklist = true;  //reject a genome if it is very similar to existing genomes in pop
-                    }
-                }
-                if (!blacklist)
-                {
-                    //add genome if it is unique
-                    //we might not need to make copies
-                    NeatGenome.NeatGenome copy = new NeatGenome.NeatGenome((NeatGenome.NeatGenome)p.GenomeList[i], 0);
-                    copy.objectives = (double[])p.GenomeList[i].Behavior.objectives.Clone();
-                    population.Add(copy);
-
-                    /*
-                    if (p.GenomeList[i].GenomeId == 3689)
-                    {
-                        Console.WriteLine("Adding 3689 at " + population.Count + ":" + copy.RealFitness + ":" + copy.Fitness + ":" + string.Join(",", copy.objectives));
-                    }
-                    **/
-                }
-
-            }
-
-            // Schrum: debugging: after adding ... is it not here?
-            /*
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in population)
-            {
-                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
-                k++;
-            }
-            */
-        }
-
-		public void rankGenomes() {
-            // Schrum: debugging
-            /*
-            Console.WriteLine("pop before ranking");
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in population)
-            {
-                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
-                k++;
-            }
-            */
             int size = population.Count;
 
-            // Schrum: Originally, calculateGenomicNovelty was outside of this "if" but it was clearly causing problems
-            // with my multiobjective experiments. I feel like this might break some results from Joel's older papers though.
+            // Schrum: Moved calculateGenomicNovelty inside the "if" because it replaced my last objective score
             if (doNovelty)
             {
                 calculateGenomicNovelty();
@@ -334,33 +270,13 @@ namespace SharpNeatLib.Multiobjective
 		//it down. to do so, we just remove the last x individuals, which will be in the less significant
 		//pareto fronts
 		public GenomeList truncatePopulation(int size) {
-            
 			int to_remove=population.Count - size;
 			Console.WriteLine("population size before: " + population.Count);
 			Console.WriteLine("removing " + to_remove);
-
-            // Schrum: print members to be removed
-            /*
-            for(int k = size; k < to_remove; k++)
-            {
-                Console.WriteLine("REMOVE:" + population[k].RealFitness + "," + population[k].Behavior.objectives[1]);
-            }
-            */
-            
 			if(to_remove>0)
 	  			population.RemoveRange(size,to_remove);
+						Console.WriteLine("population size after: " + population.Count);
 
-            Console.WriteLine("population size after: " + population.Count);
-
-            // Schrum: for debugging
-            /*
-            int k = 0;
-            foreach (NeatGenome.NeatGenome g in population)
-            {
-                Console.WriteLine(k + ": " + g.GenomeId + ":" + g.RealFitness + "," + g.Fitness + "," + g.objectives[0] + "," + g.objectives[1]);
-                k++;
-            }
-            */
 			return population;
 		}
 		

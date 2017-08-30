@@ -30,6 +30,7 @@ C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimul
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
+D:\GitHub\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
 C:\Users\He_Deceives\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
 E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.dll
 E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.pdb
@@ -39,4 +40,12 @@ E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\D
 E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
-E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
+C:\Users\Jacob\Documents\Visual Studio 2010\Projects\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.dll
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\bin\Debug\SharpNeatLib.pdb
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.Experiments.AbstractExperimentView.resources
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.NetworkVisualization.NetworkControl.resources
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.NetworkVisualization.Viewport.resources
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
+D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
