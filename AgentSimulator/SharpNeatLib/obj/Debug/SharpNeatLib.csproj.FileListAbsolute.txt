@@ -49,3 +49,4 @@ D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\Sh
 D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csproj.GenerateResource.Cache
 D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.dll
 D:\GitHub\troubleshoot\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.pdb
+E:\Users\he_de\CSharpResearch\agent_multimodal\AgentSimulator\SharpNeatLib\obj\Debug\SharpNeatLib.csprojResolveAssemblyReference.cache

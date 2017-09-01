@@ -1060,7 +1060,9 @@ namespace SharpNeatLib.Evolution
                     {
                         // At least as good in first objective, and strictly better in second objective.
                         // Use candidate.Behavior.objectives instead of candidate.objectives because they may not have been moved over yet
-                        if (bestGenome == null || (candidate.Behavior.objectives[0] >= bestGenome.Behavior.objectives[0] && candidate.Behavior.objectives[1] > bestGenome.Behavior.objectives[1]))
+                        if (bestGenome == null ||
+                            candidate.Behavior.objectives[0] > bestGenome.Behavior.objectives[0] || // strictly better
+                            (candidate.Behavior.objectives[0] >= bestGenome.Behavior.objectives[0] && candidate.Behavior.objectives[1] > bestGenome.Behavior.objectives[1])) // tie with better second objective
                         {
                             bestFitness = candidate.RealFitness;
                             bestGenome = candidate;
