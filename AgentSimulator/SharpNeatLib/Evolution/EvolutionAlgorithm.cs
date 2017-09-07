@@ -389,6 +389,15 @@ namespace SharpNeatLib.Evolution
             }
             
 			if(neatParameters.multiobjective) {
+
+                // Schrum: Troubleshooting
+                /*
+                foreach (NeatGenome.NeatGenome g in pop.GenomeList)
+                {
+                    Console.WriteLine(g.GenomeId + "\t" + string.Join("\t", g.Behavior.objectives));
+                }
+                **/
+
 				multiobjective.addPopulation(pop);
 				multiobjective.rankGenomes();
 				pop.ResetPopulation(multiobjective.truncatePopulation(pop.GenomeList.Count),this);
