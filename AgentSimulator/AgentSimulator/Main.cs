@@ -54,6 +54,11 @@ namespace PackbotExperiment
 			bool benchmark=false;
             bool overrideES = false;
             int numEvals = 1; // Schrum: default
+            // By default, no noise: deterministic
+            // Amount seems to be maximum amount of noise per reading/action
+            int sensorNoise = 0;
+            int effectorNoise = 0;
+            int headingNoise = 0;
 
             if (args.Length!=0 && args[0] == "-help")
             {
@@ -79,6 +84,18 @@ namespace PackbotExperiment
                             case "-numEvals": // Having more than one only makese sense if there are noisy evaluations
                                 numEvals = Convert.ToInt32(args[++j]);
                                 Console.WriteLine("Setting numEvals to " + numEvals);
+                                break;
+                            case "-sensorNoise":
+                                sensorNoise = Convert.ToInt32(args[++j]);
+                                Console.WriteLine("Setting sensorNoise to " + sensorNoise);
+                                break;
+                            case "-effectorNoise":
+                                effectorNoise = Convert.ToInt32(args[++j]);
+                                Console.WriteLine("Setting effectorNoise to " + effectorNoise);
+                                break;
+                            case "-headingNoise":
+                                headingNoise = Convert.ToInt32(args[++j]);
+                                Console.WriteLine("Setting headingNoise to " + headingNoise);
                                 break;
 
                             case "-multiobjective":
@@ -189,6 +206,11 @@ namespace PackbotExperiment
                 ExperimentWrapper wr = ExperimentWrapper.load(experimentName);
                 SimulatorExperiment experiment = wr.experiment;
 
+                // Schrum: Added to allow noise in evals
+                experiment.sensorNoise = sensorNoise;
+                experiment.headingNoise = headingNoise;
+                experiment.effectorNoise = effectorNoise;
+
                 if(populationSize!=0)
                     experiment.populationSize = populationSize;
 				else
@@ -250,6 +272,9 @@ namespace PackbotExperiment
 
                     Console.WriteLine("Links: " + network.NumLinks);
                     Console.WriteLine("Output Modules: " + network.NumOutputModules);
+
+                    // Schrum: Consider this alternative, even though it only results in a final (average?) score
+                    //experiment.timesToRunEnvironments = numEvals;
 
                     for (int i = 0; i < numEvals; i++) {
                         Console.WriteLine("Fitness score "+i+":" + x.EvaluateNetwork(network, out behavior));
