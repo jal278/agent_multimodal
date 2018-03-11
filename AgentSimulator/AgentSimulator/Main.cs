@@ -53,6 +53,7 @@ namespace PackbotExperiment
             string experimentName = null;
 			bool benchmark=false;
             bool overrideES = false;
+            int numEvals = 1; // Schrum: default
 
             if (args.Length!=0 && args[0] == "-help")
             {
@@ -67,10 +68,20 @@ namespace PackbotExperiment
                     if (j <= args.Length - 2)
                         switch (args[j])
                         {
-						    case "-benchmark":
-								benchmark=true;
-								break;
-						    case "-multiobjective":
+                            // Schrum: This is clearly the setting that was formerly used to do robustness testing
+                            //         in the IROS paper, but it does not seem to actually modify the evaluation at
+                            //         all any more.
+                            //case "-benchmark":
+                            //	benchmark=true;
+                            //	break;
+
+                            // Schrum: Instead, several settings related to testing with noise are now accessible here:
+                            case "-numEvals": // Having more than one only makese sense if there are noisy evaluations
+                                numEvals = Convert.ToInt32(args[++j]);
+                                Console.WriteLine("Setting numEvals to " + numEvals);
+                                break;
+
+                            case "-multiobjective":
 						        multiobjective=true;
 						        break;
                             case "-es":
@@ -226,44 +237,45 @@ namespace PackbotExperiment
                     Console.WriteLine("Time to evaluate");
 					experiment.loadGenome(to_eval);
 					experiment.initialize();
-					if(benchmark) {
-						experiment.timesToRunEnvironments=6; //was 25
-						MultiAgentExperiment exp= (MultiAgentExperiment)experiment;
-						exp.benchmark=true;
-					}
-					Engine.NetworkEvaluator x = new Engine.NetworkEvaluator(experiment);
+                    // Schrum: I removed this since the benchmark setting in MultiAgentExperiment seems to be ignored.
+                    //if(benchmark) {
+                    //	experiment.timesToRunEnvironments=6; //was 25
+                    //	MultiAgentExperiment exp= (MultiAgentExperiment)experiment;
+                    //	exp.benchmark=true;
+                    //}
+                    Engine.NetworkEvaluator x = new Engine.NetworkEvaluator(experiment);
 
-                    // Schrum: Loop used for testing: See how consistent evals are
-                    // for (int i = 0; i < 3; i++) {
-
-					SharpNeatLib.BehaviorType behavior;
+                    SharpNeatLib.BehaviorType behavior;
                     SharpNeatLib.NeuralNetwork.INetwork network = experiment.genome.Decode(null);
 
                     Console.WriteLine("Links: " + network.NumLinks);
                     Console.WriteLine("Output Modules: " + network.NumOutputModules);
-                    Console.WriteLine("Fitness score:" + x.EvaluateNetwork(network, out behavior));
-					// schrum2: Prevent this from crashing in domains with no behavior measure defined
-                    if (behavior.behaviorList != null) {
-                        Console.Write("Behavior: ");
-                        foreach (double d in behavior.behaviorList)
-                        {
-	    					Console.Write(d+ " ");
-				    	}
-        			    Console.WriteLine();
-                    }
-                    // Schrum: This will actually print out different objective scores.
-                    // In the case of FourTasks, there is an objective for each environment.
-                    if (behavior != null)
-                    {
-                        Console.Write("MO: ");
-                        foreach (double d in behavior.objectives)
-                        {
-                            Console.Write(d + " ");
-                        }
-                        Console.WriteLine();
-                    }
 
-                    // }  // Schrum: End of test loop commented out above.
+                    for (int i = 0; i < numEvals; i++) {
+                        Console.WriteLine("Fitness score "+i+":" + x.EvaluateNetwork(network, out behavior));
+					    // schrum2: Prevent this from crashing in domains with no behavior measure defined
+                        if (behavior.behaviorList != null) {
+                            Console.Write("Behavior: ");
+                            foreach (double d in behavior.behaviorList)
+                            {
+	    					    Console.Write(d+ " ");
+				    	    }
+        			        Console.WriteLine();
+                        }
+                        // Schrum: This will actually print out different objective scores.
+                        // In the case of FourTasks, there is an objective for each environment.
+                        if (behavior != null)
+                        {
+                            Console.Write("MO: ");
+                            foreach (double d in behavior.objectives)
+                            {
+                                Console.Write(d + " ");
+                            }
+                            Console.WriteLine();
+                        }
+
+                    }
+                    // Quit after all evaluations
                     return;
 				}
 
