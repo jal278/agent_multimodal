@@ -305,6 +305,15 @@ namespace PackbotExperiment
                     }
                     avg /= numEvals;
                     Console.Write("AVG = " + avg);
+
+                    experiment.sensorNoise = 0;
+                    experiment.headingNoise = 0; // doesn't seem to do anything
+                    experiment.effectorNoise = 0; // doesn't seem to do anything
+                    // Reset experiment just in case
+                    x = new Engine.NetworkEvaluator(experiment);
+                    Console.WriteLine("Turn off noise");
+                    Console.WriteLine("Fitness score NO NOISE:" + x.EvaluateNetwork(network, out behavior));
+                    
                     // Quit after all evaluations
                     return;
 				}
