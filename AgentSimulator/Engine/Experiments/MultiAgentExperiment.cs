@@ -442,7 +442,10 @@ namespace Engine
                 inst.timestep = timestep;
                 double tempFit = 0;
                 double[] fitnesses = new double[timesToRunEnvironments];
-                SharpNeatLib.Maths.FastRandom evalRand = new SharpNeatLib.Maths.FastRandom(100);
+                // Schrum: To allow random noise to differ in each evaluation, the fixed seed was removed.
+                //         However, deterministic behavior should still be possible if there is no sensor/effector/heading noise
+                //SharpNeatLib.Maths.FastRandom evalRand = new SharpNeatLib.Maths.FastRandom(100);
+                SharpNeatLib.Maths.FastRandom evalRand = new SharpNeatLib.Maths.FastRandom();
                 for (int evals = 0; evals < timesToRunEnvironments; evals++)
                 {
                     int agent_trials = timesToRunEnvironments;

@@ -57,8 +57,7 @@ FinalConsole.txt
 
 *population*.xml
 AgentSimulator/data/results/AVG/*
-AgentSimulator/.vs/simulator/v15/sqlite3/storage.ide
+AgentSimulator/.vs/*
 AgentSimulator/AgentSimulator/obj/Debug/AgentSimulator.csproj.CopyComplete
 AgentSimulator/Engine/obj/Debug/Engine.csproj.CopyComplete
-AgentSimulator/SharpNeatLib/obj/Debug/SharpNeatLib.csproj.FileListAbsolute.txt
 AgentSimulator/SharpNeatLib/obj/Debug/SharpNeatLib.csproj.FileListAbsolute.txt
