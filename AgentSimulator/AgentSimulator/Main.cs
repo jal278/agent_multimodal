@@ -208,8 +208,8 @@ namespace PackbotExperiment
 
                 // Schrum: Added to allow noise in evals
                 experiment.sensorNoise = sensorNoise;
-                experiment.headingNoise = headingNoise;
-                experiment.effectorNoise = effectorNoise;
+                experiment.headingNoise = headingNoise; // doesn't seem to do anything
+                experiment.effectorNoise = effectorNoise; // doesn't seem to do anything
 
                 if(populationSize!=0)
                     experiment.populationSize = populationSize;
@@ -276,8 +276,11 @@ namespace PackbotExperiment
                     // Schrum: Consider this alternative, even though it only results in a final (average?) score
                     //experiment.timesToRunEnvironments = numEvals;
 
+                    double avg = 0;
                     for (int i = 0; i < numEvals; i++) {
-                        Console.WriteLine("Fitness score "+i+":" + x.EvaluateNetwork(network, out behavior));
+                        double fitness = x.EvaluateNetwork(network, out behavior);
+                        avg += fitness;
+                        Console.WriteLine("Fitness score "+i+":" + fitness);
 					    // schrum2: Prevent this from crashing in domains with no behavior measure defined
                         if (behavior.behaviorList != null) {
                             Console.Write("Behavior: ");
@@ -300,6 +303,8 @@ namespace PackbotExperiment
                         }
 
                     }
+                    avg /= numEvals;
+                    Console.Write("AVG = " + avg);
                     // Quit after all evaluations
                     return;
 				}
