@@ -208,7 +208,7 @@ namespace PackbotExperiment
 
                 // Schrum: Added to allow noise in evals
                 experiment.sensorNoise = sensorNoise;
-                experiment.headingNoise = headingNoise; // doesn't seem to do anything
+                experiment.headingNoise = headingNoise;
                 experiment.effectorNoise = effectorNoise; // doesn't seem to do anything
 
                 if(populationSize!=0)
@@ -304,10 +304,10 @@ namespace PackbotExperiment
 
                     }
                     avg /= numEvals;
-                    Console.Write("AVG = " + avg);
+                    Console.WriteLine("AVG = " + avg);
 
                     experiment.sensorNoise = 0;
-                    experiment.headingNoise = 0; // doesn't seem to do anything
+                    experiment.headingNoise = 0;
                     experiment.effectorNoise = 0; // doesn't seem to do anything
                     // Reset experiment just in case
                     x = new Engine.NetworkEvaluator(experiment);
